@@ -3,7 +3,14 @@ import Collapse from '@material-ui/core/Collapse';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
+import CartButton from '../components/CartButton';
 import { PDFObject } from 'react-pdfobject';
+
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import './Row.css';
+
+
+const greenTheme = createMuiTheme({ palette: {primary:  {'500': "#28a745" }, } });
 
 class Row extends React.Component {
     // ...
@@ -12,6 +19,7 @@ class Row extends React.Component {
         this.state = { expanded:false};
     }
     render() {
+
       const details = this.state.expanded ? (
         <TableRow>
           <TableCell colSpan={4} id={`u${this.props.data.id}`}>
@@ -25,20 +33,20 @@ class Row extends React.Component {
         
       return (
         <React.Fragment>
-            <TableRow key={this.props.data.name}>
+            <TableRow >
                 <TableCell component="th" scope="row">
                 {this.props.data.linkedin
-                    ? <a style={{textDecoration: "none", color: "inherit"}} target="_blank" href={this.props.data.linkedin}><i class="fa fa-linkedin-square mr-1" aria-hidden="true" style={{color:"#0077B5"}}></i> {this.props.data.name}</a>
-                    :  this.props.data.name}
+                    ? <a style={{textDecoration: "none", color: "inherit", display: "inline"}} target="_blank" rel="noopener noreferrer" href={this.props.data.linkedin}><i className="fa fa-linkedin-square mr-1" aria-hidden="true" style={{fontSize: "20px", color:"#0077B5"}}></i> <p>{this.props.data.name}</p></a>
+                    :  <p>{this.props.data.name}</p>}
                 </TableCell>
-                    <TableCell align="left">{this.props.data.major}
+                    <TableCell align="left"><p>{this.props.data.major}</p>
                     </TableCell>
-                <TableCell align="left">{this.props.data.standing}</TableCell>
-                <TableCell align="left">
-                    {/* <MuiThemeProvider theme={greenTheme}> */}
-                        <Button variant="outlined" size="medium" style={{marginRight: '8px'}} onClick={() => this.setState(({ expanded }) => ({ expanded: !expanded }))} color="primary">View</Button>
-                        <Button variant="outlined" color="primary">Add to Cart</Button>
-                    {/* </MuiThemeProvider> */}
+                <TableCell align="left"><p>{this.props.data.standing}</p></TableCell>
+                <TableCell align="left">  
+                  <Button variant="outlined" size="medium" style={{marginRight: '8px'}} onClick={() => this.setState(({ expanded }) => ({ expanded: !expanded }))} color="primary">View</Button>
+                  <MuiThemeProvider theme={greenTheme}> 
+                      <CartButton userId={this.props.data.id} /> 
+                </MuiThemeProvider> 
                 </TableCell>
             </TableRow>
             {details}

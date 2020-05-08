@@ -1,18 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
 import FormGroup from '@material-ui/core/FormGroup';
 import MenuIcon from '@material-ui/icons/Menu';
 import Grid from '@material-ui/core/Grid';
@@ -21,14 +12,15 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import Input from '@material-ui/core/Input';
+import Cart from './CartNavBar';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import green from '@material-ui/core/colors/green';
-import MediaQuery from 'react-responsive';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Switch from '@material-ui/core/Switch';
 import Table from './Table';
+import { connect } from "react-redux";
+import {addFilter, removeFilter, increaseGPA, decreaseGPA} from '../redux/actions';
 
 const drawerWidth = 300;
 
@@ -90,16 +82,20 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
-    checkedF: true,
-    checkedG: true,
-  });
 
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+  const handleChange = (name, category) => {
+      if(props[category][name])
+        props.removeFilter(name, category);
+      else
+        props.addFilter(name, category);
   };
+  
+  const handleGPAChange = (gpa) => {
+    if(gpa > props.gpa.min)
+        props.increaseGPA(gpa, 'gpa');
+    else
+      props.decreaseGPA(gpa);
+  }
 
   const drawer = (
     <div>
@@ -109,13 +105,13 @@ function ResponsiveDrawer(props) {
             <Box ml={1}>
                 <FormGroup>
                     <Grid item xs={12}>
-                        <h3 style={{marginTop: "0px", marginBottom: "0px"}}>GPA:</h3>
+                        <h3 style={{marginTop: "0px", marginBottom: "0px"}}>GPA</h3>
                     </Grid>
                     <Grid item xs={12}>
                         <FormControlLabel 
                             label="Minimum GPA:"
                             labelPlacement="start"
-                            control={<input className={classes.title} type="number" onChange={handleChange} id="quantity" name="quantity" step="0.1" min="0" max="4" />}
+                            control={<Input className={classes.title} value={props.gpa.min} type="number" onChange={e => handleGPAChange(e.target.value)} id="quantity" name="quantity" inputProps={{step:0.1, min:0, max:4}} />}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -124,31 +120,32 @@ function ResponsiveDrawer(props) {
                     <div className={classes.formEntry}>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                
+                                control={<Switch checked={props.standing.grad} onChange={e => handleChange(e.target.name, "standing")} color="primary" name="grad" />}
                                 label="Graduate Student"
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                control={<Switch checked={props.standing.senior} onChange={e => handleChange(e.target.name, "standing")} color="primary" name="senior" />}
                                 label="Senior"
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                control={<Switch checked={props.standing.junior } onChange={e => handleChange(e.target.name, "standing")} color="primary" name="junior" />}
                                 label="Junior"
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                control={<Switch checked={props.standing.sophomore} onChange={e => handleChange(e.target.name, "standing")} color="primary" name="sophomore" />}
                                 label="Sophomore"
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                control={<Switch checked={props.standing.freshman} onChange={e => handleChange(e.target.name, "standing")} color="primary" name="freshman" />}
                                 label="Freshman"
                             />
                         </Grid>
@@ -159,43 +156,43 @@ function ResponsiveDrawer(props) {
                     <div className={classes.formEntry}>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                control={<Switch checked={props.major.be} onChange={e => handleChange(e.target.name, "major")} color="primary" name="be" />}
                                 label="Biomedical Engineering"
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                control={<Switch checked={props.major.ce} onChange={e => handleChange(e.target.name, "major")} color="primary" name="ce" />}
                                 label="Computer Engineering"
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                control={<Switch checked={props.major.cs} onChange={e => handleChange(e.target.name, "major")} color="primary" name="cs" />}
                                 label="Computer Science"
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                control={<Switch checked={props.major.ee} onChange={e => handleChange(e.target.name, "major")} color="primary" name="ee" />}
                                 label="Electrical Engineering"
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                control={<Switch checked={props.major.me} onChange={e => handleChange(e.target.name, "major")} color="primary" name="me" />}
                                 label="Mechanical Engineering"
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                control={<Switch checked={props.major.se} onChange={e => handleChange(e.target.name, "major")} color="primary" name="se" />}
                                 label="Software Engineering"
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel className={classes.formEntry}
-                                control={<Switch checked={state.checkedA} onChange={handleChange} color="primary" name="checkedA" />}
+                                control={<Switch checked={props.major.other} onChange={e => handleChange(e.target.name, "major")} color="primary" name="other" />}
                                 label="Other"
                             />
                         </Grid>
@@ -222,14 +219,13 @@ function ResponsiveDrawer(props) {
                     <MenuIcon />
                 </IconButton>
                 
-                {<img style={{width: "40x", height: "40px"}} src="https://i0.wp.com/www.shpesd.org/wp-content/uploads/2020/02/cropped-SHPE_logo_vert_SanDiegoPro_CMYK_HalfSize.png?fit=512%2C512"/>}
+                {<img style={{width: "40x", height: "40px"}} alt="SHPE logo"src="https://i0.wp.com/www.shpesd.org/wp-content/uploads/2020/02/cropped-SHPE_logo_vert_SanDiegoPro_CMYK_HalfSize.png?fit=512%2C512"/>}
                 <Typography className={classes.title} variant="h6" mx="auto">
                  SHPE
                 </Typography>
                 
                 <Box ml="auto">
-                    <Typography className={classes.cartText}>0</Typography>
-                    <ShoppingCartIcon className={classes.cart}/>
+                    <Cart classes={classes}/>
                     <MuiThemeProvider theme={greenTheme}>
                         <Button variant="contained" color="primary">Login</Button>
                     </MuiThemeProvider>
@@ -267,19 +263,26 @@ function ResponsiveDrawer(props) {
           </Drawer>
         </Hidden>
       </nav>
-      <MediaQuery maxWidth={600}>
-            {console.log("Hello)")}
-                    <p>Hello</p>
-            </MediaQuery>
             <main className={classes.content}>
         <div className={classes.toolbar} />
         <h1 style={{textAlign: "center"}}>Members</h1>
-        <Table/>
+        <Table data={[]}/>
       </main>
             
     </div>
   );
 }
 
+const mapStateToProps = state => {
+    const {gpa, standing, major} = state.data.passingTags;
+    return {gpa: gpa, standing: standing, major: major};
+}
 
-export default ResponsiveDrawer;
+const mapDispatchToProps = {
+    addFilter,
+    removeFilter,
+    increaseGPA,
+    decreaseGPA
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResponsiveDrawer);
