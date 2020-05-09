@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_FROM_CART, STORE_DATA_FROM_API, ADD_FILTER, REMOVE_FILTER, INCREASE_GPA, DECREASE_GPA} from './actionTypes';
+import { ADD_TO_CART, REMOVE_FROM_CART, STORE_DATA_FROM_API, ADD_FILTER, REMOVE_FILTER, INCREASE_GPA, DECREASE_GPA, SORT_TABLE} from './actionTypes';
 
 export const addToCart = userId => ({
     type: ADD_TO_CART,
@@ -51,3 +51,11 @@ export const decreaseGPA = num => ({
         num
     }
 });
+
+export const sortTable = (category, direction) => ({
+    type: SORT_TABLE,
+    payload: {
+        category,
+        direction
+    }
+})

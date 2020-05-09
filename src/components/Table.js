@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import {connect} from 'react-redux';
-import {storeDataFromAPI} from '../redux/actions';
+import {storeDataFromAPI, sortTable} from '../redux/actions';
 import Row from './Row';
 
 class SimpleTable extends React.Component {
@@ -21,7 +21,15 @@ class SimpleTable extends React.Component {
           .then(items => this.props.storeDataFromAPI(items));
           
     }
-
+    
+    handleSort = ((category) => {
+      const {orderBy, order} = this.props
+      const isAsc = orderBy === category && order === 'asc';
+      if(isAsc)
+        this.props.sortTable(category, 'desc');
+      else
+        this.props.sortTable(category, 'asc');
+    });
 
     render() {
         var newData = this.props.data;
@@ -30,20 +38,26 @@ class SimpleTable extends React.Component {
                 <Table aria-label="simple table">
                     <TableHead>
                     <TableRow>
-                        <TableCell size="small">Name</TableCell>
-                        <TableCell align="left" sortDirection="asc" size="small">Major</TableCell>
-                        <TableCell align="left" size="small">Standing
+                      <TableCell size="small">Name</TableCell>
+                      <TableCell align="left" onClick={e => this.handleSort('major')} size="small">Major
                         <TableSortLabel
-                                    active={true}
-                                    direction='asc'
-                                ></TableSortLabel></TableCell>
-                        <TableCell align="left" size="medium"> Resume</TableCell>
+                            active={this.props.orderBy === 'major'}
+                            direction={this.props.orderBy === 'major' ? this.props.order : 'asc'}
+                        />
+                      </TableCell>
+                      <TableCell align="left" size="small" onClick={e => this.handleSort('standing')}>Standing
+                        <TableSortLabel
+                          active={this.props.orderBy === 'standing'}
+                          direction={this.props.orderBy === 'standing' ? this.props.order : 'asc'}
+                        />
+                      </TableCell>
+                      <TableCell align="left" size="medium"> Resume</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {newData ? newData.map((row) => (
-                        <Row key={row.id} data={row} />
-                    )): <TableCell>Loading</TableCell>}
+                      {newData ? newData.map((row) => (
+                          <Row key={row.id} data={row} />
+                      )): <TableCell>Loading</TableCell>}
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -53,9 +67,14 @@ class SimpleTable extends React.Component {
 
 const mapStateToProps = state => {
   const {tableData} = state.data;
-  return {data: tableData};
+  const {category, direction} = state.data.sort;
+  return {data: tableData, orderBy: category, order: direction};
+}
+const mapDispatchToProps = {
+  storeDataFromAPI,
+  sortTable
 }
 export default connect(
   mapStateToProps,
-  {storeDataFromAPI})
+  mapDispatchToProps)
   (SimpleTable);

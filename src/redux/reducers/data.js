@@ -1,13 +1,15 @@
-import { STORE_DATA_FROM_API, ADD_FILTER, REMOVE_FILTER, INCREASE_GPA, DECREASE_GPA} from "../actionTypes";
+import { STORE_DATA_FROM_API, ADD_FILTER, REMOVE_FILTER, INCREASE_GPA, DECREASE_GPA, SORT_TABLE} from "../actionTypes";
 
 /*TODO:
 Fix mapping of 'Graduate Student' => grad and make the mappings for majors more intuitive/fast (HashMap structure? extra data but faster runtime than doing string splitting)
-For removing a filter only update from tableData(What the table currently shows), not data(All our data).
-    ->No need to do extra processing in the case we are filtering from what we currently have
 */
 const initialState = {
     data: [],
     tableData: [],
+    sort: {
+      category: 'standing',
+      direction: 'asc'
+    },
     passingTags: {
         gpa: {
             min: 0
@@ -31,6 +33,7 @@ const initialState = {
         
     }
 };
+//Filter algorithm from: https://medium.com/better-programming/creating-a-multi-filter-function-to-filter-out-multiple-attributes-javascript-react-rails-5aad8e272142
 const newTable = (state, filter, category) => {
     const collectedTrueKeys = {
       major: [],
@@ -93,6 +96,41 @@ const updateTable = (state, filter, category) => {
         
 }
 
+//Reference: https://www.sitepoint.com/sort-an-array-of-objects-in-javascript/
+const compareValues= ((category, order = 'asc') => {
+  let myMap = new Map();
+  if(category==='standing')
+  {
+      myMap.set('Graduate Student',  0);
+      myMap.set('Senior', 1);
+      myMap.set('Junior', 2);
+      myMap.set('Sophomore', 3);
+      myMap.set('Freshman', 4);
+  } else{
+      myMap.set('Biomedical Engineering',  0);
+      myMap.set('Computer Engineering', 1);
+      myMap.set('Computer Science', 2);
+      myMap.set('Electrical Engineering', 3);
+      myMap.set('Mechanical Engineering', 4);
+      myMap.set('Software Engineering', 5);
+      myMap.set('Other', 6);
+  }
+  return function innerSort(obj1, obj2) {
+    let varA = myMap.get(obj1[category]);
+    let varB = myMap.get(obj2[category]);
+    let comparison = 0;
+    if (varA > varB) {
+      comparison = 1;
+    } else if (varA < varB) {
+      comparison = -1;
+    }
+    return (
+      (order === 'desc') ? (comparison * -1) : comparison
+    );
+  };
+});
+
+
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -101,14 +139,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
        data: data,
-       tableData: data
+       tableData: data.sort(compareValues(state.sort.category, state.sort.direction))
       };
     }
 
     case ADD_FILTER: {
       const {category, filter} = action.payload;
-      //Filter algorithm from: https://medium.com/better-programming/creating-a-multi-filter-function-to-filter-out-multiple-attributes-javascript-react-rails-5aad8e272142
-     
       return {
           ...state,
           passingTags: {
@@ -118,7 +154,7 @@ export default function(state = initialState, action) {
               [filter]: !state.passingTags[category][filter]
               }
           },
-          tableData: newTable({...state}, filter, category)
+          tableData: newTable({...state}, filter, category).sort(compareValues(state.sort.category, state.sort.direction))
       }
     }
     case REMOVE_FILTER: {
@@ -150,19 +186,30 @@ export default function(state = initialState, action) {
     }
     case DECREASE_GPA: {
       const {num} = action.payload;
-          return {
-              ...state,
-              passingTags: {
-                  ...state.passingTags,
-                  gpa: {
-                      min: num
-                  }
-              },
-              tableData: newTable({...state}, num, "gpa")
-          }
+      return {
+          ...state,
+          passingTags: {
+              ...state.passingTags,
+              gpa: {
+                  min: num
+              }
+          },
+          tableData: newTable({...state}, num, "gpa")
       }
-      default:
-        return state;
+    }
+    case SORT_TABLE: {
+      const {category, direction} = action.payload;
+      return{
+        ...state,
+        sort:{
+          category: category,
+          direction: direction
+        },
+        tableData: [...state.tableData].sort(compareValues(category, direction))
+      }
+    }
+    default:
+      return state;
   }
 }
 
