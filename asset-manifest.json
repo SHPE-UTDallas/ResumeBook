@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/ResumeBook/static/css/main.f1896a18.chunk.css",
+    "main.js": "/ResumeBook/static/js/main.7354be13.chunk.js",
+    "main.js.map": "/ResumeBook/static/js/main.7354be13.chunk.js.map",
+    "runtime-main.js": "/ResumeBook/static/js/runtime-main.81aebea0.js",
+    "runtime-main.js.map": "/ResumeBook/static/js/runtime-main.81aebea0.js.map",
+    "static/js/2.d3d16e31.chunk.js": "/ResumeBook/static/js/2.d3d16e31.chunk.js",
+    "static/js/2.d3d16e31.chunk.js.map": "/ResumeBook/static/js/2.d3d16e31.chunk.js.map",
+    "index.html": "/ResumeBook/index.html",
+    "precache-manifest.ad920404ab603b57108c304797a0b5bb.js": "/ResumeBook/precache-manifest.ad920404ab603b57108c304797a0b5bb.js",
+    "service-worker.js": "/ResumeBook/service-worker.js",
+    "static/css/main.f1896a18.chunk.css.map": "/ResumeBook/static/css/main.f1896a18.chunk.css.map",
+    "static/js/2.d3d16e31.chunk.js.LICENSE.txt": "/ResumeBook/static/js/2.d3d16e31.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.81aebea0.js",
+    "static/js/2.d3d16e31.chunk.js",
+    "static/css/main.f1896a18.chunk.css",
+    "static/js/main.7354be13.chunk.js"
+  ]
+}
