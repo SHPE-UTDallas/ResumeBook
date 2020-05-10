@@ -16,17 +16,9 @@ const IndexPage = () => {
 IndexPage.getInitialProps = async ({ reduxStore}) => {
   const data = await fetch("https://demo8344494.mockable.io/new").then(function(response) {
     return response.json();
-  }).then(items => { console.log(reduxStore); reduxStore.dispatch(storeDataFromAPI(items)) });
-  console.log(data);
+  }).then(items => reduxStore.dispatch(storeDataFromAPI(items)));
   return {}
 }
-// export async function getStaticProps() {
-//   // Get external data from the file system, API, DB, etc.
-//   console.log("TEST!!!");
-//   // const data = await fetch("https://demo8344494.mockable.io/new").then(function(response) {
-//   //   return response.json();
-//   // }).then(items => storeDataFromAPI(items));
-// }
 
 
 export default IndexPage;
