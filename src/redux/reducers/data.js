@@ -1,4 +1,4 @@
-import { STORE_DATA_FROM_API, ADD_FILTER, REMOVE_FILTER, INCREASE_GPA, DECREASE_GPA, SORT_TABLE} from "../actionTypes";
+import { STORE_DATA_FROM_API, ADD_FILTER, REMOVE_FILTER, INCREASE_GPA, DECREASE_GPA, SORT_TABLE, TOGGLE_DRAWER} from "../actionTypes";
 
 /*TODO:
 Fix mapping of 'Graduate Student' => grad and make the mappings for majors more intuitive/fast (HashMap structure? extra data but faster runtime than doing string splitting)
@@ -6,6 +6,7 @@ Fix mapping of 'Graduate Student' => grad and make the mappings for majors more 
 const initialState = {
     data: [],
     tableData: [],
+    mobileOpen: false,
     sort: {
       category: 'standing',
       direction: 'asc'
@@ -206,6 +207,12 @@ export default function(state = initialState, action) {
           direction: direction
         },
         tableData: [...state.tableData].sort(compareValues(category, direction))
+      }
+    }
+    case TOGGLE_DRAWER: {
+      return {
+        ...state,
+        mobileOpen: !state.mobileOpen
       }
     }
     default:

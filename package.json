@@ -1,7 +1,6 @@
 {
   "name": "resumebook",
   "version": "0.1.0",
-  "homepage": "http://gabriel-flynn.github.io/SHPE-ResumeBook",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.9.13",

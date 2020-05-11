@@ -14,7 +14,7 @@ import Row from './Row';
 class SimpleTable extends React.Component {
 
     componentDidMount() {
-        fetch("https://demo8344494.mockable.io/new")
+        fetch(`/.netlify/functions/dummydata`)
           .then(function(response) {
             return response.json();
           })
