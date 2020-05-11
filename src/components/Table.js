@@ -14,7 +14,7 @@ import Row from './Row';
 class SimpleTable extends React.Component {
 
     componentDidMount() {
-        fetch(`/.netlify/functions/dummydata`)
+        fetch('/.netlify/functions/dummydata')
           .then(function(response) {
             return response.json();
           })

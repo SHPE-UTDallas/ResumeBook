@@ -3,19 +3,32 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
-
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-
+import red from '@material-ui/core/colors/red';
 import Input from '@material-ui/core/Input';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Table from './Table';
 import { connect } from "react-redux";
 import {addFilter, removeFilter, increaseGPA, decreaseGPA, toggleDrawer} from '../redux/actions';
+import PropTypes from 'prop-types';
 
-
-
+const blueTheme = createMuiTheme({
+    palette: {
+      primary: {
+          main: '#3f50b5'
+      }
+    },
+    overrides: {
+      MuiButton: {
+        containedPrimary: {
+          color: 'white',
+        },
+      },
+    }
+  });
 
 function ResponsiveDrawer(props) {
   const classes = props.classes;
@@ -43,6 +56,7 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
+      <MuiThemeProvider theme={blueTheme}>
         <Box ml={1}>
             <h2>Filter Options</h2>
             <Box ml={1}>
@@ -143,6 +157,7 @@ function ResponsiveDrawer(props) {
                 </FormGroup>
             </Box>
         </Box>
+        </MuiThemeProvider>
     </div>
   );
 
@@ -186,6 +201,10 @@ function ResponsiveDrawer(props) {
       </main>
       </React.Fragment>
   );
+}
+
+ResponsiveDrawer.propTypes = {
+    classes: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => 

@@ -1,9 +1,36 @@
 import React from 'react';
-import FilterPane from './components/FilterPane';
-import NavBar from './components/NavBar';
+import './index.css';
+import { Provider } from 'react-redux'
+import store from './redux/store'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import {makeStyles} from '@material-ui/core/styles';
+import Home from './routes/index';
+import Resume from './routes/resume/index';
+import Login from './routes/login/index';
+import NoMatch from './routes/404';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import cyan from '@material-ui/core/colors/cyan';
+import { green } from '@material-ui/core/colors';
 
 const drawerWidth = 300;
+const defaultTheme = createMuiTheme({
+    palette: {
+      primary: green,
+    },
+    overrides: {
+      MuiButton: {
+        containedPrimary: {
+          color: 'white',
+        },
+      },
+    }
+  });
+const darkTheme = createMuiTheme({
+    palette: {
+      type: 'dark',
+      primary: cyan
+    },
+  });
 const useStyles = makeStyles((theme) => ({
   root: {
       display: 'flex',
@@ -54,11 +81,17 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
   return (
-    
-  <React.Fragment>
-    <NavBar classes={classes}/>
-    <FilterPane classes={classes} />
-  </React.Fragment>);
+    <Provider store={store}>
+        <MuiThemeProvider theme={defaultTheme}>
+            <Router>
+                <Route exact path="/" render={(routeProps) => <Home {...routeProps} classes={classes} />} />
+                <Route exact path="/resume" render={(routeProps) => <Resume  {...routeProps} classes={classes} />} />
+                <Route exact path="/login" render={(routerProps) => <Login {...routerProps} classes={classes} />} />
+                {/* <Route component={NoMatch} /> */}
+            </Router>
+        </MuiThemeProvider>
+    </Provider>
+    );
 }
 export default App;
 

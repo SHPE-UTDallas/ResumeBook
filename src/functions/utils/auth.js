@@ -14,7 +14,7 @@ const {
 
 
 function authJwt(email) {
-  return sign({user: { email }}, SECRET)
+  return sign({user: { email }}, SECRET);
 }
 
 passport.use(
