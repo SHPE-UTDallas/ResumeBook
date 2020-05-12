@@ -7,3 +7,5 @@ export const INCREASE_GPA = "INCREASE_GPA";
 export const DECREASE_GPA = "DECREASE_GPA";
 export const SORT_TABLE = "SORT_TABLE";
 export const TOGGLE_DRAWER = "TOGGLE_DRAWER";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";

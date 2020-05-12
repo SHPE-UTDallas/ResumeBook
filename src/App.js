@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './index.css';
 import { Provider } from 'react-redux'
 import store from './redux/store'
@@ -7,11 +7,13 @@ import {makeStyles} from '@material-ui/core/styles';
 import Home from './routes/index';
 import Resume from './routes/resume/index';
 import Login from './routes/login/index';
+import LoginSuccess from './routes/login/success';
+import Logout from './routes/logout/index';
 import NoMatch from './routes/404';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import cyan from '@material-ui/core/colors/cyan';
 import { green } from '@material-ui/core/colors';
-
+import isAuthenticated from './utils/auth/isAuthenticated';
 const drawerWidth = 300;
 const defaultTheme = createMuiTheme({
     palette: {
@@ -80,6 +82,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 function App() {
   const classes = useStyles();
+  useEffect(() => {
+    isAuthenticated();
+  }, []);
   return (
     <Provider store={store}>
         <MuiThemeProvider theme={defaultTheme}>
@@ -87,6 +92,8 @@ function App() {
                 <Route exact path="/" render={(routeProps) => <Home {...routeProps} classes={classes} />} />
                 <Route exact path="/resume" render={(routeProps) => <Resume  {...routeProps} classes={classes} />} />
                 <Route exact path="/login" render={(routerProps) => <Login {...routerProps} classes={classes} />} />
+                <Route exact path="/login/success" render={(routerProps) => <LoginSuccess {...routerProps} classes={classes} />} />
+                <Route exact path="/logout" render={(routerProps) => <Logout {...routerProps} classes={classes} />} />
                 {/* <Route component={NoMatch} /> */}
             </Router>
         </MuiThemeProvider>

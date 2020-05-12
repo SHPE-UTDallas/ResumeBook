@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import red from '@material-ui/core/colors/red';
 import Input from '@material-ui/core/Input';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';

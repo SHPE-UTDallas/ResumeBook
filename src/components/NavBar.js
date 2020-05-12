@@ -5,29 +5,13 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import Cart from './CartNavBar';
-import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import green from '@material-ui/core/colors/green';
 import { connect } from 'react-redux';
 import {toggleDrawer} from '../redux/actions';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import {NavLink} from 'react-router-dom';
-import red from '@material-ui/core/colors/red';
-const greenTheme = createMuiTheme({
-    palette: {
-      primary: green,
-    },
-    overrides: {
-      MuiButton: {
-        containedPrimary: {
-          color: 'white',
-        },
-      },
-    }
-  });
-
+import LoginLogoutButton from './LoginLogoutButton.js'
 
 
 function NavBar(props) {
@@ -62,9 +46,7 @@ function NavBar(props) {
                     </Typography>
                     <Box ml="auto">
                         <Cart classes={classes}/>
-                        <MuiThemeProvider theme={greenTheme}>
-                            <Button variant="contained" component={NavLink} to='/login' color="primary">Login</Button>
-                        </MuiThemeProvider>
+                        <LoginLogoutButton loggedIn={props.isAuthenticated}/>
                     </Box>
                 </Toolbar>
             </AppBar>
@@ -81,7 +63,8 @@ NavBar.propTypes = {
 
 const mapStateToProps = state => {
     const {mobileOpen} = state.data;
-    return {mobileOpen: mobileOpen};
+    const {isAuthenticated} = state.auth;
+    return {mobileOpen: mobileOpen, isAuthenticated: isAuthenticated};
 }
 
 

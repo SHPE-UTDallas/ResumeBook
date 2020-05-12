@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_FROM_CART, STORE_DATA_FROM_API, ADD_FILTER, REMOVE_FILTER, INCREASE_GPA, DECREASE_GPA, SORT_TABLE, TOGGLE_DRAWER} from './actionTypes';
+import { ADD_TO_CART, REMOVE_FROM_CART, STORE_DATA_FROM_API, ADD_FILTER, REMOVE_FILTER, INCREASE_GPA, DECREASE_GPA, SORT_TABLE, TOGGLE_DRAWER, LOGIN_SUCCESS, LOGOUT_SUCCESS} from './actionTypes';
 
 export const addToCart = userId => ({
     type: ADD_TO_CART,
@@ -62,4 +62,12 @@ export const sortTable = (category, direction) => ({
 
 export const toggleDrawer = () => ({
     type: TOGGLE_DRAWER
+});
+
+export const loginSuccess = () => ({
+    type: LOGIN_SUCCESS
+});
+
+export const logoutSuccess = () => ({
+    type: LOGOUT_SUCCESS
 });

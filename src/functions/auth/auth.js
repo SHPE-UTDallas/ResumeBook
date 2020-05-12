@@ -1,9 +1,7 @@
-
 const passport = require('passport');
 const express = require('express');
 const serverless = require('serverless-http');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
 
 
 
@@ -22,10 +20,15 @@ app.use(passport.initialize());
 const handleCallback = () => (req, res) => {
   res
     .cookie('jwt', req.user.jwt, { httpOnly: true, COOKIE_SECURE })
-    .redirect('/');
+    .redirect('/login/success');
 };
 
-
+app.get(`${ENDPOINT}/auth/logout`, (req, res) => {
+  res
+    .clearCookie('jwt')
+    .send("Successfully logged out");
+});
+  
 app.get('/.netlify/functions/auth/', (req, res) => {
     res.send('hi');
 });
