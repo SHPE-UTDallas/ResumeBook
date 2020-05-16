@@ -64,8 +64,11 @@ export const toggleDrawer = () => ({
     type: TOGGLE_DRAWER
 });
 
-export const loginSuccess = () => ({
-    type: LOGIN_SUCCESS
+export const loginSuccess = (verified) => ({
+    type: LOGIN_SUCCESS,
+    payload: {
+        verified
+    }
 });
 
 export const logoutSuccess = () => ({

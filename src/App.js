@@ -2,10 +2,12 @@ import React, {useEffect} from 'react';
 import './index.css';
 import { Provider } from 'react-redux'
 import store from './redux/store'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import {makeStyles} from '@material-ui/core/styles';
 import Home from './routes/index';
-import Resume from './routes/resume/index';
+import Demo from './routes/demo/index';
+import Resumes from './routes/resumes/index';
+import Verify from './routes/verify/index';
 import Login from './routes/login/index';
 import LoginSuccess from './routes/login/success';
 import Logout from './routes/logout/index';
@@ -80,6 +82,26 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: "-10px",
   },
 }));
+
+const PrivateRoute = ({ render: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    store.getState().auth.isVerified === true
+      ? <Component {...props} />
+      : store.getState().auth.isAuthenticated === true
+        ? <Redirect to='/verify' /> 
+        : <Redirect to ='/login' />
+  )} />
+)
+
+const PrivateRoute2 = ({ render: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    store.getState().auth.isAuthenticated === true
+      ? <Component {...props} />
+      : <Redirect to='/login' />
+  )} />
+)
+
+
 function App() {
   const classes = useStyles();
   useEffect(() => {
@@ -90,7 +112,9 @@ function App() {
         <MuiThemeProvider theme={defaultTheme}>
             <Router>
                 <Route exact path="/" render={(routeProps) => <Home {...routeProps} classes={classes} />} />
-                <Route exact path="/resume" render={(routeProps) => <Resume  {...routeProps} classes={classes} />} />
+                <Route exact path="/demo" render={(routeProps) => <Demo {...routeProps} classes={classes} />} />
+                <PrivateRoute exact path="/resumes" render={(routerProps) => <Resumes {...routerProps} classes={classes} />} />
+                <PrivateRoute2 exact path = "/verify" render={(routerProps) => <Verify {...routerProps} classes={classes} />} />
                 <Route exact path="/login" render={(routerProps) => <Login {...routerProps} classes={classes} />} />
                 <Route exact path="/login/success" render={(routerProps) => <LoginSuccess {...routerProps} classes={classes} />} />
                 <Route exact path="/logout" render={(routerProps) => <Logout {...routerProps} classes={classes} />} />

@@ -14,7 +14,7 @@
     "jsonwebtoken": "^8.5.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "passport-linkedin-oauth2": "^2.0.0",
+    "passport-linkedin-oauth2": "git+https://github.com/gabriel-flynn/passport-linkedin-oauth2.git",
     "serverless-http": "^2.3.2"
   }
 }

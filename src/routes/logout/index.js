@@ -10,7 +10,7 @@ function App(props) {
         <NavBar enableDrawer={false} classes={classes}/>
         <div className={classes.content}>
             <div className={classes.toolbar} />
-                <h1>Login successful</h1>
+                <h1>Logout successful</h1>
         </div>
     </div>
   );

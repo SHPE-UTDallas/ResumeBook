@@ -9,12 +9,13 @@ import Paper from '@material-ui/core/Paper';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import {connect} from 'react-redux';
 import {storeDataFromAPI, sortTable} from '../redux/actions';
+import PropTypes from 'prop-types';
 import Row from './Row';
 
 class SimpleTable extends React.Component {
 
     componentDidMount() {
-        fetch('/.netlify/functions/dummydata')
+        fetch(this.props.url)
           .then(function(response) {
             return response.json();
           })
@@ -64,6 +65,13 @@ class SimpleTable extends React.Component {
         );
     }
 }
+
+SimpleTable.propTypes = {
+  url: PropTypes.string.isRequired,
+  data: PropTypes.array.isRequired
+}
+
+
 
 const mapStateToProps = state => {
   const {tableData} = state.data;

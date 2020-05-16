@@ -1,4 +1,3 @@
-import { connect } from "react-redux";
 import {loginSuccess} from '../../redux/actions';
 import store from '../../redux/store';
 

@@ -28,13 +28,17 @@ app.get(`${ENDPOINT}/auth/logout`, (req, res) => {
     .clearCookie('jwt')
     .send("Successfully logged out");
 });
-  
+
+app.post(`${ENDPOINT}/auth/verify`, (req, res) => {
+  //to be implemented
+})
+
 app.get('/.netlify/functions/auth/', (req, res) => {
     res.send('hi');
 });
 app.get(`${ENDPOINT}/auth/linkedin`, passport.authenticate('linkedin', {session: false}));
 
-app.get(`${ENDPOINT}/auth/linkedin/callback`, 
+app.get(`${ENDPOINT}/auth/linkedin/callback`,
   passport.authenticate('linkedin', { failureRedirect: '/', session: false }),
   handleCallback()
 );

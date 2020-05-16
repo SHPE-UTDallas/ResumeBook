@@ -1,7 +1,6 @@
 import React from 'react';
 import NavBar from '../../components/NavBar';
 import {LinkedInLoginButton} from "react-social-login-buttons";
-import {Link} from 'react-router-dom';
 function App(props) {
   const classes = props.classes;
   

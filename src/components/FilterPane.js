@@ -9,7 +9,6 @@ import Box from '@material-ui/core/Box';
 import Input from '@material-ui/core/Input';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import Table from './Table';
 import { connect } from "react-redux";
 import {addFilter, removeFilter, increaseGPA, decreaseGPA, toggleDrawer} from '../redux/actions';
 import PropTypes from 'prop-types';
@@ -161,7 +160,6 @@ function ResponsiveDrawer(props) {
   );
 
   return (
-    <React.Fragment>
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden mdUp implementation="css">
@@ -193,12 +191,6 @@ function ResponsiveDrawer(props) {
           </Drawer>
         </Hidden>
       </nav>
-        <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <h1 style={{textAlign: "center"}}>Members</h1>
-        <Table data={[]}/>
-      </main>
-      </React.Fragment>
   );
 }
 
