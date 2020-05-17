@@ -42,7 +42,7 @@ app.get(`${ENDPOINT}/dummydata`, (req, res) => {
         "gpa": 0.3,
         "major": "Computer Science",
         "standing": "Graduate Student",
-        "resume": "https://www.mccc.edu/programs/engr_sci_as/pdf/resume.pdf"
+        "resume": "https://res.cloudinary.com/dq5kgikcx/image/upload/v1589703696/qqcadddsinxj9ndxei9d.pdf"
       }, {
         "id": 5,
         "name": "Kimberly Pellett",

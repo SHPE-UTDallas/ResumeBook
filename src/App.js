@@ -11,6 +11,7 @@ import Verify from './routes/verify/index';
 import Login from './routes/login/index';
 import LoginSuccess from './routes/login/success';
 import Logout from './routes/logout/index';
+import Upload from './routes/upload/index';
 import NoMatch from './routes/404';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import cyan from '@material-ui/core/colors/cyan';
@@ -118,6 +119,7 @@ function App() {
                 <Route exact path="/login" render={(routerProps) => <Login {...routerProps} classes={classes} />} />
                 <Route exact path="/login/success" render={(routerProps) => <LoginSuccess {...routerProps} classes={classes} />} />
                 <Route exact path="/logout" render={(routerProps) => <Logout {...routerProps} classes={classes} />} />
+                <Route exact path="/upload" render={(routerProps) => <Upload {...routerProps} classes={classes} />} />
                 {/* <Route component={NoMatch} /> */}
             </Router>
         </MuiThemeProvider>

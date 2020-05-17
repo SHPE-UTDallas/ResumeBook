@@ -12,9 +12,14 @@ const {
   SECRET,
 } = require('../utils/config');
 
+module.exports = {updateVerification};
 
 function authJwt(email) {
   return sign({user: { email }}, SECRET);
+}
+
+function updateVerification(email) {
+  return sign({user: { email, verified: true}}, SECRET)
 }
 
 passport.use(

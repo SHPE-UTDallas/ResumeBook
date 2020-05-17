@@ -57,7 +57,7 @@ class SimpleTable extends React.Component {
                     </TableHead>
                     <TableBody>
                       {newData ? newData.map((row) => (
-                          <Row key={row.id} data={row} />
+                          <Row key={row._id} data={row} />
                       )): <TableCell>Loading</TableCell>}
                     </TableBody>
                 </Table>

@@ -22,9 +22,9 @@ class Row extends React.Component {
 
       const details = this.state.expanded ? (
         <TableRow>
-          <TableCell colSpan={4} id={`u${this.props.data.id}`}>
+          <TableCell colSpan={4} id={`u${this.props.data._id}`}>
             <Collapse in={this.state.expanded} unmountOnExit={true}>
-                <PDFObject url={this.props.data.resume} height="500px" containerId={`u${this.props.data.id}`}/>    
+                <PDFObject url={this.props.data.resume} height="500px" containerId={`u${this.props.data._id}`}/>    
             </Collapse>
           </TableCell>
         </TableRow>
@@ -45,7 +45,7 @@ class Row extends React.Component {
                 <TableCell align="left">  
                   <Button variant="outlined" size="medium" style={{marginRight: '8px'}} onClick={() => this.setState(({ expanded }) => ({ expanded: !expanded }))} color="primary">View</Button>
                   <MuiThemeProvider theme={greenTheme}> 
-                      <CartButton userId={this.props.data.id} /> 
+                      <CartButton userId={this.props.data._id} /> 
                 </MuiThemeProvider> 
                 </TableCell>
             </TableRow>

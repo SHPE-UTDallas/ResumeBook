@@ -11,7 +11,7 @@ function App(props) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <h1 style={{textAlign: "center"}}>Members</h1>
-        <Table url='/.netlify/functions/' data={[]}/>
+        <Table url='/.netlify/functions/api/resumes' data={[]}/>
       </main>
     </div>
   );

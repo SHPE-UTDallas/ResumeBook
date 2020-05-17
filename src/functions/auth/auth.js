@@ -2,7 +2,7 @@ const passport = require('passport');
 const express = require('express');
 const serverless = require('serverless-http');
 const cookieParser = require('cookie-parser');
-
+const {updateVerification} = require('../utils/auth');
 
 
 require('../utils/auth');
@@ -10,13 +10,14 @@ require('../utils/auth');
 const {
   ENDPOINT,
   COOKIE_SECURE,
+  VERIFICATION_CODE
 } = require('../utils/config');
 
 const app = express();
 
 app.use(cookieParser())
 app.use(passport.initialize());
-
+app.use(express.json());
 const handleCallback = () => (req, res) => {
   res
     .cookie('jwt', req.user.jwt, { httpOnly: true, COOKIE_SECURE })
@@ -29,9 +30,21 @@ app.get(`${ENDPOINT}/auth/logout`, (req, res) => {
     .send("Successfully logged out");
 });
 
-app.post(`${ENDPOINT}/auth/verify`, (req, res) => {
-  //to be implemented
-})
+app.post(`${ENDPOINT}/auth/verify`, 
+  passport.authenticate('jwt', { session: false }), 
+  (req, res) => {
+    //to be implemented
+    if(req.body.code.toLocaleLowerCase() === VERIFICATION_CODE.toLocaleLowerCase())
+    {
+      const newJwt = updateVerification(req.user.email);
+      res
+          .clearCookie('jwt')
+          .cookie('jwt', newJwt, { httpOnly: true, COOKIE_SECURE })
+          .send("Successfully Verified");
+    } else{
+      res.send('Invalid Code');
+    }
+});
 
 app.get('/.netlify/functions/auth/', (req, res) => {
     res.send('hi');
