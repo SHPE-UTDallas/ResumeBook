@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 
 var ResumeModel = new Schema({
     name: String,
-    linkedn: String,
+    linkedin: String,
     gpa: String,
     major: String,
     standing: String,

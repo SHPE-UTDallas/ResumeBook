@@ -45,7 +45,7 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
         
         conn.model('resumes').create({
             name: req.body.name,
-            linkedn: req.body.linkedin,
+            linkedin: req.body.linkedin,
             gpa: req.body.gpa,
             major: req.body.major,
             standing: req.body.standing,
