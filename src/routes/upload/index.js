@@ -23,6 +23,7 @@ class App extends React.Component {
         let base64 =await this.toBase64(event.target.pdf.files[0]);
         let formData = new FormData();
         formData.append('name', event.target.name.value);
+        formData.append('email', event.target.email.value);
         formData.append('linkedin', event.target.linkedin.value);
         formData.append('gpa', event.target.gpa.value);
         formData.append('major', event.target.major.value);
@@ -60,6 +61,14 @@ class App extends React.Component {
                                 <Grid item>
                                     <FormControlLabel 
                                         className={classes.formEntry}
+                                        control={<Input type="email" name="email" />}
+                                        label="Email:"
+                                        labelPlacement='start'
+                                    />
+                                </Grid>
+                                <Grid item>
+                                    <FormControlLabel 
+                                        className={classes.formEntry}
                                         control={<Input type="text" name="linkedin" />}
                                         label="LinkedIn:"
                                         labelPlacement='start'
@@ -68,7 +77,7 @@ class App extends React.Component {
                                 <Grid item>
                                     <FormControlLabel 
                                         className={classes.formEntry}
-                                        control={<Input type="number" name="gpa" />}
+                                        control={<Input step="0.1" type="number" name="gpa" />}
                                         label="GPA:"
                                         labelPlacement='start'
                                     />

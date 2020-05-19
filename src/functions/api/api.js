@@ -46,10 +46,11 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
         conn.model('resumes').create({
             name: req.body.name,
             linkedin: req.body.linkedin,
+            email: req.body.email,
             gpa: req.body.gpa,
             major: req.body.major,
             standing: req.body.standing,
-            resume: "test123"
+            resume: url.secure_url
         });
 //       var uri = parser.format('.pdf', req.file.buffer);
 //       const M = conn.model('PDF').create({data: req.file.buffer});
