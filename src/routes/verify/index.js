@@ -5,6 +5,7 @@ import SendIcon from '@material-ui/icons/Send';
 import {connect} from 'react-redux';
 import {loginSuccess} from '../../redux/actions';
 import { withRouter } from 'react-router-dom'
+import {ENDPOINT} from '../../functions/utils/config';
 
 class VerifyForm extends React.Component {
     constructor(props) {
@@ -19,8 +20,8 @@ class VerifyForm extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        console.log(this.state.value);
-        const response = await fetch('/.netlify/functions/auth/verify', {
+        const endpoint_url = `${ENDPOINT}/auth/verify`
+        const response = await fetch({endpoint_url}, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'

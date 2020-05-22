@@ -2,8 +2,10 @@ import React from 'react';
 import FilterPane from '../../components/FilterPane';
 import NavBar from '../../components/NavBar';
 import Table from '../../components/Table';
+import {ENDPOINT} from '../../functions/utils/config';
 function App(props) {
   const classes = props.classes;
+  const endpoint_url = `${ENDPOINT}/api/resumes`;
   return (
     <div className={classes.root}>
       <NavBar enableDrawer={true} classes={classes}/>
@@ -11,7 +13,7 @@ function App(props) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <h1 style={{textAlign: "center"}}>Members</h1>
-        <Table url='/.netlify/functions/api/resumes' data={[]}/>
+        <Table url={endpoint_url} data={[]}/>
       </main>
     </div>
   );

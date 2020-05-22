@@ -1,13 +1,9 @@
 import React from 'react';
-import {Grid, FormControlLabel, Input, Button} from '@material-ui/core';
+import {Grid, FormControlLabel, Input} from '@material-ui/core';
 import NavBar from '../../components/NavBar';
-
+import {ENDPOINT} from '../../functions/utils/config';
 
 class App extends React.Component {
-    
-    constructor(props){
-        super(props);
-    }
 
     toBase64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -29,8 +25,8 @@ class App extends React.Component {
         formData.append('major', event.target.major.value);
         formData.append('standing', event.target.standing.value);
         formData.append('pdf', base64);
-    
-        fetch('/.netlify/functions/api/file', {
+        const endpoint_url = `${ENDPOINT}/api/file`;
+        fetch({endpoint_url}, {
             method: 'POST',
              body: formData
         })
