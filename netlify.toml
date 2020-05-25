@@ -7,6 +7,6 @@ publish = "build"
 package = "@netlify/plugin-functions-install-core"
 
 [[redirects]]
-from = "/*"
+from = "/api"
 to = "/.netlify/functions/:splat"
 status = 200
