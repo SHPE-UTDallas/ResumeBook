@@ -26,7 +26,7 @@ class App extends React.Component {
         formData.append('standing', event.target.standing.value);
         formData.append('pdf', base64);
         const endpoint_url = `${ENDPOINT}/api/file`;
-        fetch({endpoint_url}, {
+        fetch(`${endpoint_url}`, {
             method: 'POST',
              body: formData
         })

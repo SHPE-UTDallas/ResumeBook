@@ -39,6 +39,7 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
     /*TODO: HANDLE ERROR INCASE CLOUDINARY UPLOAD DOESN'T WORK
             INPUT VALIDATION
     */
+   console.log('about to go to url');
     let url = await cloudinary.uploader.upload(req.body.pdf,
         {public_id: `${req.body.name} - Resume`, resource_type: 'raw', format: 'pdf'}, 
         (error, result) => {return result.secure_url });

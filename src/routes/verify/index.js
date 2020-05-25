@@ -21,7 +21,7 @@ class VerifyForm extends React.Component {
     async handleSubmit(event) {
         event.preventDefault();
         const endpoint_url = `${ENDPOINT}/auth/verify`
-        const response = await fetch({endpoint_url}, {
+        const response = await fetch(`${endpoint_url}`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
