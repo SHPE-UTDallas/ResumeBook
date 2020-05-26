@@ -1,12 +1,17 @@
 [build]
-functions = "./src/functions"
-command = "npm run build"
+functions = "func"
+command = "npm install && npm run build && npm run funcinstall && npm run build:lambda"
 publish = "build"
 
 [[plugins]]
 package = "@netlify/plugin-functions-install-core"
 
 [[redirects]]
-from = "/api"
+from = "/api/*"
 to = "/.netlify/functions/:splat"
+status = 200
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
 status = 200

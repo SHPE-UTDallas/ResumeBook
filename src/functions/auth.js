@@ -2,16 +2,16 @@ const passport = require('passport');
 const express = require('express');
 const serverless = require('serverless-http');
 const cookieParser = require('cookie-parser');
-const {updateVerification} = require('../utils/auth');
+const {updateVerification} = require('./utils/auth');
 
 
-require('../utils/auth');
+require('./utils/auth');
 
 const {
   ENDPOINT,
   COOKIE_SECURE,
   VERIFICATION_CODE
-} = require('../utils/config');
+} = require('./utils/config');
 
 const app = express();
 

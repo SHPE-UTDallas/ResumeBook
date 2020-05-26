@@ -3,12 +3,12 @@ const express = require('express');
 const serverless = require('serverless-http');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
-const ResumeModel = require('../models/Resume');
+const ResumeModel = require('./models/Resume');
 var multer  = require('multer');
 var upload = multer({ storage: storage });
 var storage = multer.memoryStorage();
 var cloudinary = require('cloudinary').v2;
-require('../utils/auth');
+require('./utils/auth');
 fs = require('fs');
 
 const app = express();
@@ -17,7 +17,7 @@ app.use(cookieParser());
 const {
     ENDPOINT,
     MONGODB_URI,
-  } = require('../utils/config');
+  } = require('./utils/config');
 
 
 let conn = null;

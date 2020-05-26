@@ -8,9 +8,9 @@ const app = express();
 //   return newValue;
 // }
 
-const {ENDPOINT} = require('../utils/config');
+const {ENDPOINT} = require('./utils/config');
 
-app.get(`${ENDPOINT}/dummydata`, (req, res) => {
+app.get(`${ENDPOINT}/dummydata/`, (req, res) => {
     res.json([{
         "id": 1,
         "name": "Mahmud Bouda",
