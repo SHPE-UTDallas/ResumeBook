@@ -1,6 +1,6 @@
 [build]
 functions = "func"
-command = "npm install && npm run funcinstal l&& npm run prod"
+command = "npm install && npm run funcinstall && npm run prod"
 publish = "build"
 
 [[plugins]]
