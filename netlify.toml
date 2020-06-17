@@ -1,6 +1,6 @@
 [build]
 functions = "func"
-command = "npm install && npm run build && npm run funcinstall && npm run build:lambda"
+command = "npm install && npm run funcinstal l&& npm run prod"
 publish = "build"
 
 [[plugins]]
@@ -11,6 +11,7 @@ from = "/api/*"
 to = "/.netlify/functions/:splat"
 status = 200
 
+#This rule allows users to directly go to urls in react (ex: going to www.websiteurl.com/login loads login page instead of a 404)
 [[redirects]]
 from = "/*"
 to = "/index.html"

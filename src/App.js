@@ -105,8 +105,8 @@ const PrivateRoute2 = ({ render: Component, ...rest }) => (
 
 function App() {
   const classes = useStyles();
-  useEffect(() => {
-    isAuthenticated();
+  useEffect(async () => {
+    await isAuthenticated();
   }, []);
   return (
     <Provider store={store}>

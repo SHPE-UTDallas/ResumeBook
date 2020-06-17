@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import AuthWrapper from './AuthWrapper';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AuthWrapper />
   </React.StrictMode>,
   document.getElementById('root')
 );
