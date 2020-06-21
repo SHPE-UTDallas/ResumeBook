@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import './index.css';
 import { Provider } from 'react-redux'
 import store from './redux/store'
@@ -12,11 +12,10 @@ import Login from './routes/login/index';
 import LoginSuccess from './routes/login/success';
 import Logout from './routes/logout/index';
 import Upload from './routes/upload/index';
-import NoMatch from './routes/404';
+//import NoMatch from './routes/404'; TODO: Implement 404 page
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import cyan from '@material-ui/core/colors/cyan';
 import { green } from '@material-ui/core/colors';
-import isAuthenticated from './utils/auth/isAuthenticated';
+
 const drawerWidth = 300;
 const defaultTheme = createMuiTheme({
     palette: {
@@ -30,12 +29,14 @@ const defaultTheme = createMuiTheme({
       },
     }
   });
+/* TODO: Dark theme
 const darkTheme = createMuiTheme({
     palette: {
       type: 'dark',
       primary: cyan
     },
   });
+  */
 const useStyles = makeStyles((theme) => ({
   root: {
       display: 'flex',
@@ -105,9 +106,6 @@ const PrivateRoute2 = ({ render: Component, ...rest }) => (
 
 function App() {
   const classes = useStyles();
-  useEffect(async () => {
-    await isAuthenticated();
-  }, []);
   return (
     <Provider store={store}>
         <MuiThemeProvider theme={defaultTheme}>

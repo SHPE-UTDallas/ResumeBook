@@ -1,8 +1,8 @@
 import { LOGIN_SUCCESS, LOGOUT_SUCCESS } from "../actionTypes";
 
 const initialState = {
-  isAuthenticated: undefined,
-  isVerified: undefined
+  isAuthenticated: false,
+  isVerified: false
 };
 
 export default function(state = initialState, action) {

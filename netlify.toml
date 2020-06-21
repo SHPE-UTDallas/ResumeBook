@@ -1,7 +1,10 @@
 [build]
 functions = "func"
-command = "npm install && npm run funcinstall && npm run prod"
+command = "npm install && netlify-lambda install ./src/functions && netlify-lambda build ./src/functions/ && npm run build"
 publish = "build"
+
+[dev]
+functions="./src/functions"
 
 [[plugins]]
 package = "@netlify/plugin-functions-install-core"
