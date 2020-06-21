@@ -2,7 +2,7 @@ var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 const { sign } = require('jsonwebtoken');
 const passport = require('passport');
 const passportJwt = require('passport-jwt');
-
+const mongoose = require('mongoose');
 
 const {
   BASE_URL,
@@ -10,12 +10,15 @@ const {
   LINKEDIN_CLIENT_ID,
   LINKEDIN_CLIENT_SECRET,
   SECRET,
+  MONGODB_URI
 } = require('../utils/config');
+
+let conn = null;
 
 module.exports = {updateVerification};
 
-function authJwt(email) {
-  return sign({user: { email }}, SECRET);
+function authJwt(email, verified) {
+  return sign({user: { email, verified}}, SECRET);
 }
 
 function updateVerification(email) {
@@ -50,11 +53,33 @@ passport.use(
   },
   async ({ user: { email } }, done) => {
     try {
-      // Here you'd typically load an existing user
-      // and use the data to create the JWT.
-      const jwt = authJwt(email);
+      //Setup DB connection
+      if (conn == null) {
+        conn = mongoose.createConnection(MONGODB_URI, {
+          // Buffering means mongoose will queue up operations if it gets
+          // disconnected from MongoDB and send them when it reconnects.
+          // With serverless, better to fail fast if not connected.
+          bufferCommands: false, // Disable mongoose buffering
+          bufferMaxEntries: 0, // and MongoDB driver buffering
+          useNewUrlParser: true,
+          useUnifiedTopology: true
+        });
+        await conn;
+      }
+      //Check if the user is already verified
+      let verified = false;
+        if(email != null) {
+        const M = conn.model('users');
+        await M.findOne({email: email}, (err, doc) => {
+          if(err)
+            console.log(err);
+          if(doc !== null && doc.verified === true)
+            verified = true;
+        });
+      }
+      const jwt = authJwt(email, verified);
 
-      return done(null, { email, jwt });
+      return done(null, { email, verified, jwt });
     } catch (error) {
       return done(error);
     }

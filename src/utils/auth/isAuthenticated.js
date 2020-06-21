@@ -14,5 +14,7 @@ export default async function isAuthenticated(props) {
                                 console.log(err);
                             });
     if(response.email)
-        store.dispatch(loginSuccess());
+    {
+        store.dispatch(loginSuccess(response.verified));
+    }
 }

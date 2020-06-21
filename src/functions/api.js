@@ -3,13 +3,12 @@ const express = require('express');
 const serverless = require('serverless-http');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
-const ResumeModel = require('./models/Resume');
+require('./models/Resume');
 var multer  = require('multer');
 var upload = multer({ storage: storage });
 var storage = multer.memoryStorage();
 var cloudinary = require('cloudinary').v2;
 require('./utils/auth');
-fs = require('fs');
 
 const app = express();
 app.use(passport.initialize());
@@ -67,8 +66,6 @@ app.get(
     async (req, res) => {
         //From mongoose docs: https://mongoosejs.com/docs/lambda.html
         //context.callbackWaitsForEmptyEventLoop = false; <--- TODO: Research how to use context with Express
-        console.log(mongoose.connection.readyState);
-        console.log(MONGODB_URI);
         if (conn == null) {
             conn = mongoose.createConnection(MONGODB_URI, {
               // Buffering means mongoose will queue up operations if it gets
@@ -82,7 +79,7 @@ app.get(
         await conn;
       }
     
-      const M = conn.model('resumes');
+    const M = conn.model('resumes');
     const doc = await M.find({});
     res.json(doc);
 
