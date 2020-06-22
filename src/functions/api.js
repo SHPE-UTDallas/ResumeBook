@@ -14,49 +14,74 @@ const app = express();
 app.use(passport.initialize());
 app.use(cookieParser());
 const {
-    ENDPOINT,
-    MONGODB_URI,
+    ENDPOINT
   } = require('./utils/config');
 
-
+const {db} = require('./utils/firebaseConfig');
 let conn = null;
 
 app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
-        if (conn == null) {
-            conn = mongoose.createConnection(MONGODB_URI, {
-              // Buffering means mongoose will queue up operations if it gets
-              // disconnected from MongoDB and send them when it reconnects.
-              // With serverless, better to fail fast if not connected.
-              bufferCommands: false, // Disable mongoose buffering
-              bufferMaxEntries: 0, // and MongoDB driver buffering
-              useNewUrlParser: true,
-              useUnifiedTopology: true
-        });
-        await conn;
-
-      }
-    /*TODO: HANDLE ERROR INCASE CLOUDINARY UPLOAD DOESN'T WORK
-            INPUT VALIDATION
-    */
-   console.log('about to go to url');
-    let url = await cloudinary.uploader.upload(req.body.pdf,
-        {public_id: `${req.body.name} - Resume`, resource_type: 'raw', format: 'pdf'}, 
-        (error, result) => {return result.secure_url });
-        
-        conn.model('resumes').create({
-            name: req.body.name,
+  /*TODO: -HANDLE ERROR INCASE CLOUDINARY UPLOAD DOESN'T WORK
+          -INPUT VALIDATION
+  */
+ 
+  //Upload the resume to the cloudinary CDN
+  let url = await cloudinary.uploader.upload(req.body.pdf,
+      {public_id: `${req.body.name} - Resume`, resource_type: 'raw', format: 'pdf'}, 
+      (error, result) => {return result.secure_url });
+  
+  //Add an entry to the resumes collection
+  let resumesRef = db.collection('resumes');
+  resumesRef.where('name', '==', `${req.body.name}`).get().then(snapshot => {
+    if(snapshot.size== 0) {
+      resumesRef.add({
+        name: req.body.name,
+        linkedin: req.body.linkedin,
+        email: req.body.email,
+        gpa: req.body.gpa,
+        major: req.body.major,
+        standing: req.body.standing,
+        resume: url.secure_url
+      })
+    }
+    else if(snapshot.size >= 1)
+    {
+      /*If there already exists an entry with that same name either:
+        Update their entry if we can be somewhat confident it's the same person (We're going to assume the chance of two people having the same name, standing, and major is low)
+        Create a new entry if we can be somewhat confident it's a different person
+      */
+      let documentAdded = false;
+      snapshot.forEach(doc => {
+        const { major, standing, email } = doc.data();
+        //If the email they inputed is the same as another entry with the same name but a different major and/or standing we can assume it's the same person
+        if (!documentAdded && (major === req.body.major && standing === req.body.standing) || email === req.body.email) {
+          //TODO: Delete old cloudinary resume if the user is updating their resume
+          resumesRef.doc(doc).update({
             linkedin: req.body.linkedin,
             email: req.body.email,
             gpa: req.body.gpa,
             major: req.body.major,
             standing: req.body.standing,
             resume: url.secure_url
+          });
+          documentAdded = true;
+        }
+      });
+      //We are assuming that this person hasn't already been added to the resumes collection
+      if(documentAdded === false)
+      {
+        resumesRef.add({
+          name: req.body.name,
+          linkedin: req.body.linkedin,
+          email: req.body.email,
+          gpa: req.body.gpa,
+          major: req.body.major,
+          standing: req.body.standing,
+          resume: url.secure_url
         });
-//       var uri = parser.format('.pdf', req.file.buffer);
-//       const M = conn.model('PDF').create({data: req.file.buffer});
-//       M.create({data: req.body})
-//     console.log(doc);
-//    // res.json(doc);
+      }
+    }
+  });
    res.send("Successfully Added");
 })
 
@@ -64,47 +89,16 @@ app.get(
   `${ENDPOINT}/api/resumes`,
   passport.authenticate('jwt', { session: false }),
     async (req, res) => {
-        //From mongoose docs: https://mongoosejs.com/docs/lambda.html
-        //context.callbackWaitsForEmptyEventLoop = false; <--- TODO: Research how to use context with Express
-        if (conn == null) {
-            conn = mongoose.createConnection(MONGODB_URI, {
-              // Buffering means mongoose will queue up operations if it gets
-              // disconnected from MongoDB and send them when it reconnects.
-              // With serverless, better to fail fast if not connected.
-              bufferCommands: false, // Disable mongoose buffering
-              bufferMaxEntries: 0, // and MongoDB driver buffering
-              useNewUrlParser: true,
-              useUnifiedTopology: true
-        });
-        await conn;
-      }
-    
-    const M = conn.model('resumes');
-    const doc = await M.find({});
-    res.json(doc);
+      let resumesRef = db.collection('resumes');
+      let resumes = [];
+      await resumesRef.get().then(snapshot => {
+        snapshot.forEach(doc => {
+          resumes.push(doc.data());
+        })
+      });
+      res.json(resumes);
 
     }
 );
-
-// app.get(`${ENDPOINT}/api/resumes/:id`, passport.authenticate('jwt', { session: false }),
-// async (req, res) => {
-//     if (conn == null) {
-//         conn = mongoose.createConnection(MONGODB_URI, {
-//           // Buffering means mongoose will queue up operations if it gets
-//           // disconnected from MongoDB and send them when it reconnects.
-//           // With serverless, better to fail fast if not connected.
-//           bufferCommands: false, // Disable mongoose buffering
-//           bufferMaxEntries: 0, // and MongoDB driver buffering
-//           useNewUrlParser: true,
-//           useUnifiedTopology: true
-//     });
-//     await conn;
-//     conn.model('PDF', new mongoose.Schema({data: Buffer}));
-
-//   }
-//   const M = await conn.model('PDF').findById(req.params.id);
-  
-
-// })
 
 module.exports.handler = serverless(app)

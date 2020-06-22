@@ -15,9 +15,10 @@ app.use(express.json());
 const {
   ENDPOINT,
   COOKIE_SECURE,
-  VERIFICATION_CODE,
-  MONGODB_URI
+  VERIFICATION_CODE
 } = require('./utils/config');
+
+const {db} = require('./utils/firebaseConfig');
 
 let conn = null;
 
@@ -36,31 +37,25 @@ app.get(`${ENDPOINT}/auth/logout`, (req, res) => {
 app.post(`${ENDPOINT}/auth/verify`, 
   passport.authenticate('jwt', { session: false }), 
   async (req, res) => {
-    //to be implemented
     if(req.body.code.toLocaleLowerCase() === VERIFICATION_CODE.toLocaleLowerCase())
     {
-      if (conn == null) {
-        conn = mongoose.createConnection(MONGODB_URI, {
-          // Buffering means mongoose will queue up operations if it gets
-          // disconnected from MongoDB and send them when it reconnects.
-          // With serverless, better to fail fast if not connected.
-          bufferCommands: false, // Disable mongoose buffering
-          bufferMaxEntries: 0, // and MongoDB driver buffering
-          useNewUrlParser: true,
-          useUnifiedTopology: true
+      let userRef = db.collection('users');
+      userRef.where('email', '==', `${req.user.email}`).get()
+        .then(snapshot => {
+          if(snapshot.empty) {
+            console.log('No matching documents.');
+            userRef.add({
+              email: `${req.user.email}`,
+              verified: true
+            });
+          }
+          else if(snapshot.size === 1){
+            userRef.doc(snapshot.docs[0].id).update({verified: true});
+          }
+          else{
+            console.error(`There are two or more user with the same email: ${req.user.email}`);
+          }
         });
-        await conn;
-      }
-      const M = conn.model('users');
-      await M.findOneAndUpdate({email: req.user.email}, {$set:{email: req.user.email, verified: true}}, {upsert: true, useFindAndModify: false}, (err, doc) => {
-        if(err)
-        {
-          console.log(err);
-          res.send(500, {error: err});
-        }
-        console.log(doc);
-      });
-
       const newJwt = updateVerification(req.user.email);
       res
           .clearCookie('jwt')
@@ -73,9 +68,6 @@ app.post(`${ENDPOINT}/auth/verify`,
     }
 });
 
-app.get('/.netlify/functions/auth/', (req, res) => {
-    res.send('hi');
-});
 app.get(`${ENDPOINT}/auth/linkedin`, passport.authenticate('linkedin', {session: false}));
 
 app.get(`${ENDPOINT}/auth/linkedin/callback`,

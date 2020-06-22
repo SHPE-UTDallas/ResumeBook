@@ -9,9 +9,10 @@ const {
   ENDPOINT,
   LINKEDIN_CLIENT_ID,
   LINKEDIN_CLIENT_SECRET,
-  SECRET,
-  MONGODB_URI
+  SECRET
 } = require('../utils/config');
+
+const {db} = require('../utils/firebaseConfig');
 
 let conn = null;
 
@@ -53,28 +54,28 @@ passport.use(
   },
   async ({ user: { email } }, done) => {
     try {
-      //Setup DB connection
-      if (conn == null) {
-        conn = mongoose.createConnection(MONGODB_URI, {
-          // Buffering means mongoose will queue up operations if it gets
-          // disconnected from MongoDB and send them when it reconnects.
-          // With serverless, better to fail fast if not connected.
-          bufferCommands: false, // Disable mongoose buffering
-          bufferMaxEntries: 0, // and MongoDB driver buffering
-          useNewUrlParser: true,
-          useUnifiedTopology: true
-        });
-        await conn;
-      }
       //Check if the user is already verified
       let verified = false;
-        if(email != null) {
-        const M = conn.model('users');
-        await M.findOne({email: email}, (err, doc) => {
-          if(err)
-            console.log(err);
-          if(doc !== null && doc.verified === true)
-            verified = true;
+      if(email != null) {
+        let userRef = db.collection('users');
+        await userRef.where('email', '==', `${email}`).get()
+        .then(snapshot => {
+          if(snapshot.empty) {
+            console.log('No matching documents.');
+            userRef.add({
+              email: `${email}`,
+              verified: false
+            });
+          }
+          else if(snapshot.size === 1){
+            snapshot.forEach(doc => {
+              if(doc.data().verified)
+                verified = true;
+            });
+          }
+          else{
+            console.error(`There are two or more user with the same email: ${req.user.email}`);
+          }
         });
       }
       const jwt = authJwt(email, verified);
