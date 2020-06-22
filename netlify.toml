@@ -6,9 +6,6 @@ publish = "build"
 [dev]
 functions="./src/functions"
 
-[[plugins]]
-package = "@netlify/plugin-functions-install-core"
-
 [[redirects]]
 from = "/api/*"
 to = "/.netlify/functions/:splat"
