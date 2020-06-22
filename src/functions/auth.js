@@ -2,10 +2,7 @@ const passport = require('passport');
 const express = require('express');
 const serverless = require('serverless-http');
 const cookieParser = require('cookie-parser');
-const mongoose = require('mongoose');
 const {updateVerification} = require('./utils/auth');
-require('./models/User');
-require('./utils/auth');
 
 const app = express();
 
@@ -20,9 +17,7 @@ const {
 
 const {db} = require('./utils/firebaseConfig');
 
-let conn = null;
-
-const handleCallback = () => (req, res) => {
+const handleCallback = (req, res) => {
   res
     .cookie('jwt', req.user.jwt, { httpOnly: true, COOKIE_SECURE })
     .redirect('/login/success');
@@ -72,7 +67,7 @@ app.get(`${ENDPOINT}/auth/linkedin`, passport.authenticate('linkedin', {session:
 
 app.get(`${ENDPOINT}/auth/linkedin/callback`,
   passport.authenticate('linkedin', { failureRedirect: '/', session: false }),
-  handleCallback()
+  handleCallback
 );
 
 app.get( `${ENDPOINT}/auth/status`,

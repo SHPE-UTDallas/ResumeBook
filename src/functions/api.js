@@ -2,8 +2,6 @@ const passport = require('passport');
 const express = require('express');
 const serverless = require('serverless-http');
 const cookieParser = require('cookie-parser');
-const mongoose = require('mongoose');
-require('./models/Resume');
 var multer  = require('multer');
 var upload = multer({ storage: storage });
 var storage = multer.memoryStorage();
@@ -18,7 +16,6 @@ const {
   } = require('./utils/config');
 
 const {db} = require('./utils/firebaseConfig');
-let conn = null;
 
 app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
   /*TODO: -HANDLE ERROR INCASE CLOUDINARY UPLOAD DOESN'T WORK

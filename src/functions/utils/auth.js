@@ -2,7 +2,6 @@ var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 const { sign } = require('jsonwebtoken');
 const passport = require('passport');
 const passportJwt = require('passport-jwt');
-const mongoose = require('mongoose');
 
 const {
   BASE_URL,
@@ -13,8 +12,6 @@ const {
 } = require('../utils/config');
 
 const {db} = require('../utils/firebaseConfig');
-
-let conn = null;
 
 module.exports = {updateVerification};
 
@@ -35,8 +32,37 @@ passport.use(
   }, async (accessToken, refreshToken, profile, done) => {
     try {
         const email = profile.emails[0].value;
-        const jwt = authJwt(email);
-        return done(null, {email, jwt});
+
+        let verified = false;
+        //Check if user is verified
+        if(email != null) {
+          let userRef = db.collection('users');
+          await userRef.where('email', '==', `${email}`).get()
+          .then(snapshot => {
+            if(snapshot.empty) {
+              console.log('No matching documents.');
+              userRef.add({
+                email: `${email}`,
+                verified: false
+              });
+            }
+            else if(snapshot.size === 1){
+              snapshot.forEach(doc => {
+                if(doc.data().verified)
+                  verified = true;
+              });
+            }
+            else{
+              console.error(`There are two or more user with the same email: ${req.user.email}`);
+            }
+          });
+        } else{
+          console.error(`ERROR: The user's linkedin emails is ${email}`);
+        }
+
+        const jwt = authJwt(email, verified);
+
+        return done(null, {jwt});
       } catch(error) {
         return done(error);
       }
@@ -52,34 +78,9 @@ passport.use(
     },
     secretOrKey: SECRET,
   },
-  async ({ user: { email } }, done) => {
+  async ({ user: { email, verified} }, done) => {
     try {
-      //Check if the user is already verified
-      let verified = false;
-      if(email != null) {
-        let userRef = db.collection('users');
-        await userRef.where('email', '==', `${email}`).get()
-        .then(snapshot => {
-          if(snapshot.empty) {
-            console.log('No matching documents.');
-            userRef.add({
-              email: `${email}`,
-              verified: false
-            });
-          }
-          else if(snapshot.size === 1){
-            snapshot.forEach(doc => {
-              if(doc.data().verified)
-                verified = true;
-            });
-          }
-          else{
-            console.error(`There are two or more user with the same email: ${req.user.email}`);
-          }
-        });
-      }
       const jwt = authJwt(email, verified);
-
       return done(null, { email, verified, jwt });
     } catch (error) {
       return done(error);
