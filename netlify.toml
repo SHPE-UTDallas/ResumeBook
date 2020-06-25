@@ -1,11 +1,10 @@
 [build]
 functions = "func"
-command = "npm install && npm run build && echo| zip-it-and-ship-it --help && zip-it-and-ship-it ./src/functions/ func"
+command = "npm install && npm run build && node zipFunctions.js"
 publish = "build"
 
 [dev]
 functions="./src/functions"
-
 
 [[redirects]]
 from = "/api/*"
