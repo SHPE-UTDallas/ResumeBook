@@ -2,18 +2,16 @@ var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 const { sign } = require('jsonwebtoken');
 const passport = require('passport');
 const passportJwt = require('passport-jwt');
-const mongoose = require('mongoose');
 
 const {
   BASE_URL,
   ENDPOINT,
   LINKEDIN_CLIENT_ID,
   LINKEDIN_CLIENT_SECRET,
-  SECRET,
-  MONGODB_URI
+  SECRET
 } = require('../utils/config');
 
-let conn = null;
+const {db} = require('../utils/firebaseConfig');
 
 module.exports = {updateVerification};
 
@@ -34,8 +32,37 @@ passport.use(
   }, async (accessToken, refreshToken, profile, done) => {
     try {
         const email = profile.emails[0].value;
-        const jwt = authJwt(email);
-        return done(null, {email, jwt});
+
+        let verified = false;
+        //Check if user is verified
+        if(email != null) {
+          let userRef = db.collection('users');
+          await userRef.where('email', '==', `${email}`).get()
+          .then(snapshot => {
+            if(snapshot.empty) {
+              console.log('No matching documents.');
+              userRef.add({
+                email: `${email}`,
+                verified: false
+              });
+            }
+            else if(snapshot.size === 1){
+              snapshot.forEach(doc => {
+                if(doc.data().verified)
+                  verified = true;
+              });
+            }
+            else{
+              console.error(`There are two or more user with the same email: ${req.user.email}`);
+            }
+          });
+        } else{
+          console.error(`ERROR: The user's linkedin emails is ${email}`);
+        }
+
+        const jwt = authJwt(email, verified);
+
+        return done(null, {jwt});
       } catch(error) {
         return done(error);
       }
@@ -51,34 +78,9 @@ passport.use(
     },
     secretOrKey: SECRET,
   },
-  async ({ user: { email } }, done) => {
+  async ({ user: { email, verified} }, done) => {
     try {
-      //Setup DB connection
-      if (conn == null) {
-        conn = mongoose.createConnection(MONGODB_URI, {
-          // Buffering means mongoose will queue up operations if it gets
-          // disconnected from MongoDB and send them when it reconnects.
-          // With serverless, better to fail fast if not connected.
-          bufferCommands: false, // Disable mongoose buffering
-          bufferMaxEntries: 0, // and MongoDB driver buffering
-          useNewUrlParser: true,
-          useUnifiedTopology: true
-        });
-        await conn;
-      }
-      //Check if the user is already verified
-      let verified = false;
-        if(email != null) {
-        const M = conn.model('users');
-        await M.findOne({email: email}, (err, doc) => {
-          if(err)
-            console.log(err);
-          if(doc !== null && doc.verified === true)
-            verified = true;
-        });
-      }
       const jwt = authJwt(email, verified);
-
       return done(null, { email, verified, jwt });
     } catch (error) {
       return done(error);

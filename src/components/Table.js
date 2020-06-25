@@ -15,12 +15,9 @@ import Row from './Row';
 class SimpleTable extends React.Component {
 
     componentDidMount() {
-        fetch(this.props.url)
-          .then(function(response) {
-            return response.json();
-          })
-          .then(items => this.props.storeDataFromAPI(items));
-          
+      fetch(this.props.url)
+        .then(res => res.json())
+        .then(items => this.props.storeDataFromAPI(items));
     }
     
     handleSort = ((category) => {
@@ -33,36 +30,36 @@ class SimpleTable extends React.Component {
     });
 
     render() {
-        var newData = this.props.data;
-        return (
-            <TableContainer component={Paper}>
-                <Table aria-label="simple table">
-                    <TableHead>
-                    <TableRow>
-                      <TableCell size="small">Name</TableCell>
-                      <TableCell align="left" onClick={e => this.handleSort('major')} size="small">Major
-                        <TableSortLabel
-                            active={this.props.orderBy === 'major'}
-                            direction={this.props.orderBy === 'major' ? this.props.order : 'asc'}
-                        />
-                      </TableCell>
-                      <TableCell align="left" size="small" onClick={e => this.handleSort('standing')}>Standing
-                        <TableSortLabel
-                          active={this.props.orderBy === 'standing'}
-                          direction={this.props.orderBy === 'standing' ? this.props.order : 'asc'}
-                        />
-                      </TableCell>
-                      <TableCell align="left" size="medium"> Resume</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {newData ? newData.map((row) => (
-                          <Row key={row._id} data={row} />
-                      )): <TableCell>Loading</TableCell>}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        );
+      var newData = this.props.data;
+      return (
+        <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+            <TableRow>
+              <TableCell size="small">Name</TableCell>
+              <TableCell align="left" onClick={e => this.handleSort('major')} size="small">Major
+                <TableSortLabel
+                    active={this.props.orderBy === 'major'}
+                    direction={this.props.orderBy === 'major' ? this.props.order : 'asc'}
+                />
+              </TableCell>
+              <TableCell align="left" size="small" onClick={e => this.handleSort('standing')}>Standing
+                <TableSortLabel
+                  active={this.props.orderBy === 'standing'}
+                  direction={this.props.orderBy === 'standing' ? this.props.order : 'asc'}
+                />
+              </TableCell>
+              <TableCell align="left" size="medium"> Resume</TableCell>
+            </TableRow>
+            </TableHead>
+            <TableBody>
+              {newData ? newData.map((row) => (
+                <Row key={row._id} data={row} />
+              )): <TableCell>Loading</TableCell>}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      );
     }
 }
 
