@@ -1,13 +1,11 @@
 [build]
 functions = "func"
-command = "npm install && netlify-lambda install ./src/functions && npm run build && zip-it-and-ship-it ./src/functions/ func"
+command = "npm install && npm run build && echo| zip-it-and-ship-it --help && zip-it-and-ship-it ./src/functions/ func"
 publish = "build"
 
 [dev]
 functions="./src/functions"
 
-[[plugins]]
-package = "@netlify/plugin-functions-install-core"
 
 [[redirects]]
 from = "/api/*"
