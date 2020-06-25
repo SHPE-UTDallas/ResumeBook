@@ -29,9 +29,9 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
   
   //Add an entry to the resumes collection
   let resumesRef = db.collection('resumes');
-  resumesRef.where('name', '==', `${req.body.name}`).get().then(snapshot => {
+  resumesRef.where('name', '==', `${req.body.name}`).get().then(async snapshot => {
     if(snapshot.size== 0) {
-      resumesRef.add({
+      const doc = await resumesRef.add({
         name: req.body.name,
         linkedin: req.body.linkedin,
         email: req.body.email,
@@ -39,7 +39,10 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
         major: req.body.major,
         standing: req.body.standing,
         resume: url.secure_url
-      })
+      });
+      resumesRef.doc(doc.id).update({
+        _id: doc.id
+      });
     }
     else if(snapshot.size >= 1)
     {
@@ -48,12 +51,12 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
         Create a new entry if we can be somewhat confident it's a different person
       */
       let documentAdded = false;
-      snapshot.forEach(doc => {
+      await snapshot.forEach(doc => {
         const { major, standing, email } = doc.data();
         //If the email they inputed is the same as another entry with the same name but a different major and/or standing we can assume it's the same person
         if (!documentAdded && (major === req.body.major && standing === req.body.standing) || email === req.body.email) {
           //TODO: Delete old cloudinary resume if the user is updating their resume
-          resumesRef.doc(doc).update({
+          resumesRef.doc(doc.id).update({
             linkedin: req.body.linkedin,
             email: req.body.email,
             gpa: req.body.gpa,

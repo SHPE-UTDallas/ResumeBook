@@ -24,7 +24,7 @@ class Row extends React.Component {
         <TableRow>
           <TableCell colSpan={4} id={`u${this.props.data._id}`}>
             <Collapse in={this.state.expanded} unmountOnExit={true}>
-                <PDFObject url={this.props.data.resume} height="500px" containerId={`u${this.props.data._id}`}/>    
+              <PDFObject url={this.props.data.resume} height="500px" containerId={`u${this.props.data._id}`}/>    
             </Collapse>
           </TableCell>
         </TableRow>
@@ -34,25 +34,24 @@ class Row extends React.Component {
       return (
         <React.Fragment>
             <TableRow >
-                <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row">
                 {this.props.data.linkedin
-                    ? <a style={{textDecoration: "none", color: "inherit", display: "inline"}} target="_blank" rel="noopener noreferrer" href={this.props.data.linkedin}><i className="fa fa-linkedin-square mr-1" aria-hidden="true" style={{fontSize: "20px", color:"#0077B5"}}></i> <p>{this.props.data.name}</p></a>
-                    :  <p>{this.props.data.name}</p>}
+                  ? <a style={{textDecoration: "none", color: "inherit", display: "inline"}} target="_blank" rel="noopener noreferrer" href={this.props.data.linkedin}><i className="fa fa-linkedin-square mr-1" aria-hidden="true" style={{fontSize: "20px", color:"#0077B5"}}></i> <p>{this.props.data.name}</p></a>
+                  :  <p>{this.props.data.name}</p>}
+              </TableCell>
+                <TableCell align="left"><p>{this.props.data.major}</p>
                 </TableCell>
-                    <TableCell align="left"><p>{this.props.data.major}</p>
-                    </TableCell>
-                <TableCell align="left"><p>{this.props.data.standing}</p></TableCell>
-                <TableCell align="left">  
-                  <Button variant="outlined" size="medium" style={{marginRight: '8px'}} onClick={() => this.setState(({ expanded }) => ({ expanded: !expanded }))} color="primary">View</Button>
-                  <MuiThemeProvider theme={greenTheme}> 
-                      <CartButton userId={this.props.data._id} /> 
-                </MuiThemeProvider> 
-                </TableCell>
+              <TableCell align="left"><p>{this.props.data.standing}</p></TableCell>
+              <TableCell align="left">  
+                <Button variant="outlined" size="medium" style={{marginRight: '8px'}} onClick={() => this.setState(({ expanded }) => ({ expanded: !expanded }))} color="primary">View</Button>
+                <MuiThemeProvider theme={greenTheme}> 
+                  <CartButton userId={`${this.props.data._id}`} /> 
+              </MuiThemeProvider> 
+              </TableCell>
             </TableRow>
             {details}
         </React.Fragment>
-      );
-                            
+      );                     
     }
   }
   export default Row;

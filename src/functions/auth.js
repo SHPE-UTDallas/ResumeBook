@@ -3,8 +3,6 @@ const express = require('express');
 const serverless = require('serverless-http');
 const cookieParser = require('cookie-parser');
 const {updateVerification} = require('./utils/auth');
-require('encoding'); //Required due to issue with netlify zip-it-and-ship-it build process https://community.netlify.com/t/error-could-not-find-encoding-module-in-file-netlify-function/2259/13 and https://github.com/netlify/zip-it-and-ship-it/issues/67#issuecomment-549837499
-
 
 const app = express();
 
