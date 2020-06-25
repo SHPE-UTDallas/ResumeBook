@@ -42,7 +42,7 @@ app.get(`${ENDPOINT}/dummydata/`, (req, res) => {
         "gpa": 0.3,
         "major": "Computer Science",
         "standing": "Graduate Student",
-        "resume": "https://res.cloudinary.com/dq5kgikcx/image/upload/v1589703696/qqcadddsinxj9ndxei9d.pdf"
+        "resume": "https://engineering.utdallas.edu/engineering/files/IPP-Resume-Tips-Samples-2019.pdf"
       }, {
         "_id": 5,
         "name": "Kimberly Pellett",
