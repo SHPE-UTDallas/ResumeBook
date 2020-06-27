@@ -12,7 +12,8 @@ const app = express();
 app.use(passport.initialize());
 app.use(cookieParser());
 const {
-    ENDPOINT
+    ENDPOINT,
+    CLOUDINARY_TESTDATAPATH
   } = require('./utils/config');
 
 const {db} = require('./utils/firebaseConfig');
@@ -24,7 +25,7 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
  
   //Upload the resume to the cloudinary CDN
   let url = await cloudinary.uploader.upload(req.body.pdf,
-      {public_id: `${req.body.name} - Resume`, resource_type: 'raw', format: 'pdf'}, 
+      {public_id: `${CLOUDINARY_TESTDATAPATH}${req.body.name} - Resume`, resource_type: 'raw', format: 'pdf'}, 
       (error, result) => {return result.secure_url });
   
   //Add an entry to the resumes collection

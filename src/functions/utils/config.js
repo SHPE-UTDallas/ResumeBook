@@ -10,6 +10,7 @@ exports.BASE_URL = process.env.NODE_ENV === 'development'
   
 exports.COOKIE_SECURE = process.env.NODE_ENV !== 'development';
 
+exports.CLOUDINARY_TESTDATAPATH = process.env.NODE_ENV === 'development';
 exports.ENDPOINT = process.env.NODE_ENV === 'development'
   ? '/.netlify/functions'
   : '/api';

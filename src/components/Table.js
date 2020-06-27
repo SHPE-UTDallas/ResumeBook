@@ -17,7 +17,11 @@ class SimpleTable extends React.Component {
     componentDidMount() {
       fetch(this.props.url)
         .then(res => res.json())
-        .then(items => this.props.storeDataFromAPI(items));
+        .then(items => this.props.storeDataFromAPI(items))
+        .catch(err => {
+          console.log(err);
+          //TODO: Display an error message above the table
+        })
     }
     
     handleSort = ((category) => {
