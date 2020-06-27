@@ -1,7 +1,8 @@
 import React from 'react';
 import NavBar from '../../components/NavBar';
 import {LinkedInLoginButton} from "react-social-login-buttons";
-import {ENDPOINT} from '../../functions/utils/config';
+import {ENDPOINT} from '../../utils/config';
+
 function App(props) {
   const classes = props.classes;
   const endpoint_url = `${ENDPOINT}/auth/linkedin`

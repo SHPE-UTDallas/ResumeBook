@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, FormControlLabel, Input} from '@material-ui/core';
 import NavBar from '../../components/NavBar';
-import {ENDPOINT} from '../../functions/utils/config';
+import {ENDPOINT} from '../../utils/config';
 
 class App extends React.Component {
 

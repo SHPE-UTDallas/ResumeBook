@@ -5,7 +5,7 @@ import SendIcon from '@material-ui/icons/Send';
 import {connect} from 'react-redux';
 import {loginSuccess} from '../../redux/actions';
 import { withRouter } from 'react-router-dom'
-import {ENDPOINT} from '../../functions/utils/config';
+import {ENDPOINT} from '../../utils/config';
 
 class VerifyForm extends React.Component {
     constructor(props) {
@@ -35,7 +35,7 @@ class VerifyForm extends React.Component {
             this.props.history.push('/resumes');
         }
         else{
-            //Pop up error messages
+            //TODO: Add error messages
         }
         
     }
