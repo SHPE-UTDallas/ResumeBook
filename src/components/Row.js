@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Collapse from '@material-ui/core/Collapse'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
@@ -87,5 +88,9 @@ class Row extends React.Component {
       </React.Fragment>
     )
   }
+}
+
+Row.propTypes = {
+  data: PropTypes.Object.isRequired
 }
 export default Row

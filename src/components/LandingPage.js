@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Button } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
 
@@ -26,4 +27,9 @@ function App (props) {
     </div>
   )
 }
+
+App.propTypes = {
+  classes: PropTypes.object.isRequired
+}
+
 export default App

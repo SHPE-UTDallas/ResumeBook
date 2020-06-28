@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Grid, FormControlLabel, Input } from '@material-ui/core'
 import NavBar from '../../components/NavBar'
 import { ENDPOINT } from '../../utils/config'
@@ -115,4 +116,7 @@ class App extends React.Component {
   }
 }
 
+App.propTypes = {
+  classes: PropTypes.object.isRequired
+}
 export default App

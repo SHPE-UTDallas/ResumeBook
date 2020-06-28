@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import './index.css'
 import { Provider } from 'react-redux'
 import store from './redux/store'
@@ -175,4 +176,13 @@ function App () {
     </Provider>
   )
 }
+
+PrivateRoute.propTypes = {
+  render: PropTypes.any.isRequired
+}
+
+PrivateRoute2.propTypes = {
+  render: PropTypes.any.isRequired
+}
+
 export default App

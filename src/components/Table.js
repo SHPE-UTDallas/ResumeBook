@@ -40,7 +40,7 @@ class SimpleTable extends React.Component {
               <TableCell size='small'>Name</TableCell>
               <TableCell
                 align='left'
-                onClick={e => this.handleSort('major')}
+                onClick={() => this.handleSort('major')}
                 size='small'
               >
                 Major
@@ -54,7 +54,7 @@ class SimpleTable extends React.Component {
               <TableCell
                 align='left'
                 size='small'
-                onClick={e => this.handleSort('standing')}
+                onClick={() => this.handleSort('standing')}
               >
                 Standing
                 <TableSortLabel
@@ -85,7 +85,11 @@ class SimpleTable extends React.Component {
 
 SimpleTable.propTypes = {
   url: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  storeDataFromAPI: PropTypes.func.isRequired,
+  orderBy: PropTypes.string.isRequired,
+  order: PropTypes.string.isRequired,
+  sortTable: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {

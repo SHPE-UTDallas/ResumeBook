@@ -84,9 +84,9 @@ class VerifyForm extends React.Component {
 }
 
 VerifyForm.propTypes = {
-  classes: PropTypes.any,
-  loginSuccess: PropTypes.func,
-  history: PropTypes.any
+  classes: PropTypes.object.isRequired,
+  loginSuccess: PropTypes.func.isRequired,
+  history: PropTypes.any.isRequired
 }
 
 export default connect(null, { loginSuccess })(withRouter(VerifyForm))

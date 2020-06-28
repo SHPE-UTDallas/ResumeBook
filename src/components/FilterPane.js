@@ -301,7 +301,16 @@ function ResponsiveDrawer (props) {
 }
 
 ResponsiveDrawer.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  mobileOpen: PropTypes.bool.isRequired,
+  gpa: PropTypes.object.isRequired,
+  increaseGPA: PropTypes.func.isRequired,
+  decreaseGPA: PropTypes.func.isRequired,
+  standing: PropTypes.object.isRequired,
+  major: PropTypes.object.isRequired,
+  toggleDrawer: PropTypes.func.isRequired,
+  removeFilter: PropTypes.func.isRequired,
+  addFilter: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {

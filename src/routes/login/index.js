@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import NavBar from '../../components/NavBar'
 import { LinkedInLoginButton } from 'react-social-login-buttons'
 import { ENDPOINT } from '../../utils/config'
@@ -17,5 +18,9 @@ function App (props) {
       </div>
     </div>
   )
+}
+
+App.propTypes = {
+  classes: PropTypes.object.isRequired
 }
 export default App

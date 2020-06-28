@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import NavBar from '../../components/NavBar'
 
 function App (props) {
@@ -13,4 +14,9 @@ function App (props) {
     </div>
   )
 }
+
+App.propTypes = {
+  classes: PropTypes.object.isRequired
+}
+
 export default App

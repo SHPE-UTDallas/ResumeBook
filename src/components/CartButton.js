@@ -39,7 +39,10 @@ class CartButton extends React.Component {
 }
 
 CartButton.propTypes = {
-  userId: PropTypes.string.isRequired
+  userId: PropTypes.string.isRequired,
+  ids: PropTypes.array.isRequired,
+  removeFromCart: PropTypes.func.isRequired,
+  addToCart: PropTypes.func.isRequired
 }
 const mapDispatchToProps = {
   addToCart,

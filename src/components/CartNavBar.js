@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import Typography from '@material-ui/core/Typography'
@@ -22,6 +23,11 @@ class Cart extends React.Component {
       </React.Fragment>
     )
   }
+}
+
+Cart.propTypes = {
+  classes: PropTypes.object.isRequired,
+  numInCart: PropTypes.number.isRequired
 }
 
 const mapStateToProps = state => {

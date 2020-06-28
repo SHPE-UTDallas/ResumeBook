@@ -63,7 +63,9 @@ function NavBar (props) {
 
 NavBar.propTypes = {
   classes: PropTypes.object.isRequired,
-  enableDrawer: PropTypes.bool.isRequired
+  enableDrawer: PropTypes.bool.isRequired,
+  toggleDrawer: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = state => {
