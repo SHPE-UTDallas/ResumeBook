@@ -91,6 +91,6 @@ class Row extends React.Component {
 }
 
 Row.propTypes = {
-  data: PropTypes.Object.isRequired
+  data: PropTypes.object.isRequired
 }
 export default Row
