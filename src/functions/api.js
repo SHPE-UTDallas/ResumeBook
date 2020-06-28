@@ -26,13 +26,23 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
   //Upload the resume to the cloudinary CDN
   let url = await cloudinary.uploader.upload(req.body.pdf,
       {public_id: `${CLOUDINARY_TESTDATAPATH}${req.body.name} - Resume`, resource_type: 'raw', format: 'pdf'}, 
-      (error, result) => {return result.secure_url });
+      (err, result) => {
+        if(err) {
+          console.error(`Cloudinary was unable to upload the resume for ${req.body.name} successfully`);
+          console.log(err);
+          res.status(500).send("Unable to upload your resume to our CDN. Please try again");
+        }
+        console.log(`Cloudinary Successfully uploaded a resume for ${req.body.name}`);
+        return result.secure_url 
+      });
   
   //Add an entry to the resumes collection
   let resumesRef = db.collection('resumes');
-  resumesRef.where('name', '==', `${req.body.name}`).get().then(async snapshot => {
+  console.log(`Performing a query to figure out if a resume exists for ${req.body.name}`);
+  await resumesRef.where('name', '==', `${req.body.name}`).get().then(async snapshot => {
     if(snapshot.size== 0) {
-      const doc = await resumesRef.add({
+      console.log(`No resumes found for ${req.body.name}, creating a new document`);
+      resumesRef.add({
         name: req.body.name,
         linkedin: req.body.linkedin,
         email: req.body.email,
@@ -40,9 +50,14 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
         major: req.body.major,
         standing: req.body.standing,
         resume: url.secure_url
-      });
-      resumesRef.doc(doc.id).update({
-        _id: doc.id
+      }).then(doc => {
+        doc.update({
+          _id: doc.id
+        })
+      }).catch(err => {
+        console.error(`Unable add a resume to the collection for ${req.body.name}`);
+        console.log(err);
+        res.status(500).send("Unable to add your resume to our database. Please try again");
       });
     }
     else if(snapshot.size >= 1)
@@ -51,27 +66,39 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
         Update their entry if we can be somewhat confident it's the same person (We're going to assume the chance of two people having the same name, standing, and major is low)
         Create a new entry if we can be somewhat confident it's a different person
       */
+      console.log(`One or more entries were found with the name ${req.body.name}`)
+
       let documentAdded = false;
-      await snapshot.forEach(doc => {
+      for(let indx = 0; indx < snapshot.size; indx++) {
+
+        let doc = snapshot.docs[indx];
         const { major, standing, email } = doc.data();
-        //If the email they inputed is the same as another entry with the same name but a different major and/or standing we can assume it's the same person
-        if (!documentAdded && (major === req.body.major && standing === req.body.standing) || email === req.body.email) {
+
+        //If the email they inputed is the same as another entry with the same name but a different major and/or standing we can reasonably assume it's the same person
+        if (!documentAdded && ((major === req.body.major && standing === req.body.standing) || email === req.body.email)) {
           //TODO: Delete old cloudinary resume if the user is updating their resume
-          resumesRef.doc(doc.id).update({
+          await doc.ref.update({
             linkedin: req.body.linkedin,
             email: req.body.email,
             gpa: req.body.gpa,
             major: req.body.major,
             standing: req.body.standing,
             resume: url.secure_url
+          }).then(() => {
+            console.log(`Successfully updated resume entry for ${req.body.name} with collection ID: ${doc.id}`);
+            documentAdded = true;
+          })
+          .catch(err => {
+            console.error(`Unable to update resume entry for ${req.body.name} with collection ID: ${doc.id}`);
+            console.log(err);
+            res.status(500).send("Unable to update your resume in our database. Please try again");
           });
-          documentAdded = true;
         }
-      });
+      }
       //We are assuming that this person hasn't already been added to the resumes collection
       if(documentAdded === false)
       {
-        resumesRef.add({
+        await resumesRef.add({
           name: req.body.name,
           linkedin: req.body.linkedin,
           email: req.body.email,
@@ -79,6 +106,13 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) =>{
           major: req.body.major,
           standing: req.body.standing,
           resume: url.secure_url
+        }).then((doc) => {
+          console.log(`Created a new entry for ${req.body.name} with collection ID: ${doc.id}`);
+        })
+        .catch(err => {
+          console.log(`Unable to add new resume entry for ${req.body.name}`);
+          console.error(err);
+          res.status(500).send("Unable to add your resume to our database. Please try again");
         });
       }
     }
@@ -96,9 +130,15 @@ app.get(
         snapshot.forEach(doc => {
           resumes.push(doc.data());
         })
+      }).then(() => {
+        console.log(`Successfully retrived resumes for user ${req.body.email}`);
+      })
+      .catch(err => {
+        console.error('Unable to retrieve resumes from the database');
+        console.log(err);
+        res.status(500).send("Could not retrieve resumes from our database. Please try again");
       });
       res.json(resumes);
-
     }
 );
 
