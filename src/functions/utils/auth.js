@@ -8,18 +8,18 @@ const {
   ENDPOINT,
   LINKEDIN_CLIENT_ID,
   LINKEDIN_CLIENT_SECRET,
-  SECRET
+  SECRET,
 } = require('../utils/config')
 
 const { db } = require('../utils/firebaseConfig')
 
 module.exports = { updateVerification }
 
-function authJwt (email, verified) {
+function authJwt(email, verified) {
   return sign({ user: { email, verified } }, SECRET)
 }
 
-function updateVerification (email) {
+function updateVerification(email) {
   return sign({ user: { email, verified: true } }, SECRET)
 }
 
@@ -29,7 +29,7 @@ passport.use(
       clientID: LINKEDIN_CLIENT_ID,
       clientSecret: LINKEDIN_CLIENT_SECRET,
       callbackURL: `${BASE_URL}${ENDPOINT}/auth/linkedin/callback`,
-      scope: ['r_emailaddress', 'r_liteprofile']
+      scope: ['r_emailaddress', 'r_liteprofile'],
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -42,15 +42,15 @@ passport.use(
           await userRef
             .where('email', '==', `${email}`)
             .get()
-            .then(snapshot => {
+            .then((snapshot) => {
               if (snapshot.empty) {
                 console.log('No matching documents.')
                 userRef.add({
                   email: `${email}`,
-                  verified: false
+                  verified: false,
                 })
               } else if (snapshot.size === 1) {
-                snapshot.forEach(doc => {
+                snapshot.forEach((doc) => {
                   if (doc.data().verified) verified = true
                 })
               } else {
@@ -76,11 +76,11 @@ passport.use(
 passport.use(
   new passportJwt.Strategy(
     {
-      jwtFromRequest (req) {
+      jwtFromRequest(req) {
         if (!req.cookies) throw new Error('Missing cookie-parser middleware')
         return req.cookies.jwt
       },
-      secretOrKey: SECRET
+      secretOrKey: SECRET,
     },
     async ({ user: { email, verified } }, done) => {
       try {

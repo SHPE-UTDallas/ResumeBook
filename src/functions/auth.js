@@ -35,7 +35,7 @@ app.post(
       await userRef
         .where('email', '==', `${req.user.email}`)
         .get()
-        .then(async snapshot => {
+        .then(async (snapshot) => {
           if (snapshot.empty) {
             console.log(
               `No matching documents. Creating a new user entry for ${req.user.email}`
@@ -43,9 +43,9 @@ app.post(
             userRef
               .add({
                 email: `${req.user.email}`,
-                verified: true
+                verified: true,
               })
-              .catch(err => {
+              .catch((err) => {
                 console.error('Could not add a user to the database')
                 console.log(err)
               })
@@ -60,7 +60,7 @@ app.post(
                   `Successfully updated verification for user ${snapshot.docs[0].id}`
                 )
               })
-              .catch(err => {
+              .catch((err) => {
                 console.error(
                   `Error updating verification status for user ${snapshot.docs[0].id}`
                 )
@@ -72,14 +72,14 @@ app.post(
             )
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(
             'Could not successfully retrieve information from the database'
           )
           console.log(err)
-          return res
-            .status(500)
-            .send({ error: 'Server was unable to update verification' })
+          return res.status(500).send({
+            error: 'Server was unable to update verification',
+          })
         })
 
       const newJwt = updateVerification(req.user.email)

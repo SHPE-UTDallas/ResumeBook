@@ -9,26 +9,26 @@ import { withRouter } from 'react-router-dom'
 import { ENDPOINT } from '../../utils/config'
 
 class VerifyForm extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = { value: '' }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
-  handleChange (event) {
+  handleChange(event) {
     this.setState({ value: event.target.value })
   }
 
-  async handleSubmit (event) {
+  async handleSubmit(event) {
     event.preventDefault()
     const endpoint_url = `${ENDPOINT}/auth/verify`
     const response = await fetch(`${endpoint_url}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ code: this.state.value })
-    }).then(response => response.text())
+      body: JSON.stringify({ code: this.state.value }),
+    }).then((response) => response.text())
     if (response === 'Successfully Verified') {
       this.props.loginSuccess(true)
       this.props.history.push('/resumes')
@@ -37,7 +37,7 @@ class VerifyForm extends React.Component {
     }
   }
 
-  render () {
+  render() {
     const classes = this.props.classes
     return (
       <div className={classes.root}>
@@ -46,9 +46,9 @@ class VerifyForm extends React.Component {
           <div className={classes.toolbar} />
           <Grid
             container
-            alignItems='center'
-            direction='column'
-            justify='center'
+            alignItems="center"
+            direction="column"
+            justify="center"
           >
             <h3>
               Please verify you account by inputting the code provided to you
@@ -62,15 +62,15 @@ class VerifyForm extends React.Component {
                     onChange={this.handleChange}
                   />
                 }
-                label='Code:'
-                labelPlacement='top'
+                label="Code:"
+                labelPlacement="top"
               />
               <Button
-                variant='contained'
-                color='secondary'
+                variant="contained"
+                color="secondary"
                 className={classes.button}
                 endIcon={<SendIcon />}
-                type='submit'
+                type="submit"
               >
                 Submit
               </Button>
@@ -85,7 +85,7 @@ class VerifyForm extends React.Component {
 VerifyForm.propTypes = {
   classes: PropTypes.object.isRequired,
   loginSuccess: PropTypes.func.isRequired,
-  history: PropTypes.any.isRequired
+  history: PropTypes.any.isRequired,
 }
 
 export default connect(null, { loginSuccess })(withRouter(VerifyForm))

@@ -5,7 +5,7 @@ import {
   INCREASE_GPA,
   DECREASE_GPA,
   SORT_TABLE,
-  TOGGLE_DRAWER
+  TOGGLE_DRAWER,
 } from '../actionTypes'
 
 /*TODO:
@@ -17,18 +17,18 @@ const initialState = {
   mobileOpen: false,
   sort: {
     category: 'standing',
-    direction: 'asc'
+    direction: 'asc',
   },
   passingTags: {
     gpa: {
-      min: 0
+      min: 0,
     },
     standing: {
       grad: true,
       senior: true,
       junior: true,
       sophomore: true,
-      freshman: true
+      freshman: true,
     },
     major: {
       be: true,
@@ -37,15 +37,15 @@ const initialState = {
       ee: true,
       me: true,
       se: true,
-      other: true
-    }
-  }
+      other: true,
+    },
+  },
 }
 //Filter algorithm from: https://medium.com/better-programming/creating-a-multi-filter-function-to-filter-out-multiple-attributes-javascript-react-rails-5aad8e272142
 const newTable = (state, filter, category) => {
   const collectedTrueKeys = {
     major: [],
-    standing: []
+    standing: [],
   }
   const { gpa, major, standing } = state.passingTags
   if (category === 'major') {
@@ -65,8 +65,8 @@ const newTable = (state, filter, category) => {
 }
 const multiPropsFilter = (gpa, products, filters) => {
   const filterKeys = Object.keys(filters)
-  return products.filter(product => {
-    return filterKeys.every(key => {
+  return products.filter((product) => {
+    return filterKeys.every((key) => {
       let str = product[key].split(' ')
       if (str.length > 1) {
         if (str[0] === 'Graduate')
@@ -81,7 +81,7 @@ const multiPropsFilter = (gpa, products, filters) => {
   })
 }
 const updateTable = (state, filter, category) => {
-  return state.tableData.filter(product => {
+  return state.tableData.filter((product) => {
     if (category !== 'gpa') {
       let str = product[category].split(' ')
       if (str.length > 1) {
@@ -117,7 +117,7 @@ const compareValues = (category, order = 'asc') => {
     myMap.set('Software Engineering', 5)
     myMap.set('Other', 6)
   }
-  return function innerSort (obj1, obj2) {
+  return function innerSort(obj1, obj2) {
     let varA = myMap.get(obj1[category])
     let varB = myMap.get(obj2[category])
     let comparison = 0
@@ -139,7 +139,7 @@ export default function (state = initialState, action) {
         data: data,
         tableData: data.sort(
           compareValues(state.sort.category, state.sort.direction)
-        )
+        ),
       }
     }
 
@@ -151,12 +151,12 @@ export default function (state = initialState, action) {
           ...state.passingTags,
           [category]: {
             ...state.passingTags[category],
-            [filter]: !state.passingTags[category][filter]
-          }
+            [filter]: !state.passingTags[category][filter],
+          },
         },
         tableData: newTable({ ...state }, filter, category).sort(
           compareValues(state.sort.category, state.sort.direction)
-        )
+        ),
       }
     }
     case REMOVE_FILTER: {
@@ -167,10 +167,10 @@ export default function (state = initialState, action) {
           ...state.passingTags,
           [category]: {
             ...state.passingTags[category],
-            [filter]: !state.passingTags[category][filter]
-          }
+            [filter]: !state.passingTags[category][filter],
+          },
         },
-        tableData: updateTable({ ...state }, filter, category)
+        tableData: updateTable({ ...state }, filter, category),
       }
     }
     case INCREASE_GPA: {
@@ -180,10 +180,10 @@ export default function (state = initialState, action) {
         passingTags: {
           ...state.passingTags,
           gpa: {
-            min: num
-          }
+            min: num,
+          },
         },
-        tableData: updateTable({ ...state }, num, 'gpa')
+        tableData: updateTable({ ...state }, num, 'gpa'),
       }
     }
     case DECREASE_GPA: {
@@ -193,10 +193,10 @@ export default function (state = initialState, action) {
         passingTags: {
           ...state.passingTags,
           gpa: {
-            min: num
-          }
+            min: num,
+          },
         },
-        tableData: newTable({ ...state }, num, 'gpa')
+        tableData: newTable({ ...state }, num, 'gpa'),
       }
     }
     case SORT_TABLE: {
@@ -205,15 +205,17 @@ export default function (state = initialState, action) {
         ...state,
         sort: {
           category: category,
-          direction: direction
+          direction: direction,
         },
-        tableData: [...state.tableData].sort(compareValues(category, direction))
+        tableData: [...state.tableData].sort(
+          compareValues(category, direction)
+        ),
       }
     }
     case TOGGLE_DRAWER: {
       return {
         ...state,
-        mobileOpen: !state.mobileOpen
+        mobileOpen: !state.mobileOpen,
       }
     }
     default:

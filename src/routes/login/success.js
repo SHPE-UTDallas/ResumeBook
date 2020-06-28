@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import NavBar from '../../components/NavBar'
 
-function App (props) {
+function App(props) {
   const classes = props.classes
   return (
     <div className={classes.root}>
@@ -16,7 +16,7 @@ function App (props) {
 }
 
 App.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 }
 
 export default App

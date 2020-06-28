@@ -26,7 +26,7 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
     {
       public_id: `${CLOUDINARY_TESTDATAPATH}${req.body.name} - Resume`,
       resource_type: 'raw',
-      format: 'pdf'
+      format: 'pdf',
     },
     (err, result) => {
       if (err) {
@@ -53,7 +53,7 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
   await resumesRef
     .where('name', '==', `${req.body.name}`)
     .get()
-    .then(async snapshot => {
+    .then(async (snapshot) => {
       if (snapshot.size == 0) {
         console.log(
           `No resumes found for ${req.body.name}, creating a new document`
@@ -66,14 +66,14 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
             gpa: req.body.gpa,
             major: req.body.major,
             standing: req.body.standing,
-            resume: url.secure_url
+            resume: url.secure_url,
           })
-          .then(doc => {
+          .then((doc) => {
             doc.update({
-              _id: doc.id
+              _id: doc.id,
             })
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(
               `Unable add a resume to the collection for ${req.body.name}`
             )
@@ -112,7 +112,7 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
                 gpa: req.body.gpa,
                 major: req.body.major,
                 standing: req.body.standing,
-                resume: url.secure_url
+                resume: url.secure_url,
               })
               .then(() => {
                 console.log(
@@ -120,7 +120,7 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
                 )
                 documentAdded = true
               })
-              .catch(err => {
+              .catch((err) => {
                 console.error(
                   `Unable to update resume entry for ${req.body.name} with collection ID: ${doc.id}`
                 )
@@ -143,14 +143,14 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
               gpa: req.body.gpa,
               major: req.body.major,
               standing: req.body.standing,
-              resume: url.secure_url
+              resume: url.secure_url,
             })
-            .then(doc => {
+            .then((doc) => {
               console.log(
                 `Created a new entry for ${req.body.name} with collection ID: ${doc.id}`
               )
             })
-            .catch(err => {
+            .catch((err) => {
               console.log(`Unable to add new resume entry for ${req.body.name}`)
               console.error(err)
               res
@@ -173,15 +173,15 @@ app.get(
     let resumes = []
     await resumesRef
       .get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
           resumes.push(doc.data())
         })
       })
       .then(() => {
         console.log(`Successfully retrived resumes for user ${req.body.email}`)
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('Unable to retrieve resumes from the database')
         console.log(err)
         res

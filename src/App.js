@@ -20,15 +20,15 @@ import { green } from '@material-ui/core/colors'
 const drawerWidth = 300
 const defaultTheme = createMuiTheme({
   palette: {
-    primary: green
+    primary: green,
   },
   overrides: {
     MuiButton: {
       containedPrimary: {
-        color: 'white'
-      }
-    }
-  }
+        color: 'white',
+      },
+    },
+  },
 })
 /* TODO: Dark theme
 const darkTheme = createMuiTheme({
@@ -38,64 +38,64 @@ const darkTheme = createMuiTheme({
     },
   });
   */
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex'
+    display: 'flex',
   },
   drawer: {
     [theme.breakpoints.up('md')]: {
       width: drawerWidth,
-      flexShrink: 0
-    }
+      flexShrink: 0,
+    },
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1
+    zIndex: theme.zIndex.drawer + 1,
   },
   menuButton: {
     marginRight: theme.spacing(2),
     [theme.breakpoints.up('md')]: {
-      display: 'none'
-    }
+      display: 'none',
+    },
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
   },
   title: {
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
   },
   cart: {
     display: 'inline',
     marginBottom: '-4px',
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
   },
   cartText: {
     display: 'inline',
     marginRight: theme.spacing(1),
-    fontSize: '1.5rem'
+    fontSize: '1.5rem',
   },
   formEntry: {
     padding: '0',
     marginTop: '0px',
-    marginBottom: '-10px'
-  }
+    marginBottom: '-10px',
+  },
 }))
 
 const PrivateRoute = ({ render: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
+    render={(props) =>
       store.getState().auth.isVerified === true ? (
         <Component {...props} />
       ) : store.getState().auth.isAuthenticated === true ? (
-        <Redirect to='/verify' />
+        <Redirect to="/verify" />
       ) : (
-        <Redirect to='/login' />
+        <Redirect to="/login" />
       )
     }
   />
@@ -104,17 +104,17 @@ const PrivateRoute = ({ render: Component, ...rest }) => (
 const PrivateRoute2 = ({ render: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
+    render={(props) =>
       store.getState().auth.isAuthenticated === true ? (
         <Component {...props} />
       ) : (
-        <Redirect to='/login' />
+        <Redirect to="/login" />
       )
     }
   />
 )
 
-function App () {
+function App() {
   const classes = useStyles()
   return (
     <Provider store={store}>
@@ -122,51 +122,53 @@ function App () {
         <Router>
           <Route
             exact
-            path='/'
-            render={routeProps => <Home {...routeProps} classes={classes} />}
+            path="/"
+            render={(routeProps) => <Home {...routeProps} classes={classes} />}
           />
           <Route
             exact
-            path='/demo'
-            render={routeProps => <Demo {...routeProps} classes={classes} />}
+            path="/demo"
+            render={(routeProps) => <Demo {...routeProps} classes={classes} />}
           />
           <PrivateRoute
             exact
-            path='/resumes'
-            render={routerProps => (
+            path="/resumes"
+            render={(routerProps) => (
               <Resumes {...routerProps} classes={classes} />
             )}
           />
           <PrivateRoute2
             exact
-            path='/verify'
-            render={routerProps => (
+            path="/verify"
+            render={(routerProps) => (
               <Verify {...routerProps} classes={classes} />
             )}
           />
           <Route
             exact
-            path='/login'
-            render={routerProps => <Login {...routerProps} classes={classes} />}
+            path="/login"
+            render={(routerProps) => (
+              <Login {...routerProps} classes={classes} />
+            )}
           />
           <Route
             exact
-            path='/login/success'
-            render={routerProps => (
+            path="/login/success"
+            render={(routerProps) => (
               <LoginSuccess {...routerProps} classes={classes} />
             )}
           />
           <Route
             exact
-            path='/logout'
-            render={routerProps => (
+            path="/logout"
+            render={(routerProps) => (
               <Logout {...routerProps} classes={classes} />
             )}
           />
           <Route
             exact
-            path='/upload'
-            render={routerProps => (
+            path="/upload"
+            render={(routerProps) => (
               <Upload {...routerProps} classes={classes} />
             )}
           />
@@ -178,11 +180,11 @@ function App () {
 }
 
 PrivateRoute.propTypes = {
-  render: PropTypes.any.isRequired
+  render: PropTypes.any.isRequired,
 }
 
 PrivateRoute2.propTypes = {
-  render: PropTypes.any.isRequired
+  render: PropTypes.any.isRequired,
 }
 
 export default App

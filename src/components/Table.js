@@ -46,9 +46,7 @@ class SimpleTable extends React.Component {
                 Major
                 <TableSortLabel
                   active={this.props.orderBy === 'major'}
-                  direction={
-                    this.props.orderBy === 'major' ? this.props.order : 'asc'
-                  }
+                  direction={this.props.orderBy === 'major' ? this.props.order : 'asc'}
                 />
               </TableCell>
               <TableCell
@@ -59,9 +57,7 @@ class SimpleTable extends React.Component {
                 Standing
                 <TableSortLabel
                   active={this.props.orderBy === 'standing'}
-                  direction={
-                    this.props.orderBy === 'standing' ? this.props.order : 'asc'
-                  }
+                  direction={this.props.orderBy === 'standing' ? this.props.order : 'asc'}
                 />
               </TableCell>
               <TableCell align='left' size='medium'>
@@ -89,7 +85,7 @@ SimpleTable.propTypes = {
   storeDataFromAPI: PropTypes.func.isRequired,
   orderBy: PropTypes.string.isRequired,
   order: PropTypes.string.isRequired,
-  sortTable: PropTypes.func.isRequired
+  sortTable: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => {
@@ -99,6 +95,6 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = {
   storeDataFromAPI,
-  sortTable
+  sortTable,
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SimpleTable)

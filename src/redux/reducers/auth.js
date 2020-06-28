@@ -2,7 +2,7 @@ import { LOGIN_SUCCESS, LOGOUT_SUCCESS } from '../actionTypes'
 
 const initialState = {
   isAuthenticated: false,
-  isVerified: false
+  isVerified: false,
 }
 
 export default function (state = initialState, action) {
@@ -13,14 +13,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isAuthenticated: true,
-        isVerified: verified
+        isVerified: verified,
       }
     }
     case LOGOUT_SUCCESS: {
       return {
         ...state,
         isAuthenticated: false,
-        isVerified: false
+        isVerified: false,
       }
     }
     default:

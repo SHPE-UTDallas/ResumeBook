@@ -5,12 +5,12 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import Typography from '@material-ui/core/Typography'
 
 class Cart extends React.Component {
-  constructor () {
+  constructor() {
     super()
     this.state = { numInCart: 0 }
   }
 
-  render () {
+  render() {
     return (
       <React.Fragment>
         <Typography
@@ -27,10 +27,10 @@ class Cart extends React.Component {
 
 Cart.propTypes = {
   classes: PropTypes.object.isRequired,
-  numInCart: PropTypes.number.isRequired
+  numInCart: PropTypes.number.isRequired,
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { numInCart } = state.cart
   return { numInCart: numInCart }
 }

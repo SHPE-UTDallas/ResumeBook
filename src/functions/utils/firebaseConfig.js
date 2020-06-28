@@ -4,7 +4,7 @@ const { FIREBASE } = require('./config')
 let serviceAccount = JSON.parse(FIREBASE)
 const db = admin
   .initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount),
   })
   .firestore()
 

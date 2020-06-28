@@ -2,7 +2,7 @@ import { ADD_TO_CART, REMOVE_FROM_CART } from '../actionTypes'
 
 const initialState = {
   ids: [],
-  numInCart: 0
+  numInCart: 0,
 }
 
 export default function (state = initialState, action) {
@@ -12,7 +12,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         ids: [...state.ids, userId],
-        numInCart: state.numInCart + 1
+        numInCart: state.numInCart + 1,
       }
     }
     case REMOVE_FROM_CART: {
@@ -21,7 +21,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         ids: [...state.ids.slice(0, index), ...state.ids.slice(index + 1)],
-        numInCart: state.numInCart - 1
+        numInCart: state.numInCart - 1,
       }
     }
     default:

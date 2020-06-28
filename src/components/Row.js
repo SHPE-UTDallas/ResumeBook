@@ -11,23 +11,23 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import './Row.css'
 
 const greenTheme = createMuiTheme({
-  palette: { primary: { '500': '#28a745' } }
+  palette: { primary: { '500': '#28a745' } },
 })
 
 class Row extends React.Component {
   // ...
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = { expanded: false }
   }
-  render () {
+  render() {
     const details = this.state.expanded ? (
       <TableRow>
         <TableCell colSpan={4} id={`u${this.props.data._id}`}>
           <Collapse in={this.state.expanded} unmountOnExit={true}>
             <PDFObject
               url={this.props.data.resume}
-              height='500px'
+              height="500px"
               containerId={`u${this.props.data._id}`}
             />
           </Collapse>
@@ -38,22 +38,25 @@ class Row extends React.Component {
     return (
       <React.Fragment>
         <TableRow>
-          <TableCell component='th' scope='row'>
+          <TableCell component="th" scope="row">
             {this.props.data.linkedin ? (
               <a
                 style={{
                   textDecoration: 'none',
                   color: 'inherit',
-                  display: 'inline'
+                  display: 'inline',
                 }}
-                target='_blank'
-                rel='noopener noreferrer'
+                target="_blank"
+                rel="noopener noreferrer"
                 href={this.props.data.linkedin}
               >
                 <i
-                  className='fa fa-linkedin-square mr-1'
-                  aria-hidden='true'
-                  style={{ fontSize: '20px', color: '#0077B5' }}
+                  className="fa fa-linkedin-square mr-1"
+                  aria-hidden="true"
+                  style={{
+                    fontSize: '20px',
+                    color: '#0077B5',
+                  }}
                 ></i>{' '}
                 <p>{this.props.data.name}</p>
               </a>
@@ -61,21 +64,23 @@ class Row extends React.Component {
               <p>{this.props.data.name}</p>
             )}
           </TableCell>
-          <TableCell align='left'>
+          <TableCell align="left">
             <p>{this.props.data.major}</p>
           </TableCell>
-          <TableCell align='left'>
+          <TableCell align="left">
             <p>{this.props.data.standing}</p>
           </TableCell>
-          <TableCell align='left'>
+          <TableCell align="left">
             <Button
-              variant='outlined'
-              size='medium'
+              variant="outlined"
+              size="medium"
               style={{ marginRight: '8px' }}
               onClick={() =>
-                this.setState(({ expanded }) => ({ expanded: !expanded }))
+                this.setState(({ expanded }) => ({
+                  expanded: !expanded,
+                }))
               }
-              color='primary'
+              color="primary"
             >
               View
             </Button>
@@ -91,6 +96,6 @@ class Row extends React.Component {
 }
 
 Row.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
 }
 export default Row

@@ -5,15 +5,15 @@ import NavBar from '../../components/NavBar'
 import { ENDPOINT } from '../../utils/config'
 
 class App extends React.Component {
-  toBase64 = file =>
+  toBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onload = () => resolve(reader.result)
-      reader.onerror = error => reject(error)
+      reader.onerror = (error) => reject(error)
     })
 
-  handleSubmit = async event => {
+  handleSubmit = async (event) => {
     event.preventDefault()
     event.persist()
     //Convert pdf to base64 since Netlify/AWS Lambda doesn't allow binary content
@@ -29,11 +29,11 @@ class App extends React.Component {
     const endpoint_url = `${ENDPOINT}/api/file`
     fetch(`${endpoint_url}`, {
       method: 'POST',
-      body: formData
+      body: formData,
     })
   }
 
-  render () {
+  render() {
     const classes = this.props.classes
     return (
       <div className={classes.root}>
@@ -42,71 +42,71 @@ class App extends React.Component {
           <div className={classes.toolbar} />
           <Grid
             container
-            alignItems='center'
-            direction='column'
-            justify='center'
+            alignItems="center"
+            direction="column"
+            justify="center"
           >
-            <form onSubmit={this.handleSubmit} encType='multipart/form-data'>
+            <form onSubmit={this.handleSubmit} encType="multipart/form-data">
               <Grid item>
                 <FormControlLabel
                   className={classes.formEntry}
-                  control={<Input type='text' name='name' />}
-                  label='Name:'
-                  labelPlacement='start'
+                  control={<Input type="text" name="name" />}
+                  label="Name:"
+                  labelPlacement="start"
                 />
               </Grid>
               <Grid item>
                 <FormControlLabel
                   className={classes.formEntry}
-                  control={<Input type='email' name='email' />}
-                  label='Email:'
-                  labelPlacement='start'
+                  control={<Input type="email" name="email" />}
+                  label="Email:"
+                  labelPlacement="start"
                 />
               </Grid>
               <Grid item>
                 <FormControlLabel
                   className={classes.formEntry}
-                  control={<Input type='text' name='linkedin' />}
-                  label='LinkedIn:'
-                  labelPlacement='start'
+                  control={<Input type="text" name="linkedin" />}
+                  label="LinkedIn:"
+                  labelPlacement="start"
                 />
               </Grid>
               <Grid item>
                 <FormControlLabel
                   className={classes.formEntry}
-                  control={<Input step='0.1' type='number' name='gpa' />}
-                  label='GPA:'
-                  labelPlacement='start'
+                  control={<Input step="0.1" type="number" name="gpa" />}
+                  label="GPA:"
+                  labelPlacement="start"
                 />
               </Grid>
               <Grid item>
                 <FormControlLabel
                   className={classes.formEntry}
-                  control={<Input type='text' name='major' />}
-                  label='Major:'
-                  labelPlacement='start'
+                  control={<Input type="text" name="major" />}
+                  label="Major:"
+                  labelPlacement="start"
                 />
               </Grid>
               <Grid item>
                 <FormControlLabel
                   className={classes.formEntry}
-                  control={<Input type='text' name='standing' />}
-                  label='Standing:'
-                  labelPlacement='start'
+                  control={<Input type="text" name="standing" />}
+                  label="Standing:"
+                  labelPlacement="start"
                 />
               </Grid>
               <Grid item>
                 <FormControlLabel
                   className={classes.formEntry}
                   control={
-                    <Input type='file' name='pdf' accept='application/pdf' />
+                    <Input type="file" name="pdf" accept="application/pdf" />
                   }
-                  label='PDF:'
-                  labelPlacement='start'
+                  label="PDF:"
+                  labelPlacement="start"
                 />
               </Grid>
               <Grid item>
-                <Input type='submit' />
+                <Input type="submit" />
               </Grid>
             </form>
           </Grid>
@@ -117,6 +117,6 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 }
 export default App

@@ -15,26 +15,26 @@ import {
   removeFilter,
   increaseGPA,
   decreaseGPA,
-  toggleDrawer
+  toggleDrawer,
 } from '../redux/actions'
 import PropTypes from 'prop-types'
 
 const blueTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#3f50b5'
-    }
+      main: '#3f50b5',
+    },
   },
   overrides: {
     MuiButton: {
       containedPrimary: {
-        color: 'white'
-      }
-    }
-  }
+        color: 'white',
+      },
+    },
+  },
 })
 
-function ResponsiveDrawer (props) {
+function ResponsiveDrawer(props) {
   const classes = props.classes
   const mobileOpen = props.mobileOpen
   const theme = useTheme()
@@ -48,7 +48,7 @@ function ResponsiveDrawer (props) {
     else props.addFilter(name, category)
   }
 
-  const handleGPAChange = gpa => {
+  const handleGPAChange = (gpa) => {
     if (gpa > props.gpa.min) props.increaseGPA(gpa, 'gpa')
     else props.decreaseGPA(gpa)
   }
@@ -62,21 +62,32 @@ function ResponsiveDrawer (props) {
           <Box ml={1}>
             <FormGroup>
               <Grid item xs={12}>
-                <h3 style={{ marginTop: '0px', marginBottom: '0px' }}>GPA</h3>
+                <h3
+                  style={{
+                    marginTop: '0px',
+                    marginBottom: '0px',
+                  }}
+                >
+                  GPA
+                </h3>
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  label='Minimum GPA:'
-                  labelPlacement='start'
+                  label="Minimum GPA:"
+                  labelPlacement="start"
                   control={
                     <Input
                       className={classes.title}
                       value={props.gpa.min}
-                      type='number'
-                      onChange={e => handleGPAChange(e.target.value)}
-                      id='quantity'
-                      name='quantity'
-                      inputProps={{ step: 0.1, min: 0, max: 4 }}
+                      type="number"
+                      onChange={(e) => handleGPAChange(e.target.value)}
+                      id="quantity"
+                      name="quantity"
+                      inputProps={{
+                        step: 0.1,
+                        min: 0,
+                        max: 4,
+                      }}
                     />
                   }
                 />
@@ -91,12 +102,14 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.standing.grad}
-                        onChange={e => handleChange(e.target.name, 'standing')}
-                        color='primary'
-                        name='grad'
+                        onChange={(e) =>
+                          handleChange(e.target.name, 'standing')
+                        }
+                        color="primary"
+                        name="grad"
                       />
                     }
-                    label='Graduate Student'
+                    label="Graduate Student"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -105,12 +118,14 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.standing.senior}
-                        onChange={e => handleChange(e.target.name, 'standing')}
-                        color='primary'
-                        name='senior'
+                        onChange={(e) =>
+                          handleChange(e.target.name, 'standing')
+                        }
+                        color="primary"
+                        name="senior"
                       />
                     }
-                    label='Senior'
+                    label="Senior"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -119,12 +134,14 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.standing.junior}
-                        onChange={e => handleChange(e.target.name, 'standing')}
-                        color='primary'
-                        name='junior'
+                        onChange={(e) =>
+                          handleChange(e.target.name, 'standing')
+                        }
+                        color="primary"
+                        name="junior"
                       />
                     }
-                    label='Junior'
+                    label="Junior"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -133,12 +150,14 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.standing.sophomore}
-                        onChange={e => handleChange(e.target.name, 'standing')}
-                        color='primary'
-                        name='sophomore'
+                        onChange={(e) =>
+                          handleChange(e.target.name, 'standing')
+                        }
+                        color="primary"
+                        name="sophomore"
                       />
                     }
-                    label='Sophomore'
+                    label="Sophomore"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -147,12 +166,14 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.standing.freshman}
-                        onChange={e => handleChange(e.target.name, 'standing')}
-                        color='primary'
-                        name='freshman'
+                        onChange={(e) =>
+                          handleChange(e.target.name, 'standing')
+                        }
+                        color="primary"
+                        name="freshman"
                       />
                     }
-                    label='Freshman'
+                    label="Freshman"
                   />
                 </Grid>
               </div>
@@ -166,12 +187,12 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.major.be}
-                        onChange={e => handleChange(e.target.name, 'major')}
-                        color='primary'
-                        name='be'
+                        onChange={(e) => handleChange(e.target.name, 'major')}
+                        color="primary"
+                        name="be"
                       />
                     }
-                    label='Biomedical Engineering'
+                    label="Biomedical Engineering"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -180,12 +201,12 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.major.ce}
-                        onChange={e => handleChange(e.target.name, 'major')}
-                        color='primary'
-                        name='ce'
+                        onChange={(e) => handleChange(e.target.name, 'major')}
+                        color="primary"
+                        name="ce"
                       />
                     }
-                    label='Computer Engineering'
+                    label="Computer Engineering"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -194,12 +215,12 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.major.cs}
-                        onChange={e => handleChange(e.target.name, 'major')}
-                        color='primary'
-                        name='cs'
+                        onChange={(e) => handleChange(e.target.name, 'major')}
+                        color="primary"
+                        name="cs"
                       />
                     }
-                    label='Computer Science'
+                    label="Computer Science"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -208,12 +229,12 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.major.ee}
-                        onChange={e => handleChange(e.target.name, 'major')}
-                        color='primary'
-                        name='ee'
+                        onChange={(e) => handleChange(e.target.name, 'major')}
+                        color="primary"
+                        name="ee"
                       />
                     }
-                    label='Electrical Engineering'
+                    label="Electrical Engineering"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -222,12 +243,12 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.major.me}
-                        onChange={e => handleChange(e.target.name, 'major')}
-                        color='primary'
-                        name='me'
+                        onChange={(e) => handleChange(e.target.name, 'major')}
+                        color="primary"
+                        name="me"
                       />
                     }
-                    label='Mechanical Engineering'
+                    label="Mechanical Engineering"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -236,12 +257,12 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.major.se}
-                        onChange={e => handleChange(e.target.name, 'major')}
-                        color='primary'
-                        name='se'
+                        onChange={(e) => handleChange(e.target.name, 'major')}
+                        color="primary"
+                        name="se"
                       />
                     }
-                    label='Software Engineering'
+                    label="Software Engineering"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -250,12 +271,12 @@ function ResponsiveDrawer (props) {
                     control={
                       <Switch
                         checked={props.major.other}
-                        onChange={e => handleChange(e.target.name, 'major')}
-                        color='primary'
-                        name='other'
+                        onChange={(e) => handleChange(e.target.name, 'major')}
+                        color="primary"
+                        name="other"
                       />
                     }
-                    label='Other'
+                    label="Other"
                   />
                 </Grid>
               </div>
@@ -267,30 +288,30 @@ function ResponsiveDrawer (props) {
   )
 
   return (
-    <nav className={classes.drawer} aria-label='mailbox folders'>
+    <nav className={classes.drawer} aria-label="mailbox folders">
       {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-      <Hidden mdUp implementation='css'>
+      <Hidden mdUp implementation="css">
         <Drawer
-          variant='temporary'
+          variant="temporary"
           anchor={theme.direction === 'rtl' ? 'right' : 'left'}
           open={mobileOpen}
           onClose={handleDrawerToggle}
           classes={{
-            paper: classes.drawerPaper
+            paper: classes.drawerPaper,
           }}
           ModalProps={{
-            keepMounted: true // Better open performance on mobile.
+            keepMounted: true, // Better open performance on mobile.
           }}
         >
           {drawer}
         </Drawer>
       </Hidden>
-      <Hidden smDown implementation='css'>
+      <Hidden smDown implementation="css">
         <Drawer
           classes={{
-            paper: classes.drawerPaper
+            paper: classes.drawerPaper,
           }}
-          variant='permanent'
+          variant="permanent"
           open
         >
           {drawer}
@@ -310,13 +331,18 @@ ResponsiveDrawer.propTypes = {
   major: PropTypes.object.isRequired,
   toggleDrawer: PropTypes.func.isRequired,
   removeFilter: PropTypes.func.isRequired,
-  addFilter: PropTypes.func.isRequired
+  addFilter: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { mobileOpen } = state.data
   const { gpa, standing, major } = state.data.passingTags
-  return { mobileOpen: mobileOpen, gpa: gpa, standing: standing, major: major }
+  return {
+    mobileOpen: mobileOpen,
+    gpa: gpa,
+    standing: standing,
+    major: major,
+  }
 }
 
 const mapDispatchToProps = {
@@ -324,7 +350,7 @@ const mapDispatchToProps = {
   removeFilter,
   increaseGPA,
   decreaseGPA,
-  toggleDrawer
+  toggleDrawer,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResponsiveDrawer)

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import NavBar from '../../components/NavBar'
 import logout from '../../utils/auth/logout'
 
-function App (props) {
+function App(props) {
   const classes = props.classes
   logout()
   return (
@@ -18,7 +18,7 @@ function App (props) {
 }
 
 App.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 }
 
 export default App

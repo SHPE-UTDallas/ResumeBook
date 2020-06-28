@@ -8,36 +8,36 @@ import PropTypes from 'prop-types'
 
 const greenTheme = createMuiTheme({
   palette: {
-    primary: green
+    primary: green,
   },
   overrides: {
     MuiButton: {
       containedPrimary: {
-        color: 'white'
-      }
-    }
-  }
+        color: 'white',
+      },
+    },
+  },
 })
 const redTheme = createMuiTheme({
   palette: {
-    primary: red
+    primary: red,
   },
   overrides: {
     MuiButton: {
       containedPrimary: {
-        color: 'white'
-      }
-    }
-  }
+        color: 'white',
+      },
+    },
+  },
 })
-function LoginLogout (props) {
+function LoginLogout(props) {
   const login = props.loggedIn ? (
     <MuiThemeProvider theme={redTheme}>
       <Button
-        variant='contained'
+        variant="contained"
         component={NavLink}
-        to='/logout'
-        color='primary'
+        to="/logout"
+        color="primary"
       >
         Logout
       </Button>
@@ -45,10 +45,10 @@ function LoginLogout (props) {
   ) : (
     <MuiThemeProvider theme={greenTheme}>
       <Button
-        variant='contained'
+        variant="contained"
         component={NavLink}
-        to='/login'
-        color='primary'
+        to="/login"
+        color="primary"
       >
         Login
       </Button>
@@ -58,7 +58,7 @@ function LoginLogout (props) {
 }
 
 LoginLogout.propTypes = {
-  loggedIn: PropTypes.bool.isRequired
+  loggedIn: PropTypes.bool.isRequired,
 }
 
 export default LoginLogout

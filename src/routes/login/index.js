@@ -4,7 +4,7 @@ import NavBar from '../../components/NavBar'
 import { LinkedInLoginButton } from 'react-social-login-buttons'
 import { ENDPOINT } from '../../utils/config'
 
-function App (props) {
+function App(props) {
   const classes = props.classes
   const endpoint_url = `${ENDPOINT}/auth/linkedin`
   return (
@@ -21,6 +21,6 @@ function App (props) {
 }
 
 App.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 }
 export default App

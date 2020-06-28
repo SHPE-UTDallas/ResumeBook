@@ -9,79 +9,79 @@ import {
   SORT_TABLE,
   TOGGLE_DRAWER,
   LOGIN_SUCCESS,
-  LOGOUT_SUCCESS
+  LOGOUT_SUCCESS,
 } from './actionTypes'
 
-export const addToCart = userId => ({
+export const addToCart = (userId) => ({
   type: ADD_TO_CART,
   payload: {
-    userId
-  }
+    userId,
+  },
 })
 
-export const removeFromCart = userId => ({
+export const removeFromCart = (userId) => ({
   type: REMOVE_FROM_CART,
   payload: {
-    userId
-  }
+    userId,
+  },
 })
 
 export const addFilter = (filter, category) => ({
   type: ADD_FILTER,
   payload: {
     filter,
-    category
-  }
+    category,
+  },
 })
 
 export const removeFilter = (filter, category) => ({
   type: REMOVE_FILTER,
   payload: {
     filter,
-    category
-  }
+    category,
+  },
 })
 
-export const storeDataFromAPI = data => ({
+export const storeDataFromAPI = (data) => ({
   type: STORE_DATA_FROM_API,
   payload: {
-    data
-  }
+    data,
+  },
 })
 
-export const increaseGPA = num => ({
+export const increaseGPA = (num) => ({
   type: INCREASE_GPA,
   payload: {
-    num
-  }
+    num,
+  },
 })
 
-export const decreaseGPA = num => ({
+export const decreaseGPA = (num) => ({
   type: DECREASE_GPA,
   payload: {
-    num
-  }
+    num,
+  },
 })
 
 export const sortTable = (category, direction) => ({
   type: SORT_TABLE,
   payload: {
     category,
-    direction
-  }
+    direction,
+  },
 })
 
 export const toggleDrawer = () => ({
-  type: TOGGLE_DRAWER
+  type: TOGGLE_DRAWER,
 })
 
-export const loginSuccess = verified => ({
+export const loginSuccess = (verified) => ({
   type: LOGIN_SUCCESS,
   payload: {
-    verified
-  }
+    verified,
+  },
 })
 
 export const logoutSuccess = () => ({
-  type: LOGOUT_SUCCESS
+  type: LOGOUT_SUCCESS,
 })
