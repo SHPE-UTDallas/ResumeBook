@@ -23,6 +23,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
@@ -44,6 +47,17 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^2.2.0"
+    "eslint": "^7.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.0",
+    "gh-pages": "^2.2.0",
+    "husky": "^4.2.5",
+    "prettier": "^2.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run format && cd src/functions && npm run lint"
+    }
   }
 }

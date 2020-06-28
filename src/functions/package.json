@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "author": "",
   "license": "ISC",
@@ -20,5 +22,8 @@
     "passport-jwt": "^4.0.0",
     "passport-linkedin-oauth2": "git+https://github.com/gabriel-flynn/passport-linkedin-oauth2.git",
     "serverless-http": "^2.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.3.1"
   }
 }
