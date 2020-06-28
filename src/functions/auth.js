@@ -27,10 +27,7 @@ app.post(
   `${ENDPOINT}/auth/verify`,
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    if (
-      req.body.code.toLocaleLowerCase() ===
-      VERIFICATION_CODE.toLocaleLowerCase()
-    ) {
+    if (req.body.code.toLocaleLowerCase() === VERIFICATION_CODE.toLocaleLowerCase()) {
       let userRef = db.collection('users')
       await userRef
         .where('email', '==', `${req.user.email}`)
@@ -73,9 +70,7 @@ app.post(
           }
         })
         .catch((err) => {
-          console.error(
-            'Could not successfully retrieve information from the database'
-          )
+          console.error('Could not successfully retrieve information from the database')
           console.log(err)
           return res.status(500).send({
             error: 'Server was unable to update verification',
@@ -88,9 +83,7 @@ app.post(
         .cookie('jwt', newJwt, { httpOnly: true, COOKIE_SECURE })
         .send('Successfully Verified')
     } else {
-      res
-        .status(422)
-        .send('Invalid Verification Code entered, please try again')
+      res.status(422).send('Invalid Verification Code entered, please try again')
     }
   }
 )

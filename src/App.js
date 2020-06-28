@@ -133,44 +133,32 @@ function App() {
           <PrivateRoute
             exact
             path="/resumes"
-            render={(routerProps) => (
-              <Resumes {...routerProps} classes={classes} />
-            )}
+            render={(routerProps) => <Resumes {...routerProps} classes={classes} />}
           />
           <PrivateRoute2
             exact
             path="/verify"
-            render={(routerProps) => (
-              <Verify {...routerProps} classes={classes} />
-            )}
+            render={(routerProps) => <Verify {...routerProps} classes={classes} />}
           />
           <Route
             exact
             path="/login"
-            render={(routerProps) => (
-              <Login {...routerProps} classes={classes} />
-            )}
+            render={(routerProps) => <Login {...routerProps} classes={classes} />}
           />
           <Route
             exact
             path="/login/success"
-            render={(routerProps) => (
-              <LoginSuccess {...routerProps} classes={classes} />
-            )}
+            render={(routerProps) => <LoginSuccess {...routerProps} classes={classes} />}
           />
           <Route
             exact
             path="/logout"
-            render={(routerProps) => (
-              <Logout {...routerProps} classes={classes} />
-            )}
+            render={(routerProps) => <Logout {...routerProps} classes={classes} />}
           />
           <Route
             exact
             path="/upload"
-            render={(routerProps) => (
-              <Upload {...routerProps} classes={classes} />
-            )}
+            render={(routerProps) => <Upload {...routerProps} classes={classes} />}
           />
           {/* <Route component={NoMatch} /> */}
         </Router>

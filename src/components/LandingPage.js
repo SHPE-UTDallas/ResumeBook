@@ -8,20 +8,10 @@ function App(props) {
   return (
     <div className={classes.content}>
       <div className={classes.toolbar} />
-      <Button
-        variant="contained"
-        color="primary"
-        to="/demo"
-        component={RouterLink}
-      >
+      <Button variant="contained" color="primary" to="/demo" component={RouterLink}>
         Demo
       </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        to="/resumes"
-        component={RouterLink}
-      >
+      <Button variant="contained" color="primary" to="/resumes" component={RouterLink}>
         Sponsor
       </Button>
     </div>

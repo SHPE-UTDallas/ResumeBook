@@ -137,9 +137,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         data: data,
-        tableData: data.sort(
-          compareValues(state.sort.category, state.sort.direction)
-        ),
+        tableData: data.sort(compareValues(state.sort.category, state.sort.direction)),
       }
     }
 
@@ -207,9 +205,7 @@ export default function (state = initialState, action) {
           category: category,
           direction: direction,
         },
-        tableData: [...state.tableData].sort(
-          compareValues(category, direction)
-        ),
+        tableData: [...state.tableData].sort(compareValues(category, direction)),
       }
     }
     case TOGGLE_DRAWER: {

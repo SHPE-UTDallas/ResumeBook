@@ -44,24 +44,12 @@ class VerifyForm extends React.Component {
         <NavBar enableDrawer={false} classes={classes} />
         <div className={classes.content}>
           <div className={classes.toolbar} />
-          <Grid
-            container
-            alignItems="center"
-            direction="column"
-            justify="center"
-          >
-            <h3>
-              Please verify you account by inputting the code provided to you
-            </h3>
+          <Grid container alignItems="center" direction="column" justify="center">
+            <h3>Please verify you account by inputting the code provided to you</h3>
             <form onSubmit={this.handleSubmit}>
               <FormControlLabel
                 className={classes.formEntry}
-                control={
-                  <Input
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                  />
-                }
+                control={<Input value={this.state.value} onChange={this.handleChange} />}
                 label="Code:"
                 labelPlacement="top"
               />

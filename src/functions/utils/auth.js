@@ -54,9 +54,7 @@ passport.use(
                   if (doc.data().verified) verified = true
                 })
               } else {
-                console.error(
-                  `There are two or more user with the same email: ${email}`
-                )
+                console.error(`There are two or more user with the same email: ${email}`)
               }
             })
         } else {

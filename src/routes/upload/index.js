@@ -40,12 +40,7 @@ class App extends React.Component {
         <NavBar enableDrawer={false} classes={classes} />
         <div className={classes.content}>
           <div className={classes.toolbar} />
-          <Grid
-            container
-            alignItems="center"
-            direction="column"
-            justify="center"
-          >
+          <Grid container alignItems="center" direction="column" justify="center">
             <form onSubmit={this.handleSubmit} encType="multipart/form-data">
               <Grid item>
                 <FormControlLabel
@@ -98,9 +93,7 @@ class App extends React.Component {
               <Grid item>
                 <FormControlLabel
                   className={classes.formEntry}
-                  control={
-                    <Input type="file" name="pdf" accept="application/pdf" />
-                  }
+                  control={<Input type="file" name="pdf" accept="application/pdf" />}
                   label="PDF:"
                   labelPlacement="start"
                 />

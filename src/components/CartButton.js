@@ -22,11 +22,7 @@ class CartButton extends React.Component {
 
   render() {
     const button = this.props.ids.includes(this.props.userId) ? (
-      <Button
-        variant="outlined"
-        color="secondary"
-        onClick={this.handleRemoveFromCart}
-      >
+      <Button variant="outlined" color="secondary" onClick={this.handleRemoveFromCart}>
         Remove from Cart
       </Button>
     ) : (

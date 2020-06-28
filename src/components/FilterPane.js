@@ -102,9 +102,7 @@ function ResponsiveDrawer(props) {
                     control={
                       <Switch
                         checked={props.standing.grad}
-                        onChange={(e) =>
-                          handleChange(e.target.name, 'standing')
-                        }
+                        onChange={(e) => handleChange(e.target.name, 'standing')}
                         color="primary"
                         name="grad"
                       />
@@ -118,9 +116,7 @@ function ResponsiveDrawer(props) {
                     control={
                       <Switch
                         checked={props.standing.senior}
-                        onChange={(e) =>
-                          handleChange(e.target.name, 'standing')
-                        }
+                        onChange={(e) => handleChange(e.target.name, 'standing')}
                         color="primary"
                         name="senior"
                       />
@@ -134,9 +130,7 @@ function ResponsiveDrawer(props) {
                     control={
                       <Switch
                         checked={props.standing.junior}
-                        onChange={(e) =>
-                          handleChange(e.target.name, 'standing')
-                        }
+                        onChange={(e) => handleChange(e.target.name, 'standing')}
                         color="primary"
                         name="junior"
                       />
@@ -150,9 +144,7 @@ function ResponsiveDrawer(props) {
                     control={
                       <Switch
                         checked={props.standing.sophomore}
-                        onChange={(e) =>
-                          handleChange(e.target.name, 'standing')
-                        }
+                        onChange={(e) => handleChange(e.target.name, 'standing')}
                         color="primary"
                         name="sophomore"
                       />
@@ -166,9 +158,7 @@ function ResponsiveDrawer(props) {
                     control={
                       <Switch
                         checked={props.standing.freshman}
-                        onChange={(e) =>
-                          handleChange(e.target.name, 'standing')
-                        }
+                        onChange={(e) => handleChange(e.target.name, 'standing')}
                         color="primary"
                         name="freshman"
                       />

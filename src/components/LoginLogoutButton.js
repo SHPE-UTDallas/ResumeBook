@@ -33,23 +33,13 @@ const redTheme = createMuiTheme({
 function LoginLogout(props) {
   const login = props.loggedIn ? (
     <MuiThemeProvider theme={redTheme}>
-      <Button
-        variant="contained"
-        component={NavLink}
-        to="/logout"
-        color="primary"
-      >
+      <Button variant="contained" component={NavLink} to="/logout" color="primary">
         Logout
       </Button>
     </MuiThemeProvider>
   ) : (
     <MuiThemeProvider theme={greenTheme}>
-      <Button
-        variant="contained"
-        component={NavLink}
-        to="/login"
-        color="primary"
-      >
+      <Button variant="contained" component={NavLink} to="/login" color="primary">
         Login
       </Button>
     </MuiThemeProvider>

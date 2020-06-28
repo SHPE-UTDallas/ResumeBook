@@ -13,36 +13,35 @@ import PropTypes from 'prop-types'
 import Row from './Row'
 
 class SimpleTable extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     fetch(this.props.url)
-      .then(res => res.json())
-      .then(items => this.props.storeDataFromAPI(items))
-      .catch(err => {
-console.error(err);
-console.log(undefinedVar);
+      .then((res) => res.json())
+      .then((items) => this.props.storeDataFromAPI(items))
+      .catch((err) => {
+        console.error(err)
         //TODO: Display an error message above the table
       })
   }
 
-  handleSort = category => {
+  handleSort = (category) => {
     const { orderBy, order } = this.props
     const isAsc = orderBy === category && order === 'asc'
     if (isAsc) this.props.sortTable(category, 'desc')
     else this.props.sortTable(category, 'asc')
   }
 
-  render () {
+  render() {
     var newData = this.props.data
     return (
       <TableContainer component={Paper}>
-        <Table aria-label='simple table'>
+        <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell size='small'>Name</TableCell>
+              <TableCell size="small">Name</TableCell>
               <TableCell
-                align='left'
+                align="left"
                 onClick={() => this.handleSort('major')}
-                size='small'
+                size="small"
               >
                 Major
                 <TableSortLabel
@@ -51,8 +50,8 @@ console.log(undefinedVar);
                 />
               </TableCell>
               <TableCell
-                align='left'
-                size='small'
+                align="left"
+                size="small"
                 onClick={() => this.handleSort('standing')}
               >
                 Standing
@@ -61,7 +60,7 @@ console.log(undefinedVar);
                   direction={this.props.orderBy === 'standing' ? this.props.order : 'asc'}
                 />
               </TableCell>
-              <TableCell align='left' size='medium'>
+              <TableCell align="left" size="medium">
                 {' '}
                 Resume
               </TableCell>
@@ -69,7 +68,7 @@ console.log(undefinedVar);
           </TableHead>
           <TableBody>
             {newData ? (
-              newData.map(row => <Row key={row._id} data={row} />)
+              newData.map((row) => <Row key={row._id} data={row} />)
             ) : (
               <TableCell>Loading</TableCell>
             )}
@@ -89,7 +88,7 @@ SimpleTable.propTypes = {
   sortTable: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { tableData } = state.data
   const { category, direction } = state.data.sort
   return { data: tableData, orderBy: category, order: direction }

@@ -34,30 +34,22 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
           `Cloudinary was unable to upload the resume for ${req.body.name} successfully`
         )
         console.log(err)
-        res
-          .status(500)
-          .send('Unable to upload your resume to our CDN. Please try again')
+        res.status(500).send('Unable to upload your resume to our CDN. Please try again')
       }
-      console.log(
-        `Cloudinary Successfully uploaded a resume for ${req.body.name}`
-      )
+      console.log(`Cloudinary Successfully uploaded a resume for ${req.body.name}`)
       return result.secure_url
     }
   )
 
   //Add an entry to the resumes collection
   let resumesRef = db.collection('resumes')
-  console.log(
-    `Performing a query to figure out if a resume exists for ${req.body.name}`
-  )
+  console.log(`Performing a query to figure out if a resume exists for ${req.body.name}`)
   await resumesRef
     .where('name', '==', `${req.body.name}`)
     .get()
     .then(async (snapshot) => {
       if (snapshot.size == 0) {
-        console.log(
-          `No resumes found for ${req.body.name}, creating a new document`
-        )
+        console.log(`No resumes found for ${req.body.name}, creating a new document`)
         resumesRef
           .add({
             name: req.body.name,
@@ -74,24 +66,18 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
             })
           })
           .catch((err) => {
-            console.error(
-              `Unable add a resume to the collection for ${req.body.name}`
-            )
+            console.error(`Unable add a resume to the collection for ${req.body.name}`)
             console.log(err)
             res
               .status(500)
-              .send(
-                'Unable to add your resume to our database. Please try again'
-              )
+              .send('Unable to add your resume to our database. Please try again')
           })
       } else if (snapshot.size >= 1) {
         /*If there already exists an entry with that same name either:
         Update their entry if we can be somewhat confident it's the same person (We're going to assume the chance of two people having the same name, standing, and major is low)
         Create a new entry if we can be somewhat confident it's a different person
       */
-        console.log(
-          `One or more entries were found with the name ${req.body.name}`
-        )
+        console.log(`One or more entries were found with the name ${req.body.name}`)
 
         let documentAdded = false
         for (let indx = 0; indx < snapshot.size; indx++) {
@@ -127,9 +113,7 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
                 console.log(err)
                 res
                   .status(500)
-                  .send(
-                    'Unable to update your resume in our database. Please try again'
-                  )
+                  .send('Unable to update your resume in our database. Please try again')
               })
           }
         }
@@ -155,9 +139,7 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
               console.error(err)
               res
                 .status(500)
-                .send(
-                  'Unable to add your resume to our database. Please try again'
-                )
+                .send('Unable to add your resume to our database. Please try again')
             })
         }
       }
@@ -186,9 +168,7 @@ app.get(
         console.log(err)
         res
           .status(500)
-          .send(
-            'Could not retrieve resumes from our database. Please try again'
-          )
+          .send('Could not retrieve resumes from our database. Please try again')
       })
     res.json(resumes)
   }

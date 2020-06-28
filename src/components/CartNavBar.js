@@ -13,10 +13,7 @@ class Cart extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Typography
-          style={{ marginTop: '-8px' }}
-          className={this.props.classes.cartText}
-        >
+        <Typography style={{ marginTop: '-8px' }} className={this.props.classes.cartText}>
           {this.props.numInCart}
         </Typography>
         <ShoppingCartIcon className={this.props.classes.cart} />
