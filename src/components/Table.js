@@ -18,7 +18,7 @@ class SimpleTable extends React.Component {
       .then(res => res.json())
       .then(items => this.props.storeDataFromAPI(items))
       .catch(err => {
-console.error(err)
+console.error(err);
 console.log(undefinedVar);
         //TODO: Display an error message above the table
       })
