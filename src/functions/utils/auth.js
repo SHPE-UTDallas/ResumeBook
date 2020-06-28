@@ -55,7 +55,7 @@ passport.use(
                 })
               } else {
                 console.error(
-                  `There are two or more user with the same email: ${req.user.email}`
+                  `There are two or more user with the same email: ${email}`
                 )
               }
             })
