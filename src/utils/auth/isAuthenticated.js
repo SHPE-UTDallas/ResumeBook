@@ -9,7 +9,7 @@ export default async function isAuthenticated () {
       else return response.json()
     })
     .catch(err => {
-      console.log(err)
+      console.error(err)
     })
   if (response.email) {
     store.dispatch(loginSuccess(response.verified))

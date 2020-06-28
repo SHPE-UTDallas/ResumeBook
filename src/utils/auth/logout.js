@@ -6,6 +6,5 @@ export default async function isAuthenticated () {
   const response = await fetch(`${ENDPOINT}/auth/logout`).then(response =>
     response.text()
   )
-  console.log(response)
   if (response === 'Successfully logged out') store.dispatch(logoutSuccess())
 }

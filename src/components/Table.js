@@ -18,7 +18,7 @@ class SimpleTable extends React.Component {
       .then(res => res.json())
       .then(items => this.props.storeDataFromAPI(items))
       .catch(err => {
-        console.log(err)
+        console.error(err)
         //TODO: Display an error message above the table
       })
   }
