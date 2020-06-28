@@ -49,13 +49,13 @@ app.post(`${ENDPOINT}/auth/verify`,
           }
           else if(snapshot.size === 1) {
             console.log(`Attempting to update verification status for user ${snapshot.docs[0].id}`);
-           await snapshot.docs[0]
+           await snapshot.docs[0].ref
                   .update({verified: true})
                   .then(() => {
                     console.log(`Successfully updated verification for user ${snapshot.docs[0].id}`);
                   })
                   .catch(err =>{
-                    console.log(`Error updating verification status for user ${snapshot.docs[0].id}`);
+                    console.error(`Error updating verification status for user ${snapshot.docs[0].id}`);
                     console.log(err);
                   });
           
@@ -67,7 +67,7 @@ app.post(`${ENDPOINT}/auth/verify`,
         .catch(err => {
           console.error('Could not successfully retrieve information from the database');
           console.log(err);
-          res.status(500).send({error: 'Server was unable to update verification'});
+          return res.status(500).send({error: 'Server was unable to update verification'});
         })
         
       const newJwt = updateVerification(req.user.email);
