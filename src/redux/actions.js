@@ -75,10 +75,11 @@ export const toggleDrawer = () => ({
   type: TOGGLE_DRAWER,
 })
 
-export const loginSuccess = (verified) => ({
+export const loginSuccess = (verified, officer) => ({
   type: LOGIN_SUCCESS,
   payload: {
     verified,
+    officer,
   },
 })
 
