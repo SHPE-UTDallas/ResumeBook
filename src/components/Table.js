@@ -13,14 +13,50 @@ import PropTypes from 'prop-types'
 import Row from './Row'
 
 class SimpleTable extends React.Component {
-  componentDidMount() {
-    fetch(this.props.url)
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: true,
+    }
+  }
+
+  async componentDidMount() {
+    await fetch(this.props.url)
       .then((res) => res.json())
       .then((items) => this.props.storeDataFromAPI(items))
       .catch((err) => {
         console.error(err)
         //TODO: Display an error message above the table
       })
+    this.setState({ loading: false })
+  }
+
+  componentWillUnmount() {
+    /*TODO: Revisit this if we see that users want to switch back and forth between /demos and /resumes a lot
+     *     The 2nd option would improve the UX in that case
+     *     The 1st option should work just fine for our currently expected use case
+     * Possible options:
+     *
+     * Delete data everytime component unmounts
+     *   Pros:
+     *     Smaller memory footprint
+     *     Easy to implement
+     *   Cons:
+     *     More API calls are necessary
+     *
+     * Have two distinct variables for the fake data and real resume data in Redux
+     *   Pros:
+     *     Less API calls necessary
+     *   Cons:
+     *     More complicated implementation
+     *        - Have to rewrite or change a lot of the redux reducers
+     *     Bigger memory footprint
+     */
+
+    //Restore defaults
+    //TODO: Should we reset filters too??
+    this.props.storeDataFromAPI([])
+    this.props.sortTable('standing', 'asc')
   }
 
   handleSort = (category) => {
@@ -30,8 +66,22 @@ class SimpleTable extends React.Component {
     else this.props.sortTable(category, 'asc')
   }
 
+  tableBody = () => {
+    const tableData = this.props.data
+    const content = this.state.loading ? (
+      <h1>Loading...</h1> //TODO: Have a loading circle in the middle of the table body?
+    ) : (
+      <React.Fragment>
+        {tableData.map((row) => (
+          <Row key={row._id} data={row} />
+        ))}
+      </React.Fragment>
+    )
+
+    return content
+  }
+
   render() {
-    var newData = this.props.data
     return (
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
@@ -61,18 +111,11 @@ class SimpleTable extends React.Component {
                 />
               </TableCell>
               <TableCell align="left" size="medium">
-                {' '}
                 Resume
               </TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {newData ? (
-              newData.map((row) => <Row key={row._id} data={row} />)
-            ) : (
-              <TableCell>Loading</TableCell>
-            )}
-          </TableBody>
+          <TableBody>{this.tableBody()}</TableBody>
         </Table>
       </TableContainer>
     )
