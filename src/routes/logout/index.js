@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import NavBar from '../../components/NavBar'
 import logout from '../../utils/auth/logout'
 
 function App(props) {
   const classes = props.classes
-  logout()
+  useEffect(() => {
+    logout()
+  }, [])
+  //TODO: Error handling, display an error message or inform the user if a logout is not successful
   return (
     <div className={classes.root}>
       <NavBar enableDrawer={false} classes={classes} />
