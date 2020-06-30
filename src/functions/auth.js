@@ -19,7 +19,7 @@ const handleCallback = (req, res) => {
     .redirect('/login/success')
 }
 
-app.get(`${ENDPOINT}/auth/logout`, (req, res) => {
+app.post(`${ENDPOINT}/auth/logout`, (req, res) => {
   res.clearCookie('jwt').send('Successfully logged out')
 })
 
