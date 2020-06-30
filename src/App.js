@@ -153,7 +153,7 @@ function App() {
           path="/logout"
           render={(routerProps) => <Logout {...routerProps} classes={classes} />}
         />
-        <Route
+        <PrivateRoute2
           exact
           path="/upload"
           render={(routerProps) => <Upload {...routerProps} classes={classes} />}
