@@ -7,8 +7,9 @@ function App(props) {
   const classes = props.classes
   useEffect(() => {
     logout()
+    localStorage.setItem('isLoggedIn', false)
+    localStorage.setItem('verified', false)
   }, [])
-  //TODO: Error handling, display an error message or inform the user if a logout is not successful
   return (
     <div className={classes.root}>
       <NavBar enableDrawer={false} classes={classes} />
