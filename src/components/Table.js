@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import { storeDataFromAPI, sortTable } from '../redux/actions'
 import PropTypes from 'prop-types'
 import Row from './Row'
+import LoadingIndicator from './LoadingIndicator.js'
 
 class SimpleTable extends React.Component {
   constructor(props) {
@@ -68,9 +69,7 @@ class SimpleTable extends React.Component {
 
   tableBody = () => {
     const tableData = this.props.data
-    const content = this.state.loading ? (
-      <h1>Loading...</h1> //TODO: Have a loading circle in the middle of the table body?
-    ) : (
+    const content = (
       <React.Fragment>
         {tableData.map((row) => (
           <Row key={row._id} data={row} />
@@ -83,41 +82,47 @@ class SimpleTable extends React.Component {
 
   render() {
     return (
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell size="small">Name</TableCell>
-              <TableCell
-                align="left"
-                onClick={() => this.handleSort('major')}
-                size="small"
-              >
-                Major
-                <TableSortLabel
-                  active={this.props.orderBy === 'major'}
-                  direction={this.props.orderBy === 'major' ? this.props.order : 'asc'}
-                />
-              </TableCell>
-              <TableCell
-                align="left"
-                size="small"
-                onClick={() => this.handleSort('standing')}
-              >
-                Standing
-                <TableSortLabel
-                  active={this.props.orderBy === 'standing'}
-                  direction={this.props.orderBy === 'standing' ? this.props.order : 'asc'}
-                />
-              </TableCell>
-              <TableCell align="left" size="medium">
-                Resume
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>{this.tableBody()}</TableBody>
-        </Table>
-      </TableContainer>
+      <>
+        <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell size="small">Name</TableCell>
+                <TableCell
+                  align="left"
+                  onClick={() => this.handleSort('major')}
+                  size="small"
+                >
+                  Major
+                  <TableSortLabel
+                    active={this.props.orderBy === 'major'}
+                    direction={this.props.orderBy === 'major' ? this.props.order : 'asc'}
+                  />
+                </TableCell>
+                <TableCell
+                  align="left"
+                  size="small"
+                  onClick={() => this.handleSort('standing')}
+                >
+                  Standing
+                  <TableSortLabel
+                    active={this.props.orderBy === 'standing'}
+                    direction={
+                      this.props.orderBy === 'standing' ? this.props.order : 'asc'
+                    }
+                  />
+                </TableCell>
+                <TableCell align="left" size="medium">
+                  Resume
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{this.tableBody()}</TableBody>
+          </Table>
+        </TableContainer>
+
+        {this.state.loading && <LoadingIndicator />}
+      </>
     )
   }
 }
