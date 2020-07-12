@@ -12,6 +12,7 @@ import Box from '@material-ui/core/Box'
 import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
 import LoginLogoutButton from './LoginLogoutButton.js'
+import './styles/NavBar.sass'
 
 function NavBar(props) {
   const classes = props.classes
@@ -48,7 +49,7 @@ function NavBar(props) {
           <Typography className={classes.title} variant="h6">
             SHPE
           </Typography>
-          <Typography component={NavLink} to="/">
+          <Typography component={NavLink} to="/" className="nav-link">
             Home
           </Typography>
           <Box ml="auto">
