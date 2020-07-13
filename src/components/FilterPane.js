@@ -18,6 +18,7 @@ import {
   toggleDrawer,
 } from '../redux/actions'
 import PropTypes from 'prop-types'
+import './styles/FilterPane.sass'
 
 const blueTheme = createMuiTheme({
   palette: {
@@ -75,6 +76,7 @@ function ResponsiveDrawer(props) {
                 <FormControlLabel
                   label="Minimum GPA:"
                   labelPlacement="start"
+                  className="gpa-container"
                   control={
                     <Input
                       className={classes.title}
