@@ -18,7 +18,6 @@ import {
   toggleDrawer,
 } from '../redux/actions'
 import PropTypes from 'prop-types'
-import './styles/FilterPane.sass'
 
 const blueTheme = createMuiTheme({
   palette: {
@@ -72,25 +71,27 @@ function ResponsiveDrawer(props) {
                   GPA
                 </h3>
               </Grid>
-              <Grid item xs={12}>
+              <Grid container>
                 <FormControlLabel
                   label="Minimum GPA:"
                   labelPlacement="start"
-                  className="gpa-container"
+                  style={{ marginRight: '0px', justifyContent: 'start' }}
                   control={
-                    <Input
-                      className={classes.title}
-                      value={props.gpa.min}
-                      type="number"
-                      onChange={(e) => handleGPAChange(e.target.value)}
-                      id="quantity"
-                      name="quantity"
-                      inputProps={{
-                        step: 0.1,
-                        min: 0,
-                        max: 4,
-                      }}
-                    />
+                    <Grid item xs={4}>
+                      <Input
+                        className={classes.title}
+                        value={props.gpa.min}
+                        type="number"
+                        onChange={(e) => handleGPAChange(e.target.value)}
+                        id="quantity"
+                        name="quantity"
+                        inputProps={{
+                          step: 0.1,
+                          min: 0,
+                          max: 4,
+                        }}
+                      />
+                    </Grid>
                   }
                 />
               </Grid>
