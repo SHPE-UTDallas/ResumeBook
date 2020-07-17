@@ -18,7 +18,7 @@ const Indicator = styled.div`
   margin: 8px;
   border-radius: 50%;
   border: 3px solid #fff;
-  border-color: #73aabe #f16533 #4d92c8 #d43f27; 
+  border-color: #73aabe #f16533 #4d92c8 #d43f27;
   /* border-color: #a6addb transparent #a6addb transparent; */
   animation: ${IndicatorRotation} 1.2s linear infinite;
 `
