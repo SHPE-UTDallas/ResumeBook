@@ -1,0 +1,30 @@
+$button-width: 13rem
+
+#info
+    #info-title
+        border-bottom: 1px solid #555
+    #info-content
+        display: flex
+        flex-direction: row
+        justify-content: flex-start
+        align-items: flex-start
+        flex-wrap: wrap
+        >*
+            display: inline-block
+            flex: 0
+        #demo-sponsor
+            flex-basis: $button-width
+            box-sizing: border-box
+            padding-left: 3rem
+            margin-top: 1rem
+            >*
+                width: 100%
+                height: 50%
+                margin: 5px 0 5px 0
+                padding: .5rem
+        p
+            text-indent: 1em
+            flex-basis: 0
+            flex-grow: 1
+            flex-basis: 100%
+            max-width: 40rem
