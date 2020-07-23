@@ -7,9 +7,12 @@ import {
   INCREASE_GPA,
   DECREASE_GPA,
   SORT_TABLE,
+  FILTER_NAME_ADD,
+  FILTER_NAME_DEL,
   TOGGLE_DRAWER,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
+  // TOGGLE_THEME,
 } from './actionTypes'
 
 export const addToCart = (userId) => ({
@@ -68,6 +71,20 @@ export const sortTable = (category, direction) => ({
   payload: {
     category,
     direction,
+  },
+})
+
+export const filterNameAdd = (search) => ({
+  type: FILTER_NAME_ADD,
+  payload: {
+    search,
+  },
+})
+
+export const filterNameDel = (search) => ({
+  type: FILTER_NAME_DEL,
+  payload: {
+    search,
   },
 })
 
