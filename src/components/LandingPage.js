@@ -19,6 +19,7 @@ function App(props) {
             look like, go ahead and try the demo! If you are a sponsor of SHPE UTD, go
             ahead and log in through the sponsor button.
           </p>
+          <div className="spacer"></div>
           <div id="demo-sponsor">
             <Button variant="contained" color="primary" to="/demo" component={RouterLink}>
               Demo
@@ -33,6 +34,7 @@ function App(props) {
               Sponsor
             </Button>
           </div>
+          <div className="spacer"></div>
         </div>
       </div>
     </div>
