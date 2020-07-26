@@ -8,7 +8,6 @@ function SearchBar(props) {
   const search = useSelector((state) => state.data.search)
   const dispatch = useDispatch()
 
-  console.log(props)
   return (
     <div>
       <TextField
