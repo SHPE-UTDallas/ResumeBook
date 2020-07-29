@@ -1,10 +1,19 @@
 $button-width: 13rem
 
+.landing-content
+    display: flex
+    flex-direction: column
+    align-items: center
+    >*
+        flex-grow: 0
+        flex-shrink: 0
+
 #info
-    display: inline-block
+    // margin-left: 10%
     width: 80%
-    margin-left: 10%
     max-width: calc(40em + #{$button-width} + 10em)
+    display: inline-block
+    width: 100%
     #info-title
         border-bottom: 1px solid #555
     #info-content
@@ -13,18 +22,54 @@ $button-width: 13rem
             height: 100%
         >*
             box-sizing: border-box
-            // display: inline-block
         #demo-sponsor
             box-sizing: border-box
             padding: 1em
             >*
                 height: 4em
-                width: 12em
                 max-width: 100%
                 margin-bottom: 1em
-                // padding: .5em
         p
             text-indent: 1em
             padding-bottom: 1em
             box-sizing: border-box
             display: inline-block
+
+.slider-container
+    // width: 40em
+    max-width: 100%
+    padding: 40px
+
+.slick-slide img
+    margin: auto
+    height: 10em
+    // width: 10em
+
+// .landing-carousel
+//     flex-basis: 10em
+//     width: 10%
+//     // flex: 1
+//     display: inline-block
+//     background-color: #333
+//     .slick-list
+//         height: 100%
+
+// .carousel-image
+//     // height: 100%
+//     // width: 100%
+//     // display: flex
+//     // justify-content: center
+//     // align-items: center
+//     img
+//         // flex: 0
+//         max-width: 100%
+//         max-height: 100%
+//         display: inline-block
+
+.slick-arrow
+    background-color: #777
+    border-radius: 50%
+    &:focus
+        background-color: #777
+    &:hover
+        background-color: #444
