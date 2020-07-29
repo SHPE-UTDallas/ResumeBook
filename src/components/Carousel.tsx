@@ -9,16 +9,31 @@ export default class extends React.Component<
   },
   {
     activeOn: number
+    xoff: number
   }
 > {
   state = {
     activeOn: 0,
+    xoff: 0,
   }
+  length: number
+
+  constructor(props: any) {
+    super(props)
+    this.length = React.Children.count(props.children)
+    this.prevSlide = this.prevSlide.bind(this)
+    this.nextSlide = this.nextSlide.bind(this)
+  }
+
   render() {
     const { children, width, height } = this.props
 
     const slides = React.Children.toArray(children).map((e) => {
-      return <div className="carousel-item">{e}</div>
+      return (
+        <div className="carousel-item" style={{ width }}>
+          {e}
+        </div>
+      )
     })
 
     if (slides.length === 0) throw new Error('Carousel must have at least one child')
@@ -41,16 +56,44 @@ export default class extends React.Component<
         }}
       >
         <div className="top">
-          <div className="button">
+          <div className="button" onClick={this.prevSlide}>
             <div className="left" />
           </div>
-          <div className="items">{slides}</div>
-          <div className="button">
+          <div className="items">
+            <div
+              className="photo-window"
+              style={{
+                width: `calc(${width} * ${this.length}`,
+                left: `calc(${-this.state.activeOn} * ${width})`,
+              }}
+            >
+              {slides}
+            </div>
+          </div>
+          <div className="button" onClick={this.nextSlide}>
             <div className="right" />
           </div>
         </div>
         <ul className="indicators">{indicators}</ul>
       </div>
     )
+  }
+
+  nextSlide() {
+    this.setState({
+      activeOn: (this.state.activeOn + 1) % this.length,
+    })
+  }
+
+  prevSlide() {
+    if (this.state.activeOn !== 0) {
+      this.setState({
+        activeOn: (this.state.activeOn - 1) % this.length,
+      })
+    } else {
+      this.setState({
+        activeOn: this.length - 1,
+      })
+    }
   }
 }
