@@ -1,6 +1,10 @@
 $dot-height: 1em
 $button-height: $dot-height * 2
 
+// @keyframes nextSlide
+//     100%
+//         transform: translate(-25%, 0)
+
 .carousel
     .items
         width: 100%
@@ -13,7 +17,8 @@ $button-height: $dot-height * 2
         .items
             overflow: hidden
             flex-basis: 0
-            flex-grow: 1
+            flex-grow: 0
+            flex-shrink: 0
             height: 100%
             position: relative
             border-radius: .5rem
@@ -22,6 +27,8 @@ $button-height: $dot-height * 2
                 position: relative
                 height: 100%
                 display: flex
+                animation-duration: .5s
+                animation-fill-mode: forwards
         .button
             flex-basis: $button-height
             height: $button-height
@@ -31,6 +38,7 @@ $button-height: $dot-height * 2
             border-radius: 50%
             flex-shrink: 0
             flex-grow: 0
+            box-shadow: 0 0 .1rem .1rem rgba(#777, .2)
             &:hover
                 background-color: #777
             &:active
@@ -73,9 +81,12 @@ $button-height: $dot-height * 2
 .carousel-item
     display: flex
     height: 100%
-    flex-direction: row
-    flex-wrap: nowrap
+    background-color: rgba(#000, .2)
+    justify-content: center
+    align-items: center
     >*
         display: inline-block
-        flex-grow: 1
-        flex-shrink: 1
+        max-height: 100%
+        max-width: 100%
+        flex-grow: 0
+        flex-shrink: 0
