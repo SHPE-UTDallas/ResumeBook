@@ -15,11 +15,9 @@ function App(props: any) {
   return (
     <div className={classes.content + ' landing-content'}>
       <div className={classes.toolbar} />
-      <div className="slider-container">
-        <Carousel auto width="100%" height="30em" className="landing-carousel">
-          {carousel}
-        </Carousel>
-      </div>
+      <Carousel width="100%" maxWidth="40em" height="30em" className="landing-carousel">
+        {carousel}
+      </Carousel>
       <br />
       <LandingInfo />
     </div>

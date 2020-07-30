@@ -4,6 +4,7 @@ import './styles/Carousel.sass'
 export default class extends React.Component<
   {
     width: string
+    maxWidth: string
     height: string
     className: string
     auto?: boolean
@@ -17,13 +18,16 @@ export default class extends React.Component<
   }
   forward: boolean = false
   length: number
+  outerLength: number
   css: string
   auto: boolean = false
   interval: NodeJS.Timeout | null = null
+  initial: boolean = true
 
   constructor(props: any) {
     super(props)
     this.length = React.Children.count(props.children)
+    this.outerLength = React.Children.count(props.children) + 2
     this.prevSlide = this.prevSlide.bind(this)
     this.nextSlide = this.nextSlide.bind(this)
     this.nextPress = this.nextPress.bind(this)
@@ -34,24 +38,35 @@ export default class extends React.Component<
     }
 
     this.css = ''
+    const imgW = 100 / this.outerLength
+    const bias = imgW
+
+    this.css += `@keyframes init { 0% {transform: translate(-${bias}%, 0)} 100% {transform: translate(-${bias}%, 0)}}\n`
     for (let i = 0; i < this.length; i++) {
-      this.css += `@keyframes nextSlide-${i} {`
-      this.css += `0% { transform: translate(-${(100 / this.length) * (i - 1)}%, 0)}`
-      this.css += `100% { transform: translate(-${(100 / this.length) * i}%, 0)}}\n`
-      if (i !== 0) {
+      if (i === 0) {
+        this.css += `@keyframes nextSlide-${i} {`
+        this.css += `0% { transform: translate(0, 0)}`
+        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
+      } else {
+        this.css += `@keyframes nextSlide-${i} {`
+        this.css += `0% { transform: translate(-${imgW * (i - 1) + bias}%, 0)}`
+        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
+      }
+
+      if (i === this.length - 1) {
         this.css += `@keyframes prevSlide-${i} {`
-        this.css += `0% { transform: translate(-${(100 / this.length) * (i + 1)}%, 0)}`
-        this.css += `100% { transform: translate(-${(100 / this.length) * i}%, 0)}}\n`
+        this.css += `0% { transform: translate(-${imgW * (this.outerLength - 1)}%, 0)}`
+        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
       } else {
         this.css += `@keyframes prevSlide-${i} {`
-        this.css += `0% { transform: translate(-${(100 / this.length) * (i + 1)}%, 0)}`
-        this.css += `100% { transform: translate(-${(100 / this.length) * i}%, 0)}}\n`
+        this.css += `0% { transform: translate(-${imgW * (i + 1) + bias}%, 0)}`
+        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
       }
     }
   }
 
   render() {
-    const { children, width, height } = this.props
+    const { children, width, height, maxWidth } = this.props
     const buttonWidth = '4em'
     const windowWidth = `calc(100% - 2 * ${buttonWidth})`
 
@@ -66,7 +81,8 @@ export default class extends React.Component<
       )
     })
 
-    // slides.unshift(slides[slides.length - 1])
+    slides.unshift(slides[slides.length - 1])
+    slides.push(slides[1])
 
     if (slides.length === 0) throw new Error('Carousel must have at least one child')
 
@@ -79,12 +95,17 @@ export default class extends React.Component<
       }
     }
 
+    const anim = this.forward
+      ? `nextSlide-${this.state.activeOn}`
+      : `prevSlide-${this.state.activeOn}`
+
     return (
       <div
         className="carousel"
         style={{
           width,
           height,
+          maxWidth,
         }}
       >
         <style>{this.css}</style>
@@ -96,10 +117,8 @@ export default class extends React.Component<
             <div
               className="photo-window"
               style={{
-                width: `${100 * this.length}%`,
-                animationName: this.forward
-                  ? `nextSlide-${this.state.activeOn}`
-                  : `prevSlide-${this.state.activeOn}`,
+                width: `${100 * this.outerLength}%`,
+                animationName: this.initial ? 'init' : anim,
               }}
             >
               {slides}
@@ -121,6 +140,7 @@ export default class extends React.Component<
       }
       this.interval = setInterval(this.nextSlide, 3000)
     }
+    this.initial = false
   }
 
   nextPress() {
