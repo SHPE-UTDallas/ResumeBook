@@ -18,7 +18,6 @@ export default class extends React.Component<
   }
   forward: boolean = false
   length: number
-  outerLength: number
   css: string
   auto: boolean = false
   interval: NodeJS.Timeout | null = null
@@ -27,7 +26,6 @@ export default class extends React.Component<
   constructor(props: any) {
     super(props)
     this.length = React.Children.count(props.children)
-    this.outerLength = React.Children.count(props.children)
     this.prevSlide = this.prevSlide.bind(this)
     this.nextSlide = this.nextSlide.bind(this)
     this.nextPress = this.nextPress.bind(this)
@@ -38,29 +36,28 @@ export default class extends React.Component<
     }
 
     this.css = ''
-    const imgW = 100 / this.outerLength
-    const bias = imgW
+    const imgW = 100 / this.length
 
     this.css += `@keyframes init { 0% {transform: translate(0, 0)} 100% {transform: translate(0, 0)}}\n`
     for (let i = 0; i < this.length; i++) {
       if (i === this.length - 1) {
         this.css += `@keyframes nextSlide-${0} {`
         this.css += `0% { transform: translate(-${imgW * i}%, 0)}`
-        this.css += `100% { transform: translate(-${imgW * -2}%, 0)}}\n`
+        this.css += `100% { transform: translate(-${imgW}%, 0)}}\n`
       } else {
         this.css += `@keyframes nextSlide-${i+1} {`
-        this.css += `0% { transform: translate(-${imgW * (i - 1) + bias}%, 0)}`
-        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
+        this.css += `0% { transform: translate(-${imgW * (i)}%, 0)}`
+        this.css += `100% { transform: translate(-${imgW * (i+1)}%, 0)}}\n`
       }
 
       if (i === 0) {
         this.css += `@keyframes prevSlide-${this.length-1} {`
-        this.css += `0% { transform: translate(-${imgW * (this.outerLength - 1)}%, 0)}`
-        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
+        this.css += `0% { transform: translate(-${imgW}%, 0)}`
+        this.css += `100% { transform: translate(-${imgW * (this.length-1)}%, 0)}}\n`
       } else {
-        this.css += `@keyframes prevSlide-${i} {`
-        this.css += `0% { transform: translate(-${imgW * (i + 1) + bias}%, 0)}`
-        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
+        this.css += `@keyframes prevSlide-${i-1} {`
+        this.css += `0% { transform: translate(-${imgW * i}%, 0)}`
+        this.css += `100% { transform: translate(-${imgW * (i-1)}%, 0)}}\n`
       }
     }
   }
@@ -116,7 +113,7 @@ export default class extends React.Component<
             <div
               className="photo-window"
               style={{
-                width: `${100 * this.outerLength}%`,
+                width: `${100 * this.length}%`,
                 animationName: this.initial ? 'init' : anim,
               }}
             >
