@@ -27,7 +27,7 @@ export default class extends React.Component<
   constructor(props: any) {
     super(props)
     this.length = React.Children.count(props.children)
-    this.outerLength = React.Children.count(props.children) + 2
+    this.outerLength = React.Children.count(props.children)
     this.prevSlide = this.prevSlide.bind(this)
     this.nextSlide = this.nextSlide.bind(this)
     this.nextPress = this.nextPress.bind(this)
@@ -41,20 +41,20 @@ export default class extends React.Component<
     const imgW = 100 / this.outerLength
     const bias = imgW
 
-    this.css += `@keyframes init { 0% {transform: translate(-${bias}%, 0)} 100% {transform: translate(-${bias}%, 0)}}\n`
+    this.css += `@keyframes init { 0% {transform: translate(0, 0)} 100% {transform: translate(0, 0)}}\n`
     for (let i = 0; i < this.length; i++) {
-      if (i === 0) {
-        this.css += `@keyframes nextSlide-${i} {`
-        this.css += `0% { transform: translate(0, 0)}`
-        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
+      if (i === this.length - 1) {
+        this.css += `@keyframes nextSlide-${0} {`
+        this.css += `0% { transform: translate(-${imgW * i}%, 0)}`
+        this.css += `100% { transform: translate(-${imgW * -2}%, 0)}}\n`
       } else {
-        this.css += `@keyframes nextSlide-${i} {`
+        this.css += `@keyframes nextSlide-${i+1} {`
         this.css += `0% { transform: translate(-${imgW * (i - 1) + bias}%, 0)}`
         this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
       }
 
-      if (i === this.length - 1) {
-        this.css += `@keyframes prevSlide-${i} {`
+      if (i === 0) {
+        this.css += `@keyframes prevSlide-${this.length-1} {`
         this.css += `0% { transform: translate(-${imgW * (this.outerLength - 1)}%, 0)}`
         this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
       } else {
@@ -70,10 +70,11 @@ export default class extends React.Component<
     const buttonWidth = '4em'
     const windowWidth = `calc(100% - 2 * ${buttonWidth})`
 
-    const slides = React.Children.toArray(children).map((e) => {
+    const slides = React.Children.toArray(children).map((e, index) => {
       return (
         <div
           className="carousel-item"
+          key={`div-item-${index}`}
           style={{ width: `${100 / this.length}%`, maxHeight: height }}
         >
           {e}
@@ -81,17 +82,15 @@ export default class extends React.Component<
       )
     })
 
-    slides.unshift(slides[slides.length - 1])
-    slides.push(slides[1])
 
     if (slides.length === 0) throw new Error('Carousel must have at least one child')
 
     const indicators: JSX.Element[] = []
     for (let i = 0; i < this.length; i++) {
       if (i === this.state.activeOn) {
-        indicators.push(<li className="active" />)
+        indicators.push(<li key={`li-${i}`} className="active" />)
       } else {
-        indicators.push(<li />)
+        indicators.push(<li key={`li-${i}`} />)
       }
     }
 
