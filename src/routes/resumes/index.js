@@ -14,7 +14,7 @@ function App(props) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <h1 style={{ textAlign: 'center' }}>Members</h1>
-        <Table url={endpoint_url} data={[]} />
+        <Table url={endpoint_url} data={[]} classes={classes} />
       </main>
     </div>
   )

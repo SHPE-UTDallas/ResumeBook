@@ -38,14 +38,16 @@ const defaultTheme = createMuiTheme({
     },
   },
 })
-/* TODO: Dark theme
+
+/*
 const darkTheme = createMuiTheme({
-    palette: {
-      type: 'dark',
-      primary: cyan
-    },
-  });
-  */
+  palette: {
+    type: 'dark',
+    primary: blue,
+  },
+})
+*/
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -91,6 +93,10 @@ const useStyles = makeStyles((theme) => ({
     padding: '0',
     marginTop: '0px',
     marginBottom: '-10px',
+  },
+  searchBar: {
+    marginBottom: theme.spacing(2),
+    width: '25ch',
   },
 }))
 
