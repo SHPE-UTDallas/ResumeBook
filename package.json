@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^7.2.1",
     "http-proxy-middleware": "^1.0.4",
     "netlify-lambda": "^1.6.3",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-pdfobject": "^1.1.1",
@@ -52,16 +53,17 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.0",
     "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-flowtype": "^4.0.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^2.0.0",
     "gh-pages": "^2.2.0",
     "husky": "^4.2.5",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "styled-components": "^5.1.1"
   },
   "husky": {
     "hooks": {

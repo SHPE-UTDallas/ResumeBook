@@ -71,24 +71,27 @@ function ResponsiveDrawer(props) {
                   GPA
                 </h3>
               </Grid>
-              <Grid item xs={12}>
+              <Grid container>
                 <FormControlLabel
                   label="Minimum GPA:"
                   labelPlacement="start"
+                  style={{ marginRight: '0px', justifyContent: 'start' }}
                   control={
-                    <Input
-                      className={classes.title}
-                      value={props.gpa.min}
-                      type="number"
-                      onChange={(e) => handleGPAChange(e.target.value)}
-                      id="quantity"
-                      name="quantity"
-                      inputProps={{
-                        step: 0.1,
-                        min: 0,
-                        max: 4,
-                      }}
-                    />
+                    <Grid item xs={4}>
+                      <Input
+                        className={classes.title}
+                        value={props.gpa.min}
+                        type="number"
+                        onChange={(e) => handleGPAChange(e.target.value)}
+                        id="quantity"
+                        name="quantity"
+                        inputProps={{
+                          step: 0.1,
+                          min: 0,
+                          max: 4,
+                        }}
+                      />
+                    </Grid>
                   }
                 />
               </Grid>

@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './index.css'
-import { Provider } from 'react-redux'
 import store from './redux/store'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
@@ -30,14 +29,16 @@ const defaultTheme = createMuiTheme({
     },
   },
 })
-/* TODO: Dark theme
+
+/*
 const darkTheme = createMuiTheme({
-    palette: {
-      type: 'dark',
-      primary: cyan
-    },
-  });
-  */
+  palette: {
+    type: 'dark',
+    primary: blue,
+  },
+})
+*/
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -84,6 +85,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '0px',
     marginBottom: '-10px',
   },
+  searchBar: {
+    marginBottom: theme.spacing(2),
+    width: '25ch',
+  },
 }))
 
 const PrivateRoute = ({ render: Component, ...rest }) => (
@@ -117,53 +122,51 @@ const PrivateRoute2 = ({ render: Component, ...rest }) => (
 function App() {
   const classes = useStyles()
   return (
-    <Provider store={store}>
-      <MuiThemeProvider theme={defaultTheme}>
-        <Router>
-          <Route
-            exact
-            path="/"
-            render={(routeProps) => <Home {...routeProps} classes={classes} />}
-          />
-          <Route
-            exact
-            path="/demo"
-            render={(routeProps) => <Demo {...routeProps} classes={classes} />}
-          />
-          <PrivateRoute
-            exact
-            path="/resumes"
-            render={(routerProps) => <Resumes {...routerProps} classes={classes} />}
-          />
-          <PrivateRoute2
-            exact
-            path="/verify"
-            render={(routerProps) => <Verify {...routerProps} classes={classes} />}
-          />
-          <Route
-            exact
-            path="/login"
-            render={(routerProps) => <Login {...routerProps} classes={classes} />}
-          />
-          <Route
-            exact
-            path="/login/success"
-            render={(routerProps) => <LoginSuccess {...routerProps} classes={classes} />}
-          />
-          <Route
-            exact
-            path="/logout"
-            render={(routerProps) => <Logout {...routerProps} classes={classes} />}
-          />
-          <Route
-            exact
-            path="/upload"
-            render={(routerProps) => <Upload {...routerProps} classes={classes} />}
-          />
-          {/* <Route component={NoMatch} /> */}
-        </Router>
-      </MuiThemeProvider>
-    </Provider>
+    <MuiThemeProvider theme={defaultTheme}>
+      <Router>
+        <Route
+          exact
+          path="/"
+          render={(routeProps) => <Home {...routeProps} classes={classes} />}
+        />
+        <Route
+          exact
+          path="/demo"
+          render={(routeProps) => <Demo {...routeProps} classes={classes} />}
+        />
+        <PrivateRoute
+          exact
+          path="/resumes"
+          render={(routerProps) => <Resumes {...routerProps} classes={classes} />}
+        />
+        <PrivateRoute2
+          exact
+          path="/verify"
+          render={(routerProps) => <Verify {...routerProps} classes={classes} />}
+        />
+        <Route
+          exact
+          path="/login"
+          render={(routerProps) => <Login {...routerProps} classes={classes} />}
+        />
+        <Route
+          exact
+          path="/login/success"
+          render={(routerProps) => <LoginSuccess {...routerProps} classes={classes} />}
+        />
+        <Route
+          exact
+          path="/logout"
+          render={(routerProps) => <Logout {...routerProps} classes={classes} />}
+        />
+        <PrivateRoute2
+          exact
+          path="/upload"
+          render={(routerProps) => <Upload {...routerProps} classes={classes} />}
+        />
+        {/* <Route component={NoMatch} /> */}
+      </Router>
+    </MuiThemeProvider>
   )
 }
 

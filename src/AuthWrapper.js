@@ -1,4 +1,6 @@
-import isAuthenticated from './utils/auth/isAuthenticated'
+import { loginSuccess } from './redux/actions'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import App from './App'
 import React from 'react'
 // Parent
@@ -10,12 +12,13 @@ class AuthWrapper extends React.Component {
     }
   }
 
-  componentDidMount() {
-    isAuthenticated().then(() => {
-      this.setState({
-        authVerified: true,
-      })
-    })
+  async componentDidMount() {
+    if (JSON.parse(localStorage.getItem('isLoggedIn')) === true) {
+      const verificationStatus =
+        JSON.parse(localStorage.getItem('verified')) === true ? true : false
+      await this.props.loginSuccess(verificationStatus)
+    }
+    this.setState({ authVerified: true })
   }
 
   render() {
@@ -27,4 +30,8 @@ class AuthWrapper extends React.Component {
   }
 }
 
-export default AuthWrapper
+AuthWrapper.propTypes = {
+  loginSuccess: PropTypes.func.isRequired,
+}
+
+export default connect(null, { loginSuccess })(AuthWrapper)

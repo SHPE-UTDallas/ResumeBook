@@ -5,6 +5,8 @@ import {
   INCREASE_GPA,
   DECREASE_GPA,
   SORT_TABLE,
+  FILTER_NAME_ADD,
+  FILTER_NAME_DEL,
   TOGGLE_DRAWER,
 } from '../actionTypes'
 
@@ -14,11 +16,15 @@ Fix mapping of 'Graduate Student' => grad and make the mappings for majors more 
 const initialState = {
   data: [],
   tableData: [],
+  toggleTheme: false,
   mobileOpen: false,
   sort: {
     category: 'standing',
     direction: 'asc',
   },
+
+  search: '',
+
   passingTags: {
     gpa: {
       min: 0,
@@ -130,6 +136,11 @@ const compareValues = (category, order = 'asc') => {
   }
 }
 
+const filterByNames = (searchQuery, entry) => {
+  const name = entry.name.toLowerCase()
+  return name.includes(searchQuery)
+}
+
 export default function (state = initialState, action) {
   switch (action.type) {
     case STORE_DATA_FROM_API: {
@@ -208,6 +219,27 @@ export default function (state = initialState, action) {
         tableData: [...state.tableData].sort(compareValues(category, direction)),
       }
     }
+
+    case FILTER_NAME_ADD: {
+      let { search } = action.payload
+      search = search.toLowerCase()
+      return {
+        ...state,
+        search: search,
+        tableData: [...state.tableData].filter((entry) => filterByNames(search, entry)),
+      }
+    }
+
+    case FILTER_NAME_DEL: {
+      let { search } = action.payload
+      search = search.toLowerCase()
+      return {
+        ...state,
+        search: search,
+        tableData: [...state.data].filter((entry) => filterByNames(search, entry)),
+      }
+    }
+
     case TOGGLE_DRAWER: {
       return {
         ...state,
