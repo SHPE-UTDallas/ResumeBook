@@ -43,7 +43,7 @@ export default class extends React.Component<
       if (i === this.length - 1) {
         this.css += `@keyframes nextSlide-${0} {`
         this.css += `0% { transform: translate(-${imgW * i}%, 0)}`
-        this.css += `100% { transform: translate(-${imgW}%, 0)}}\n`
+        this.css += `100% { transform: translate(0, 0)}}\n`
       } else {
         this.css += `@keyframes nextSlide-${i+1} {`
         this.css += `0% { transform: translate(-${imgW * (i)}%, 0)}`
