@@ -9,13 +9,22 @@ function App(props: any) {
 
   const carousel = []
   for (let i = 1; i <= 4; i++) {
-    carousel.push(<img src={`/carousel/${i}.jpg`} alt="SHPE organization images" />)
+    carousel.push(
+      <img key={i} src={`/carousel/${i}.jpg`} alt="SHPE organization images" />
+    )
   }
 
   return (
     <div className={classes.content + ' landing-content'}>
       <div className={classes.toolbar} />
-      <Carousel width="100%" maxWidth="40em" height="30em" className="landing-carousel">
+      <Carousel
+        auto
+        width="100%"
+        aspect={[4, 3]}
+        maxWidth="40em"
+        height="30em"
+        className="landing-carousel"
+      >
         {carousel}
       </Carousel>
       <br />
