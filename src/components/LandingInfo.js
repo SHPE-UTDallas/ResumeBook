@@ -14,9 +14,9 @@ export default class LandingInfo extends React.Component {
             <p>
               ResumeBook was created by the members of SHPE UTD to bring sponsors a simple
               and unique way to find the resumes they need. It gives the ability to search
-              by GPA, major, and even year. To see experience a preview of what this might
-              look like, go ahead and try the demo! If you are a sponsor of SHPE UTD, go
-              ahead and log in through the sponsor button.
+              by GPA, major, and even year. To see a preview of what this might look like,
+              go ahead and try the demo! If you are a sponsor of SHPE UTD, go ahead and
+              log in through the sponsor button.
             </p>
           </Grid>
           <Grid item sm={1} xs={6 - xsButton / 2} />

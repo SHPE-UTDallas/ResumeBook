@@ -35,7 +35,7 @@ export default class extends React.Component<
     this.wrapper = React.createRef()
 
     this.length = React.Children.count(props.children)
-    this.outerLength = React.Children.count(props.children) + 2
+    this.outerLength = this.length + 2
     this.prevSlide = this.prevSlide.bind(this)
     this.nextSlide = this.nextSlide.bind(this)
     this.nextPress = this.nextPress.bind(this)
@@ -48,28 +48,27 @@ export default class extends React.Component<
 
     this.css = ''
     const imgW = 100 / this.outerLength
-    const bias = imgW
 
-    this.css += `@keyframes init { 0% {transform: translate(-${bias}%, 0)} 100% {transform: translate(-${bias}%, 0)}}\n`
+    this.css += `@keyframes init { 0% {transform: translate(-${imgW}%, 0)} 100% {transform: translate(-${imgW}%, 0)}}\n`
     for (let i = 0; i < this.length; i++) {
       if (i === 0) {
-        this.css += `@keyframes nextSlide-${i} {`
+        this.css += `@keyframes nextSlide-0 {`
         this.css += `0% { transform: translate(0, 0)}`
-        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
+        this.css += `100% { transform: translate(-${imgW * (i + 1)}%, 0)}}\n`
       } else {
         this.css += `@keyframes nextSlide-${i} {`
-        this.css += `0% { transform: translate(-${imgW * (i - 1) + bias}%, 0)}`
-        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
+        this.css += `0% { transform: translate(-${imgW * i}%, 0)}`
+        this.css += `100% { transform: translate(-${imgW * (i + 1)}%, 0)}}\n`
       }
 
       if (i === this.length - 1) {
         this.css += `@keyframes prevSlide-${i} {`
         this.css += `0% { transform: translate(-${imgW * (this.outerLength - 1)}%, 0)}`
-        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
+        this.css += `100% { transform: translate(-${imgW * (i + 1)}%, 0)}}\n`
       } else {
         this.css += `@keyframes prevSlide-${i} {`
-        this.css += `0% { transform: translate(-${imgW * (i + 1) + bias}%, 0)}`
-        this.css += `100% { transform: translate(-${imgW * i + bias}%, 0)}}\n`
+        this.css += `0% { transform: translate(-${imgW * (i + 2)}%, 0)}`
+        this.css += `100% { transform: translate(-${imgW * (i + 1)}%, 0)}}\n`
       }
     }
   }
@@ -105,9 +104,9 @@ export default class extends React.Component<
     const indicators: JSX.Element[] = []
     for (let i = 0; i < this.length; i++) {
       if (i === this.state.activeOn) {
-        indicators.push(<li key={`li-${i}`} className="active" />)
+        indicators.push(<li key={`c-li-${i}`} className="active" />)
       } else {
-        indicators.push(<li key={`li-${i}`} />)
+        indicators.push(<li key={`c-li-${i}`} />)
       }
     }
 

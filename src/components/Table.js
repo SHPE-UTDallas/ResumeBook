@@ -8,10 +8,11 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 import { connect } from 'react-redux'
-import { storeDataFromAPI, sortTable } from '../redux/actions'
+import { storeDataFromAPI, sortTable, filterNameDel } from '../redux/actions'
 import PropTypes from 'prop-types'
 import Row from './Row'
 import LoadingIndicator from './LoadingIndicator.js'
+import SearchBar from './SearchBar'
 
 class SimpleTable extends React.Component {
   constructor(props) {
@@ -58,6 +59,7 @@ class SimpleTable extends React.Component {
     //TODO: Should we reset filters too??
     this.props.storeDataFromAPI([])
     this.props.sortTable('standing', 'asc')
+    this.props.filterNameDel('')
   }
 
   handleSort = (category) => {
@@ -83,6 +85,7 @@ class SimpleTable extends React.Component {
   render() {
     return (
       <>
+        <SearchBar classes={this.props.classes} />
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
@@ -134,6 +137,8 @@ SimpleTable.propTypes = {
   orderBy: PropTypes.string.isRequired,
   order: PropTypes.string.isRequired,
   sortTable: PropTypes.func.isRequired,
+  filterNameDel: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => {
@@ -144,5 +149,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   storeDataFromAPI,
   sortTable,
+  filterNameDel,
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SimpleTable)

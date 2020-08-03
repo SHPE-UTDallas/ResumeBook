@@ -47,7 +47,7 @@ function NavBar(props) {
             />
           }
           <Typography className={classes.title} variant="h6">
-            SHPE
+            ResumeBook
           </Typography>
           <Typography component={NavLink} to="/" className="nav-link">
             Home
