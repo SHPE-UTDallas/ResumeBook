@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import NavBar from '../../components/NavBar'
 import { ENDPOINT } from '../../utils/config'
-import Table from '../../components/Table'
+import ApprovalTable from '../../components/ApprovalTable'
 import FilterPane from '../../components/FilterPane'
 
 function Officer(props) {
@@ -16,7 +16,7 @@ function Officer(props) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <h1 style={{ textAlign: 'center' }}>Members</h1>
-        <Table url={endpoint_url} classes={classes} data={[]} />
+        <ApprovalTable url={endpoint_url} classes={classes} data={[]} />
       </main>
     </div>
   )

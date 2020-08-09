@@ -41,7 +41,7 @@ app.post(
           console.log(err)
           res
             .status(500)
-            .send('Unable to upload your resume to our CDN. Please try again')
+            .send({ error: 'Unable to upload your resume to our CDN. Please try again' })
         }
         console.log(`Cloudinary Successfully uploaded a resume for ${req.body.name}`)
         return result.secure_url
@@ -79,7 +79,9 @@ app.post(
               console.log(err)
               res
                 .status(500)
-                .send('Unable to add your resume to our database. Please try again')
+                .send({
+                  error: 'Unable to add your resume to our database. Please try again',
+                })
             })
         } else if (snapshot.size >= 1) {
           /*If there already exists an entry with that same name either:
@@ -122,9 +124,10 @@ app.post(
                   console.log(err)
                   res
                     .status(500)
-                    .send(
-                      'Unable to update your resume in our database. Please try again'
-                    )
+                    .send({
+                      error:
+                        'Unable to update your resume in our database. Please try again',
+                    })
                 })
             }
           }
@@ -150,12 +153,14 @@ app.post(
                 console.error(err)
                 res
                   .status(500)
-                  .send('Unable to add your resume to our database. Please try again')
+                  .send({
+                    error: 'Unable to add your resume to our database. Please try again',
+                  })
               })
           }
         }
       })
-    res.send('Successfully Added')
+    res.send({ message: 'Successfully Added' })
   }
 )
 
@@ -181,29 +186,37 @@ app.get(
         console.log(err)
         res
           .status(500)
-          .send('Could not retrieve resumes from our database. Please try again')
+          .send({
+            message: 'Could not retrieve resumes from our database. Please try again',
+          })
       })
     res.json(resumes)
   }
 )
 
+//TODO: When approving a resume employ the same logic from /api/file where we check if a resume entry in prod already exists with the same email or same name and major, etc.
+
 //Move a resume from the resumes_not_approved collection to the 'production' resumes collection
 app.post(
-  `${ENDPOINT}/api/notApproved`,
+  `${ENDPOINT}/api/resumes/approve`,
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     if (req.user.officer === false) res.send(401)
     let resumesRef = db.collection('resumes_not_approved')
     await resumesRef
-      .doc(req.body.documentId)
+      .doc(`${req.body.documentId}`)
       .get()
       .then(async (doc) => {
         if (doc.exists) {
           db.collection('resumes').add(doc.data())
           await resumesRef.doc(req.body.documentId).delete()
-          res.send(`Successfully approved the resume with ID: ${req.body.documentId}`)
+          res.send({
+            message: `Successfully approved the resume with ID: ${req.body.documentId}`,
+          })
         } else {
-          res.status(422).send(`No document with the id ${req.body.documentId} exists`)
+          res
+            .status(422)
+            .send({ message: `No document with the id ${req.body.documentId} exists` })
         }
       })
       .catch((err) => {
@@ -211,7 +224,45 @@ app.post(
         console.log(err)
         res
           .status(500)
-          .send('Could not retrieve resumes from our database. Please try again later')
+          .send({
+            message:
+              'Could not retrieve resumes from our database. Please try again later',
+          })
+      })
+  }
+)
+
+//Move a resume from the the 'production' resumes collection to the resumes_not_approved collection
+app.post(
+  `${ENDPOINT}/api/resumes/unapprove`,
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (req.user.officer === false) res.send(401)
+    let resumesRef = db.collection('resumes')
+    await resumesRef
+      .doc(`${req.body.documentId}`)
+      .get()
+      .then(async (doc) => {
+        if (doc.exists) {
+          db.collection('resumes_not_approved').add(doc.data())
+          await resumesRef.doc(req.body.documentId).delete()
+          res.send({
+            message: `Successfully approved the resume with ID: ${req.body.documentId}`,
+          })
+        } else {
+          res
+            .status(422)
+            .send({ error: `No document with the id ${req.body.documentId} exists` })
+        }
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve resumes from the database')
+        console.log(err)
+        res
+          .status(500)
+          .send({
+            error: 'Could not retrieve resumes from our database. Please try again later',
+          })
       })
   }
 )
@@ -238,7 +289,9 @@ app.get(
         console.log(err)
         res
           .status(500)
-          .send('Could not retrieve resumes from our database. Please try again')
+          .send({
+            error: 'Could not retrieve resumes from our database. Please try again',
+          })
       })
     res.json(resumes)
   }

@@ -28,8 +28,8 @@ class OfficerForm extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ code: this.state.value }),
-    }).then((response) => response.text())
-    if (response === 'Successfully Verified as an Officer') {
+    }).then((response) => response.json())
+    if (response.message === 'Successfully Verified as an Officer') {
       localStorage.setItem('verified', true)
       localStorage.setItem('officer', true)
       this.props.loginSuccess(true, true)

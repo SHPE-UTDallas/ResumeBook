@@ -25,7 +25,7 @@ const handleCallback = (req, res) => {
 }
 
 app.post(`${ENDPOINT}/auth/logout`, (req, res) => {
-  res.clearCookie('jwt').send('Successfully logged out')
+  res.clearCookie('jwt').send({ message: 'Successfully logged out' })
 })
 
 app.post(
@@ -89,7 +89,7 @@ app.post(
       res
         .clearCookie('jwt')
         .cookie('jwt', newJwt, { httpOnly: true, COOKIE_SECURE })
-        .send('Successfully Verified')
+        .send({ message: 'Successfully Verified' })
     } else {
       res.status(422).send('Invalid Verification Code entered, please try again')
     }
@@ -158,9 +158,9 @@ app.post(
       res
         .clearCookie('jwt')
         .cookie('jwt', newJwt, { httpOnly: true, COOKIE_SECURE })
-        .send('Successfully Verified as an Officer')
+        .send({ message: 'Successfully Verified as an Officer' })
     } else {
-      res.status(422).send('Invalid Officer Code entered, please try again')
+      res.status(422).send({ message: 'Invalid Officer Code entered, please try again' })
     }
   }
 )

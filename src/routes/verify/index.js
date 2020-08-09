@@ -28,8 +28,8 @@ class VerifyForm extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ code: this.state.value }),
-    }).then((response) => response.text())
-    if (response === 'Successfully Verified') {
+    }).then((response) => response.json())
+    if (response.message === 'Successfully Verified') {
       localStorage.setItem('verified', true)
       this.props.loginSuccess(true)
       this.props.history.push('/resumes')
