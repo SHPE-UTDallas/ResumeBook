@@ -19,7 +19,7 @@ export default class LandingInfo extends React.Component {
               log in through the sponsor button.
             </p>
           </Grid>
-          <Grid item sm={1} xs={6 - xsButton / 2} />
+          <Grid item xs={2} sm={1}  />
           <Grid
             item
             container
