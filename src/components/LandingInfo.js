@@ -4,7 +4,6 @@ import { Link as RouterLink } from 'react-router-dom'
 
 export default class LandingInfo extends React.Component {
   render() {
-    const xsButton = 8
     return (
       <div id="info">
         <h1 id="info-title">What is ResumeBook?</h1>
