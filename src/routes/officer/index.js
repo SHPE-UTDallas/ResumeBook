@@ -8,7 +8,7 @@ import { loginSuccess } from '../../redux/actions'
 import { withRouter } from 'react-router-dom'
 import { ENDPOINT } from '../../utils/config'
 
-class VerifyForm extends React.Component {
+class OfficerForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = { value: '' }
@@ -21,7 +21,7 @@ class VerifyForm extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault()
-    const endpoint_url = `${ENDPOINT}/auth/verify`
+    const endpoint_url = `${ENDPOINT}/auth/officer`
     const response = await fetch(`${endpoint_url}`, {
       method: 'POST',
       headers: {
@@ -29,10 +29,11 @@ class VerifyForm extends React.Component {
       },
       body: JSON.stringify({ code: this.state.value }),
     }).then((response) => response.text())
-    if (response === 'Successfully Verified') {
+    if (response === 'Successfully Verified as an Officer') {
       localStorage.setItem('verified', true)
-      this.props.loginSuccess(true)
-      this.props.history.push('/resumes')
+      localStorage.setItem('officer', true)
+      this.props.loginSuccess(true, true)
+      this.props.history.push('/approv')
     } else {
       //TODO: Add error messages
     }
@@ -46,7 +47,7 @@ class VerifyForm extends React.Component {
         <div className={classes.content}>
           <div className={classes.toolbar} />
           <Grid container alignItems="center" direction="column" justify="center">
-            <h3>Please verify your account by inputting the code provided to you</h3>
+            <h3>Please verify your accssount by inputting the code provided to you</h3>
             <form onSubmit={this.handleSubmit}>
               <FormControlLabel
                 className={classes.formEntry}
@@ -61,7 +62,7 @@ class VerifyForm extends React.Component {
                 endIcon={<SendIcon />}
                 type="submit"
               >
-                Submit
+                Approve
               </Button>
             </form>
           </Grid>
@@ -71,10 +72,10 @@ class VerifyForm extends React.Component {
   }
 }
 
-VerifyForm.propTypes = {
+OfficerForm.propTypes = {
   classes: PropTypes.object.isRequired,
   loginSuccess: PropTypes.func.isRequired,
   history: PropTypes.any.isRequired,
 }
 
-export default connect(null, { loginSuccess })(withRouter(VerifyForm))
+export default connect(null, { loginSuccess })(withRouter(OfficerForm))

@@ -16,7 +16,9 @@ class AuthWrapper extends React.Component {
     if (JSON.parse(localStorage.getItem('isLoggedIn')) === true) {
       const verificationStatus =
         JSON.parse(localStorage.getItem('verified')) === true ? true : false
-      await this.props.loginSuccess(verificationStatus)
+      const officerStatus =
+        JSON.parse(localStorage.getItem('officer')) === true ? true : false
+      await this.props.loginSuccess(verificationStatus, officerStatus)
     }
     this.setState({ authVerified: true })
   }

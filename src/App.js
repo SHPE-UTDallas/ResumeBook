@@ -12,6 +12,8 @@ import Login from './routes/login/index'
 import LoginSuccess from './routes/login/success'
 import Logout from './routes/logout/index'
 import Upload from './routes/upload/index'
+import Officer from './routes/officer/index'
+import OfficerVerification from './routes/officer/verify'
 //import NoMatch from './routes/404'; TODO: Implement 404 page
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { green } from '@material-ui/core/colors'
@@ -91,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const PrivateRoute = ({ render: Component, ...rest }) => (
+const VerifiedRoute = ({ render: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
@@ -106,12 +108,27 @@ const PrivateRoute = ({ render: Component, ...rest }) => (
   />
 )
 
-const PrivateRoute2 = ({ render: Component, ...rest }) => (
+const LoggedInRoute = ({ render: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
       store.getState().auth.isAuthenticated === true ? (
         <Component {...props} />
+      ) : (
+        <Redirect to="/login" />
+      )
+    }
+  />
+)
+
+const OfficerRoute = ({ render: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={(props) =>
+      store.getState().auth.isVerified === true ? (
+        <Component {...props} />
+      ) : store.getState().auth.isAuthenticated === true ? (
+        <Redirect to="/officer/verify" />
       ) : (
         <Redirect to="/login" />
       )
@@ -134,15 +151,27 @@ function App() {
           path="/demo"
           render={(routeProps) => <Demo {...routeProps} classes={classes} />}
         />
-        <PrivateRoute
+        <VerifiedRoute
           exact
           path="/resumes"
           render={(routerProps) => <Resumes {...routerProps} classes={classes} />}
         />
-        <PrivateRoute2
+        <LoggedInRoute
           exact
           path="/verify"
           render={(routerProps) => <Verify {...routerProps} classes={classes} />}
+        />
+        <OfficerRoute
+          exact
+          path="/officer"
+          render={(routerProps) => <Officer {...routerProps} classes={classes} />}
+        />
+        <LoggedInRoute
+          exact
+          path="/officer/verify"
+          render={(routerProps) => (
+            <OfficerVerification {...routerProps} classes={classes} />
+          )}
         />
         <Route
           exact
@@ -159,7 +188,7 @@ function App() {
           path="/logout"
           render={(routerProps) => <Logout {...routerProps} classes={classes} />}
         />
-        <PrivateRoute2
+        <LoggedInRoute
           exact
           path="/upload"
           render={(routerProps) => <Upload {...routerProps} classes={classes} />}
@@ -170,11 +199,15 @@ function App() {
   )
 }
 
-PrivateRoute.propTypes = {
+VerifiedRoute.propTypes = {
   render: PropTypes.any.isRequired,
 }
 
-PrivateRoute2.propTypes = {
+LoggedInRoute.propTypes = {
+  render: PropTypes.any.isRequired,
+}
+
+OfficerRoute.propTypes = {
   render: PropTypes.any.isRequired,
 }
 
