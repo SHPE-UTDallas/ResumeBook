@@ -24,7 +24,7 @@ export default class LandingInfo extends React.Component {
             item
             container
             direction="column"
-            sm={smButton}
+            xs={8}
            sm={3}
             id="demo-sponsor"
           >
