@@ -77,11 +77,9 @@ app.post(
             .catch((err) => {
               console.error(`Unable add a resume to the collection for ${req.body.name}`)
               console.log(err)
-              res
-                .status(500)
-                .send({
-                  error: 'Unable to add your resume to our database. Please try again',
-                })
+              res.status(500).send({
+                error: 'Unable to add your resume to our database. Please try again',
+              })
             })
         } else if (snapshot.size >= 1) {
           /*If there already exists an entry with that same name either:
@@ -122,12 +120,10 @@ app.post(
                     `Unable to update resume entry for ${req.body.name} with collection ID: ${doc.id}`
                   )
                   console.log(err)
-                  res
-                    .status(500)
-                    .send({
-                      error:
-                        'Unable to update your resume in our database. Please try again',
-                    })
+                  res.status(500).send({
+                    error:
+                      'Unable to update your resume in our database. Please try again',
+                  })
                 })
             }
           }
@@ -151,11 +147,9 @@ app.post(
               .catch((err) => {
                 console.log(`Unable to add new resume entry for ${req.body.name}`)
                 console.error(err)
-                res
-                  .status(500)
-                  .send({
-                    error: 'Unable to add your resume to our database. Please try again',
-                  })
+                res.status(500).send({
+                  error: 'Unable to add your resume to our database. Please try again',
+                })
               })
           }
         }
@@ -184,11 +178,9 @@ app.get(
       .catch((err) => {
         console.error('Unable to retrieve resumes from the database')
         console.log(err)
-        res
-          .status(500)
-          .send({
-            message: 'Could not retrieve resumes from our database. Please try again',
-          })
+        res.status(500).send({
+          message: 'Could not retrieve resumes from our database. Please try again',
+        })
       })
     res.json(resumes)
   }
@@ -208,10 +200,20 @@ app.post(
       .get()
       .then(async (doc) => {
         if (doc.exists) {
-          db.collection('resumes').add(doc.data())
+          let newDocId
+          await db
+            .collection('resumes')
+            .add(doc.data())
+            .then((doc) => {
+              newDocId = doc.id
+              doc.update({
+                _id: doc.id,
+              })
+            })
           await resumesRef.doc(req.body.documentId).delete()
           res.send({
             message: `Successfully approved the resume with ID: ${req.body.documentId}`,
+            newDocumentId: newDocId,
           })
         } else {
           res
@@ -222,12 +224,9 @@ app.post(
       .catch((err) => {
         console.error('Unable to retrieve resumes from the database')
         console.log(err)
-        res
-          .status(500)
-          .send({
-            message:
-              'Could not retrieve resumes from our database. Please try again later',
-          })
+        res.status(500).send({
+          message: 'Could not retrieve resumes from our database. Please try again later',
+        })
       })
   }
 )
@@ -244,10 +243,20 @@ app.post(
       .get()
       .then(async (doc) => {
         if (doc.exists) {
-          db.collection('resumes_not_approved').add(doc.data())
+          let newDocId
+          await db
+            .collection('resumes_not_approved')
+            .add(doc.data())
+            .then((doc) => {
+              newDocId = doc.id
+              doc.update({
+                _id: doc.id,
+              })
+            })
           await resumesRef.doc(req.body.documentId).delete()
           res.send({
             message: `Successfully approved the resume with ID: ${req.body.documentId}`,
+            newDocumentId: newDocId,
           })
         } else {
           res
@@ -258,11 +267,9 @@ app.post(
       .catch((err) => {
         console.error('Unable to retrieve resumes from the database')
         console.log(err)
-        res
-          .status(500)
-          .send({
-            error: 'Could not retrieve resumes from our database. Please try again later',
-          })
+        res.status(500).send({
+          error: 'Could not retrieve resumes from our database. Please try again later',
+        })
       })
   }
 )
@@ -287,11 +294,9 @@ app.get(
       .catch((err) => {
         console.error('Unable to retrieve resumes from the database')
         console.log(err)
-        res
-          .status(500)
-          .send({
-            error: 'Could not retrieve resumes from our database. Please try again',
-          })
+        res.status(500).send({
+          error: 'Could not retrieve resumes from our database. Please try again',
+        })
       })
     res.json(resumes)
   }

@@ -5,20 +5,37 @@ import { ENDPOINT } from '../utils/config'
 
 function ApprovalButton(props) {
   const [approved, setApproved] = useState(false)
+  const [documentId, setDocumentId] = useState(props.documentId)
 
   const approveResume = () => {
     fetch(`${ENDPOINT}/api/resumes/approve`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ documentId: props.documentId }),
+      body: JSON.stringify({ documentId: documentId }),
     }).then((res) => {
-      if (res.status === 200) setApproved(!approved)
-      console.log(res)
-      console.log({ res })
+      if (res.status === 200) {
+        setApproved(!approved)
+        res.json().then((res) => setDocumentId(res.newDocumentId))
+      } else {
+        //TODO: ERROR HANDLING
+      }
     })
   }
 
-  const unapproveResume = () => {}
+  const unapproveResume = () => {
+    fetch(`${ENDPOINT}/api/resumes/unapprove`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ documentId: documentId }),
+    }).then((res) => {
+      if (res.status === 200) {
+        setApproved(!approved)
+        res.json().then((res) => setDocumentId(res.newDocumentId))
+      } else {
+        //TODO: ERROR HANDLING
+      }
+    })
+  }
 
   const button = approved ? (
     <Button variant="outlined" color="secondary" onClick={() => unapproveResume()}>
