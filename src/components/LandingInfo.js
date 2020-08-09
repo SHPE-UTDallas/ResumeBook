@@ -10,7 +10,7 @@ export default class LandingInfo extends React.Component {
       <div id="info">
         <h1 id="info-title">What is ResumeBook?</h1>
         <Grid container id="info-content">
-          <Grid item sm={12 - 1 - smButton} xs={12}>
+          <Grid item xs={12} sm={8} >
             <p>
               ResumeBook was created by the members of SHPE UTD to bring sponsors a simple
               and unique way to find the resumes they need. It gives the ability to search
