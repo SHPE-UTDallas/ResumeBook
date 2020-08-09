@@ -11,6 +11,7 @@ require('./utils/auth')
 const app = express()
 app.use(passport.initialize())
 app.use(cookieParser())
+app.use(express.json())
 const { ENDPOINT, CLOUDINARY_TESTDATAPATH } = require('./utils/config')
 
 const { db } = require('./utils/firebaseConfig')
@@ -48,7 +49,7 @@ app.post(
     )
 
     //Add an entry to the resumes collection
-    let resumesRef = db.collection('resumes')
+    let resumesRef = db.collection('resumes_not_approved')
     console.log(
       `Performing a query to figure out if a resume exists for ${req.body.name}`
     )
@@ -159,6 +160,63 @@ app.post(
 )
 
 app.get(
+  `${ENDPOINT}/api/notApproved`,
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (req.user.officer === false) res.send(401)
+    let resumesRef = db.collection('resumes_not_approved')
+    let resumes = []
+    await resumesRef
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          resumes.push(doc.data())
+        })
+      })
+      .then(() => {
+        console.log(`Successfully retrieved resumes for officer ${req.user.email}`)
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve resumes from the database')
+        console.log(err)
+        res
+          .status(500)
+          .send('Could not retrieve resumes from our database. Please try again')
+      })
+    res.json(resumes)
+  }
+)
+
+//Move a resume from the resumes_not_approved collection to the 'production' resumes collection
+app.post(
+  `${ENDPOINT}/api/notApproved`,
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (req.user.officer === false) res.send(401)
+    let resumesRef = db.collection('resumes_not_approved')
+    await resumesRef
+      .doc(req.body.documentId)
+      .get()
+      .then(async (doc) => {
+        if (doc.exists) {
+          db.collection('resumes').add(doc.data())
+          await resumesRef.doc(req.body.documentId).delete()
+          res.send(`Successfully approved the resume with ID: ${req.body.documentId}`)
+        } else {
+          res.status(422).send(`No document with the id ${req.body.documentId} exists`)
+        }
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve resumes from the database')
+        console.log(err)
+        res
+          .status(500)
+          .send('Could not retrieve resumes from our database. Please try again later')
+      })
+  }
+)
+
+app.get(
   `${ENDPOINT}/api/resumes`,
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
@@ -173,7 +231,7 @@ app.get(
         })
       })
       .then(() => {
-        console.log(`Successfully retrived resumes for user ${req.body.email}`)
+        console.log(`Successfully retrieved resumes for user ${req.user.email}`)
       })
       .catch((err) => {
         console.error('Unable to retrieve resumes from the database')
