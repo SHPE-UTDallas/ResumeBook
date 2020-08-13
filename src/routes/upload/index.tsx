@@ -1,41 +1,24 @@
 import React, { ReactElement } from 'react'
-import { Grid, Input } from '@material-ui/core'
+import { Grid, Input, Button } from '@material-ui/core'
 import NavBar from '../../components/NavBar'
 import { ENDPOINT } from '../../utils/config'
 import './main.sass'
 import FileInput from '../../components/FileInput'
 
-const LabeledInputGI = (props: {
+const LabelInput = (props: {
   name: string
   label: string
   type?: string
   children?: ReactElement
   className?: string
 }) => {
-  const wrapper = React.createRef()
   return (
-    <div className="dg-form-input">
-      <label
-        htmlFor={props.name}
-        className="MuiFormControlLabel-label MuiTypography-body1 MuiFormControlLabel-root"
-      >
-        {`${props.label}: `}
-      </label>
-      {props.children ?? (
-        <Input ref={wrapper} type={props.type ?? 'text'} name={props.name} />
-      )}
-    </div>
+    <label className="dg-form-input MuiFormControlLabel-label MuiTypography-body1 MuiFormControlLabel-root">
+      {`${props.label}: `}
+      {props.children ?? <Input type={props.type ?? 'text'} name={props.name} />}
+    </label>
   )
 }
-
-/* <FormControlLabel
-  control={
-    props.children ?? <Input type={props.type ?? 'text'} name={props.name ?? ''} />
-  }
-  label={`${props.label}: `}
-  labelPlacement="start"
-  className={props.className ?? ''}
-/> */
 
 class App extends React.Component<{ classes: any }> {
   toBase64 = (file: any): any =>
@@ -74,11 +57,15 @@ class App extends React.Component<{ classes: any }> {
         <div className={classes.content}>
           <div className={classes.toolbar} />
           <Grid container alignItems="center" direction="column" justify="center">
-            <form onSubmit={this.handleSubmit} encType="multipart/form-data">
-              <LabeledInputGI name="name" label="Name" />
-              <LabeledInputGI name="email" label="Email" />
-              <LabeledInputGI name="linkedin" label="LinkedIn" />
-              <LabeledInputGI label="GPA" name="gpa">
+            <form
+              className="dg-form"
+              onSubmit={this.handleSubmit}
+              encType="multipart/form-data"
+            >
+              <LabelInput name="name" label="Name" />
+              <LabelInput name="email" label="Email" />
+              <LabelInput name="linkedin" label="LinkedIn" />
+              <LabelInput label="GPA" name="gpa">
                 <Input
                   inputProps={{
                     step: 0.1,
@@ -86,16 +73,16 @@ class App extends React.Component<{ classes: any }> {
                   type="number"
                   name="gpa"
                 />
-              </LabeledInputGI>
-              <LabeledInputGI name="major" label="Major" />
-              <LabeledInputGI name="standing" label="Standing" />
+              </LabelInput>
+              <LabelInput name="major" label="Major" />
+              <LabelInput name="standing" label="Standing" />
               <input type="file" hidden accept="application/pdf" name="pdf" />
-              <LabeledInputGI label="Resume" name="pdf">
-                <FileInput />
-              </LabeledInputGI>
-              <Grid item>
-                <Input type="submit" />
-              </Grid>
+              <LabelInput label="Resume" name="pdf">
+                <FileInput name="pdf" accept="application/pdf" />
+              </LabelInput>
+              <Button variant="contained" color="primary" type="submit">
+                submit
+              </Button>
             </form>
           </Grid>
         </div>

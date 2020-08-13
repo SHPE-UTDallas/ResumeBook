@@ -1,7 +1,8 @@
 import React from 'react'
+import { Button } from '@material-ui/core'
 import './styles/FileInput.sass'
 
-export default class FileInput extends React.Component {
+export default class FileInput extends React.Component<{ name: string; accept: string }> {
   wrapper: React.Ref<HTMLInputElement>
   state = {
     file: '',
@@ -34,12 +35,13 @@ export default class FileInput extends React.Component {
           type="file"
           onChange={this.changeFile}
           ref={this.wrapper}
-          accept="application/pdf"
+          accept={this.props.accept}
+          name={this.props.name}
           hidden
         />
-        <div className="dg-button" onClick={this.selectFile}>
+        <Button variant="contained" onClick={this.selectFile} color="primary">
           Select File
-        </div>
+        </Button>
         {this.state.file === '' ? null : <span>{this.state.file}</span>}
       </div>
     )
