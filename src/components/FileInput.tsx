@@ -2,7 +2,10 @@ import React from 'react'
 import { Button } from '@material-ui/core'
 import './styles/FileInput.sass'
 
-export default class FileInput extends React.Component<{ name: string; accept: string }> {
+export default class FileInput extends React.Component<{
+  name: string
+  accept: string
+}> {
   wrapper: React.Ref<HTMLInputElement>
   state = {
     file: '',
