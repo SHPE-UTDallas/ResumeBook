@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Grid, Input, Button } from '@material-ui/core'
+import { Grid, Input, Button, Select } from '@material-ui/core'
 import NavBar from '../../components/NavBar'
 import { ENDPOINT } from '../../utils/config'
 import FileInput from '../../components/FileInput'
@@ -23,6 +23,16 @@ const LabelInput = (props: {
 class App extends React.Component<{ classes: any }> {
   state = {
     error: '',
+    majorOther: false,
+  }
+
+  majorWrapper: React.Ref<any>
+
+  constructor(props: any) {
+    super(props)
+    this.majorWrapper = React.createRef()
+
+    this.checkOther = this.checkOther.bind(this)
   }
 
   toBase64(file: File): Promise<null | string | ArrayBuffer> {
@@ -39,7 +49,10 @@ class App extends React.Component<{ classes: any }> {
     const email = event.target.email.value.trim()
     const linkedIn = event.target.linkedin.value.trim()
     const gpa = event.target.gpa.value.trim()
-    const major = event.target.major.value.trim()
+    let major = event.target.major.value.trim()
+    if (this.state.majorOther) {
+      major = event.target.otherMajor.value.trim()
+    }
     const standing = event.target.standing.value.trim()
 
     const info = {
@@ -115,8 +128,33 @@ class App extends React.Component<{ classes: any }> {
                   required
                 />
               </LabelInput>
-              <LabelInput name="major" label="Major" />
-              <LabelInput name="standing" label="Standing" />
+              <LabelInput name="major" label="Major">
+                <Select
+                  ref={this.majorWrapper}
+                  native
+                  name="major"
+                  onChange={this.checkOther}
+                >
+                  <option>Biomedical Engineering</option>
+                  <option>Computer Engineering</option>
+                  <option>Computer Science</option>
+                  <option>Electrical Engineering</option>
+                  <option>Mechanical Engineering</option>
+                  <option>Software Engineering</option>
+                  <option>Other</option>
+                </Select>
+              </LabelInput>
+              {this.state.majorOther ? (
+                <LabelInput label="Which major" name="otherMajor" />
+              ) : null}
+              <LabelInput name="standing" label="Standing">
+                <Select native name="standing">
+                  <option>Freshman</option>
+                  <option>Sophomore</option>
+                  <option>Junior</option>
+                  <option>Senior</option>
+                </Select>
+              </LabelInput>
               <LabelInput label="Resume" name="pdf">
                 <FileInput name="pdf" accept="application/pdf" />
               </LabelInput>
@@ -128,6 +166,21 @@ class App extends React.Component<{ classes: any }> {
         </div>
       </div>
     )
+  }
+
+  checkOther() {
+    const el: HTMLDivElement = (this.majorWrapper as any).current
+    const select = el.querySelector('select') as HTMLSelectElement
+
+    if (select.value === 'Other') {
+      this.setState({
+        majorOther: true,
+      })
+    } else {
+      this.setState({
+        majorOther: false,
+      })
+    }
   }
 }
 
