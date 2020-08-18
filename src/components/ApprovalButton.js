@@ -5,7 +5,7 @@ import { ENDPOINT } from '../utils/config'
 
 function ApprovalButton(props) {
   const [approved, setApproved] = useState(false)
-  const [documentId, setDocumentId] = useState(props.documentId)
+  const { documentId } = props
 
   const approveResume = () => {
     fetch(`${ENDPOINT}/api/resumes/approve`, {
@@ -15,7 +15,6 @@ function ApprovalButton(props) {
     }).then((res) => {
       if (res.status === 200) {
         setApproved(!approved)
-        res.json().then((res) => setDocumentId(res.newDocumentId))
       } else {
         //TODO: ERROR HANDLING
       }
@@ -30,7 +29,6 @@ function ApprovalButton(props) {
     }).then((res) => {
       if (res.status === 200) {
         setApproved(!approved)
-        res.json().then((res) => setDocumentId(res.newDocumentId))
       } else {
         //TODO: ERROR HANDLING
       }

@@ -49,7 +49,7 @@ app.post(
     )
 
     //Add an entry to the resumes collection
-    let resumesRef = db.collection('resumes_not_approved')
+    let resumesRef = db.collection('resumes')
     console.log(
       `Performing a query to figure out if a resume exists for ${req.body.name}`
     )
@@ -68,6 +68,7 @@ app.post(
               major: req.body.major,
               standing: req.body.standing,
               resume: url.secure_url,
+              approved: false,
             })
             .then((doc) => {
               doc.update({
@@ -163,9 +164,10 @@ app.get(
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     if (req.user.officer === false) res.send(401)
-    let resumesRef = db.collection('resumes_not_approved')
+    let resumesRef = db.collection('resumes')
     let resumes = []
     await resumesRef
+      .where('approved', '==', false)
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -188,50 +190,35 @@ app.get(
 
 //TODO: When approving a resume employ the same logic from /api/file where we check if a resume entry in prod already exists with the same email or same name and major, etc.
 
-//Move a resume from the resumes_not_approved collection to the 'production' resumes collection
+//Approve a resume/collection
+//TODO: verify document id is not an empty string and is actually of type string
 app.post(
   `${ENDPOINT}/api/resumes/approve`,
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     if (req.user.officer === false) res.send(401)
-    let resumesRef = db.collection('resumes_not_approved')
+    let resumesRef = db.collection('resumes')
     await resumesRef
       .doc(`${req.body.documentId}`)
-      .get()
-      .then(async (doc) => {
-        if (doc.exists) {
-          let newDocId
-          await db
-            .collection('resumes')
-            .add(doc.data())
-            .then((doc) => {
-              newDocId = doc.id
-              doc.update({
-                _id: doc.id,
-              })
-            })
-          await resumesRef.doc(req.body.documentId).delete()
-          res.send({
-            message: `Successfully approved the resume with ID: ${req.body.documentId}`,
-            newDocumentId: newDocId,
-          })
-        } else {
-          res
-            .status(422)
-            .send({ message: `No document with the id ${req.body.documentId} exists` })
-        }
+      .update({
+        approved: true,
+      })
+      .then(() => {
+        res.send({
+          message: `Successfully approved the resume with ID: ${req.body.documentId}`,
+        })
       })
       .catch((err) => {
         console.error('Unable to retrieve resumes from the database')
         console.log(err)
-        res.status(500).send({
-          message: 'Could not retrieve resumes from our database. Please try again later',
-        })
+        res
+          .status(422)
+          .send({ message: `No document with the id ${req.body.documentId} exists` })
       })
   }
 )
 
-//Move a resume from the the 'production' resumes collection to the resumes_not_approved collection
+//Unapprove a resume/entry
 app.post(
   `${ENDPOINT}/api/resumes/unapprove`,
   passport.authenticate('jwt', { session: false }),
@@ -240,36 +227,20 @@ app.post(
     let resumesRef = db.collection('resumes')
     await resumesRef
       .doc(`${req.body.documentId}`)
-      .get()
-      .then(async (doc) => {
-        if (doc.exists) {
-          let newDocId
-          await db
-            .collection('resumes_not_approved')
-            .add(doc.data())
-            .then((doc) => {
-              newDocId = doc.id
-              doc.update({
-                _id: doc.id,
-              })
-            })
-          await resumesRef.doc(req.body.documentId).delete()
-          res.send({
-            message: `Successfully approved the resume with ID: ${req.body.documentId}`,
-            newDocumentId: newDocId,
-          })
-        } else {
-          res
-            .status(422)
-            .send({ error: `No document with the id ${req.body.documentId} exists` })
-        }
+      .update({
+        approved: false,
+      })
+      .then(() => {
+        res.send({
+          message: `Successfully approved the resume with ID: ${req.body.documentId}`,
+        })
       })
       .catch((err) => {
         console.error('Unable to retrieve resumes from the database')
         console.log(err)
-        res.status(500).send({
-          error: 'Could not retrieve resumes from our database. Please try again later',
-        })
+        res
+          .status(422)
+          .send({ message: `No document with the id ${req.body.documentId} exists` })
       })
   }
 )
@@ -282,6 +253,7 @@ app.get(
     let resumesRef = db.collection('resumes')
     let resumes = []
     await resumesRef
+      .where('approved', '==', true)
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
