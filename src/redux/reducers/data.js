@@ -163,9 +163,9 @@ export default function (state = initialState, action) {
             [filter]: !state.passingTags[category][filter],
           },
         },
-        tableData: newTable({ ...state }, filter, category).sort(
-          compareValues(state.sort.category, state.sort.direction)
-        ),
+        tableData: newTable({ ...state }, filter, category)
+          .sort(compareValues(state.sort.category, state.sort.direction))
+          .filter((entry) => filterByNames(state.search, entry)),
       }
     }
     case REMOVE_FILTER: {
