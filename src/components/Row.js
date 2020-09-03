@@ -11,7 +11,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import './Row.css'
 
 const greenTheme = createMuiTheme({
-  palette: { primary: { '500': '#28a745' } },
+  palette: { primary: { 500: '#28a745' } },
 })
 
 class Row extends React.Component {
