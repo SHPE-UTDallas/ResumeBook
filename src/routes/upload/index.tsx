@@ -5,6 +5,16 @@ import { ENDPOINT } from '../../utils/config'
 import FileInput from '../../components/FileInput'
 import './main.sass'
 
+function isLIURL(str: string) {
+  var pattern = new RegExp(
+    '^(https?:\\/\\/)?' + // protocol
+    '(((linkedin)|(www)).)+com/in' + // domain name
+      '(/[-a-zd%_.~+]+)$', // port and path
+    'i'
+  ) // fragment locator
+  return !!pattern.test(str)
+}
+
 const LabelInput = (props: {
   name: string
   label: string
@@ -47,13 +57,35 @@ class App extends React.Component<{ classes: any }> {
   normalizeData(event: React.ChangeEvent<any>) {
     const name = event.target.name.value.trim()
     const email = event.target.email.value.trim()
-    const linkedIn = event.target.linkedin.value.trim()
     const gpa = event.target.gpa.value.trim()
+    const standing = event.target.standing.value.trim()
+
+    let linkedIn = event.target.linkedin.value.trim().toLowerCase()
+    if (isLIURL(linkedIn)) {
+      const indexWWW = linkedIn.indexOf('www.')
+      const indexHTTPS = linkedIn.indexOf('https://')
+      const indexLinkedIn = linkedIn.indexOf('linkedin')
+      const httpsLength = 'https://'.length
+
+      if (indexWWW === -1 || indexWWW > indexLinkedIn) {
+        if (indexHTTPS !== -1) {
+          linkedIn =
+            linkedIn.substring(0, httpsLength) + 'www.' + linkedIn.substring(httpsLength)
+        } else {
+          linkedIn = 'www.' + linkedIn
+        }
+      }
+
+      if (indexHTTPS === -1) {
+        linkedIn = 'https://' + linkedIn
+      }
+    } else {
+      linkedIn = null
+    }
     let major = event.target.major.value.trim()
     if (this.state.majorOther) {
       major = event.target.otherMajor.value.trim()
     }
-    const standing = event.target.standing.value.trim()
 
     const info = {
       name,
@@ -78,6 +110,11 @@ class App extends React.Component<{ classes: any }> {
       return false
     }
 
+    if (!info.linkedIn) {
+      this.setState({ error: 'Not a valid LinkedIn URL' })
+      return false
+    }
+
     //Convert pdf to base64 since Netlify/AWS Lambda doesn't allow binary content
     let base64 = await this.toBase64(event.target.pdf.files[0])
     let formData = new FormData()
@@ -95,6 +132,8 @@ class App extends React.Component<{ classes: any }> {
       method: 'POST',
       body: formData,
     })
+
+    this.setState({ error: null })
   }
 
   render() {

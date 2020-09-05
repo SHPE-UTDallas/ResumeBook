@@ -15,6 +15,10 @@ const { ENDPOINT, CLOUDINARY_TESTDATAPATH } = require('./utils/config')
 
 const { db } = require('./utils/firebaseConfig')
 
+function startsWith(str, check) {
+  return str.indexOf(check) === 0
+}
+
 async function uploadDocument(res, name, base64) {
   return cloudinary.uploader.upload(
     base64,
@@ -48,23 +52,31 @@ app.post(
      *  - Select for majors
      *  - Verification
      */
-    if (!req.user.verified) {
-      res.sendStatus(401)
+    // if (!req.user.verified) {
+    //   res.sendStatus(401)
+    //   return
+    // }
+
+    const profile = {
+      name: req.body.name,
+      linkedin: req.body.linkedin.toLowerCase(),
+      email: req.body.email,
+      gpa: req.body.gpa,
+      major: req.body.major,
+      standing: req.body.standing,
+      // resume: url.secure_url,
+    }
+
+    console.log()
+    console.log(profile.linkedin)
+    if (!startsWith(profile.linkedin, 'https://www.linkedin.com/in/')) {
+      console.log('bad linkedin')
+      res.sendStatus(422)
       return
     }
 
     // Upload the resume to the cloudinary CDN
     const url = await uploadDocument(res, `${profile.name} - Resume`, req.body.pdf)
-
-    const profile = {
-      name: req.body.name,
-      linkedin: req.body.linkedin,
-      email: req.body.email,
-      gpa: req.body.gpa,
-      major: req.body.major,
-      standing: req.body.standing,
-      resume: url.secure_url,
-    }
 
     // Add an entry to the resumes collection
     const resumesRef = db.collection('resumes')
