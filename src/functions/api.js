@@ -109,6 +109,7 @@ app.post(
                   major: req.body.major,
                   standing: req.body.standing,
                   resume: url.secure_url,
+                  approved: false
                 })
                 .then(() => {
                   console.log(
@@ -139,6 +140,7 @@ app.post(
                 major: req.body.major,
                 standing: req.body.standing,
                 resume: url.secure_url,
+                approved: false
               })
               .then((doc) => {
                 console.log(
