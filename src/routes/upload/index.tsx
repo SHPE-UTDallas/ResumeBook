@@ -38,6 +38,7 @@ const LabelInput = (props: {
 class App extends React.Component<{ classes: any }> {
   state = {
     error: '',
+    success: false,
     majorOther: false,
   }
 
@@ -138,9 +139,16 @@ class App extends React.Component<{ classes: any }> {
     fetch(endpoint_url, {
       method: 'POST',
       body: formData,
+    }).then((res) => {
+      if (res.status !== 200) {
+        this.setState({
+          error: `While uploading, there was a ${res.status} error`,
+          success: false,
+        })
+      } else {
+        this.setState({ error: '', success: true })
+      }
     })
-
-    this.setState({ error: null })
   }
 
   render() {
@@ -155,6 +163,9 @@ class App extends React.Component<{ classes: any }> {
             <span className="sub-text">*Note: all fields are required</span>
             {this.state.error !== '' ? (
               <span className="sub-text red">{this.state.error}</span>
+            ) : null}
+            {this.state.success ? (
+              <span className="sub-text green">Your resume has been added</span>
             ) : null}
             <form
               className="dg-form"
@@ -212,6 +223,16 @@ class App extends React.Component<{ classes: any }> {
         </div>
       </div>
     )
+  }
+
+  componentDidUpdate() {
+    if (this.state.success) {
+      setTimeout(this.redirect, 2000)
+    }
+  }
+
+  redirect() {
+    document.location.href = '/'
   }
 
   checkOther() {

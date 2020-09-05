@@ -58,7 +58,7 @@ app.post(
     }
 
     // Upload the resume to the cloudinary CDN
-    const url = await uploadDocument(res, `${profile.name} - Resume`, req.body.pdf)
+    const url = await uploadDocument(res, `${req.body.name} - Resume`, req.body.pdf)
 
     const profile = {
       name: req.body.name,
