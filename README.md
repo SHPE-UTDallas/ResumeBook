@@ -6,7 +6,7 @@ Dev Build: https://resumebook.netlify.app/
 
 A serverless web application to help recruiters get in contact with SHPE UT Dallas members. Built with: React, React Router, and Redux for the Front End and Node.js +Express with Firebase's Cloud Firestore as a database for the Backend. Hosted on Netlify
 
-![Imgur](https://i.imgur.com/8IdvQBa.gif)
+![Imgur](https://i.imgur.com/ahxbIWB.gif)
 
 ## Getting ResumeBook Setup for Local Development
 
@@ -35,7 +35,7 @@ A serverless web application to help recruiters get in contact with SHPE UT Dall
    1. If you've been following along exactly with this tutorial then entering `cd ../..` should put you the root directory
 1. Create a file called `.env` in the root directory
    1. Inside that file input `NODE_ENV=development`
-1. Run the command `netlify login` and login to your netlify
+1. Run the command `netlify login` and login to your netlify account
 1. Run the command `netlify link` and select `Use current git remote origin`
    1. This step will allow you to link your project to your netlify account and makes sure the environment variables you just set are injected into your environment
 1. Run the command `netlify dev` in your terminal
