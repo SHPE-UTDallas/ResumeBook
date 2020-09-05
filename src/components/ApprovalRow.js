@@ -29,7 +29,9 @@ function ApprovalRow(props) {
         </Collapse>
       </TableCell>
     </TableRow>
-  ) : null
+  ) : (
+    <React.Fragment />
+  )
 
   return (
     <React.Fragment>

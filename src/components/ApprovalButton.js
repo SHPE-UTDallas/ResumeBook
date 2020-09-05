@@ -5,9 +5,11 @@ import { ENDPOINT } from '../utils/config'
 
 function ApprovalButton(props) {
   const [approved, setApproved] = useState(false)
+  const [disabled, setDisabled] = useState(false)
   const { documentId } = props
 
   const approveResume = () => {
+    setDisabled(true)
     fetch(`${ENDPOINT}/api/resumes/approve`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -15,6 +17,7 @@ function ApprovalButton(props) {
     }).then((res) => {
       if (res.status === 200) {
         setApproved(!approved)
+        setDisabled(false)
       } else {
         //TODO: ERROR HANDLING
       }
@@ -22,6 +25,7 @@ function ApprovalButton(props) {
   }
 
   const unapproveResume = () => {
+    setDisabled(true)
     fetch(`${ENDPOINT}/api/resumes/unapprove`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -29,6 +33,7 @@ function ApprovalButton(props) {
     }).then((res) => {
       if (res.status === 200) {
         setApproved(!approved)
+        setDisabled(false)
       } else {
         //TODO: ERROR HANDLING
       }
@@ -36,11 +41,21 @@ function ApprovalButton(props) {
   }
 
   const button = approved ? (
-    <Button variant="outlined" color="secondary" onClick={() => unapproveResume()}>
+    <Button
+      variant="outlined"
+      disabled={disabled}
+      color="secondary"
+      onClick={() => unapproveResume()}
+    >
       Unapprove
     </Button>
   ) : (
-    <Button variant="outlined" color="primary" onClick={() => approveResume()}>
+    <Button
+      variant="outlined"
+      disabled={disabled}
+      color="primary"
+      onClick={() => approveResume()}
+    >
       Approve
     </Button>
   )
