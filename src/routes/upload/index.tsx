@@ -6,12 +6,17 @@ import FileInput from '../../components/FileInput'
 import './main.sass'
 
 function isLIURL(str: string) {
-  var pattern = new RegExp(
+  const pattern = new RegExp(
     '^(https?:\\/\\/)?' + // protocol
     '(((linkedin)|(www)).)+com/in' + // domain name
-      '(/[-a-zd%_.~+]+)$', // port and path
+      '(\\/[-a-z\\d%_.~+]+)$', // port and path
     'i'
   ) // fragment locator
+  return !!pattern.test(str)
+}
+
+function isValidLIUser(str: string) {
+  const pattern = new RegExp('^[a-zA-Z\\d-]{3,100}$', 'i') // fragment locator
   return !!pattern.test(str)
 }
 
@@ -79,6 +84,8 @@ class App extends React.Component<{ classes: any }> {
       if (indexHTTPS === -1) {
         linkedIn = 'https://' + linkedIn
       }
+    } else if (isValidLIUser(linkedIn)) {
+      linkedIn = `https://www.linkedin.com/in/${linkedIn}`
     } else {
       linkedIn = null
     }
