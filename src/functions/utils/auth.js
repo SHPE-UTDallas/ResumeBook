@@ -13,14 +13,18 @@ const {
 
 const { db } = require('../utils/firebaseConfig')
 
-module.exports = { updateVerification }
+module.exports = { updateVerification, updateOfficer }
 
-function authJwt(email, verified) {
-  return sign({ user: { email, verified } }, SECRET)
+function authJwt(email, verified, officer) {
+  return sign({ user: { email, verified, officer } }, SECRET)
 }
 
 function updateVerification(email) {
   return sign({ user: { email, verified: true } }, SECRET)
+}
+
+function updateOfficer(email) {
+  return sign({ user: { email, verified: true, officer: true } }, SECRET)
 }
 
 passport.use(
@@ -36,9 +40,11 @@ passport.use(
         const email = profile.emails[0].value
 
         let verified = false
-        //Check if user is verified
+        let officer = false
+        //Check if user is verified or an officer
         if (email != null) {
           let userRef = db.collection('users')
+
           await userRef
             .where('email', '==', `${email}`)
             .get()
@@ -48,10 +54,12 @@ passport.use(
                 userRef.add({
                   email: `${email}`,
                   verified: false,
+                  officer: false,
                 })
               } else if (snapshot.size === 1) {
                 snapshot.forEach((doc) => {
                   if (doc.data().verified) verified = true
+                  if (doc.data().officer) officer = true
                 })
               } else {
                 console.error(`There are two or more user with the same email: ${email}`)
@@ -61,7 +69,7 @@ passport.use(
           console.error(`ERROR: The user's linkedin emails is ${email}`)
         }
 
-        const jwt = authJwt(email, verified)
+        const jwt = authJwt(email, verified, officer)
 
         return done(null, { jwt })
       } catch (error) {
@@ -80,10 +88,10 @@ passport.use(
       },
       secretOrKey: SECRET,
     },
-    async ({ user: { email, verified } }, done) => {
+    async ({ user: { email, verified, officer } }, done) => {
       try {
-        const jwt = authJwt(email, verified)
-        return done(null, { email, verified, jwt })
+        const jwt = authJwt(email, verified, officer)
+        return done(null, { email, verified, officer, jwt })
       } catch (error) {
         return done(error)
       }

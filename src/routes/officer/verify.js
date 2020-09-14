@@ -7,12 +7,11 @@ import { connect } from 'react-redux'
 import { loginSuccess } from '../../redux/actions'
 import { withRouter } from 'react-router-dom'
 import { ENDPOINT } from '../../utils/config'
-import Alert from '@material-ui/lab/Alert'
 
-class VerifyForm extends React.Component {
+class OfficerForm extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { value: '', errorMessage: '' }
+    this.state = { value: '' }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -22,7 +21,7 @@ class VerifyForm extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault()
-    const endpoint_url = `${ENDPOINT}/auth/verify`
+    const endpoint_url = `${ENDPOINT}/auth/officer`
     const response = await fetch(`${endpoint_url}`, {
       method: 'POST',
       headers: {
@@ -30,18 +29,13 @@ class VerifyForm extends React.Component {
       },
       body: JSON.stringify({ code: this.state.value }),
     }).then((response) => response.json())
-    if (response.message === 'Successfully Verified') {
+    if (response.message === 'Successfully Verified as an Officer') {
       localStorage.setItem('verified', true)
-      this.props.loginSuccess(true)
-      this.props.history.push('/resumes')
-
-      this.setState({
-        errorMessage: '',
-      })
+      localStorage.setItem('officer', true)
+      this.props.loginSuccess(true, true)
+      this.props.history.push('/officer')
     } else {
-      this.setState({
-        errorMessage: response,
-      })
+      //TODO: Add error messages
     }
   }
 
@@ -53,12 +47,7 @@ class VerifyForm extends React.Component {
         <div className={classes.content}>
           <div className={classes.toolbar} />
           <Grid container alignItems="center" direction="column" justify="center">
-            <h3>Please verify you account by inputting the code provided to you</h3>
-            {this.state.errorMessage === '' ? (
-              <React.Fragment />
-            ) : (
-              <Alert severity="error">{this.state.errorMessage}</Alert>
-            )}
+            <h3>Please verify your account by inputting the code provided to you</h3>
             <form onSubmit={this.handleSubmit}>
               <FormControlLabel
                 className={classes.formEntry}
@@ -83,10 +72,10 @@ class VerifyForm extends React.Component {
   }
 }
 
-VerifyForm.propTypes = {
+OfficerForm.propTypes = {
   classes: PropTypes.object.isRequired,
   loginSuccess: PropTypes.func.isRequired,
   history: PropTypes.any.isRequired,
 }
 
-export default connect(null, { loginSuccess })(withRouter(VerifyForm))
+export default connect(null, { loginSuccess })(withRouter(OfficerForm))
