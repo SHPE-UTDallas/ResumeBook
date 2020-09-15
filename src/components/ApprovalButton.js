@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { ENDPOINT } from '../utils/config'
 
 function ApprovalButton(props) {
-  const [approved, setApproved] = useState(false)
+  const [approved, setApproved] = useState(props.approved)
   const [disabled, setDisabled] = useState(false)
   const { documentId } = props
 
@@ -64,5 +64,6 @@ function ApprovalButton(props) {
 
 ApprovalButton.propTypes = {
   documentId: PropTypes.string.isRequired,
+  approved: PropTypes.bool.isRequired,
 }
 export default ApprovalButton

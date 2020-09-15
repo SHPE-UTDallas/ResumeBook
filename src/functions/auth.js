@@ -162,7 +162,7 @@ app.post(
         .cookie('jwt', newJwt, { httpOnly: true, COOKIE_SECURE })
         .send({ message: 'Successfully Verified as an Officer' })
     } else {
-      res.status(422).send({ message: 'Invalid Officer Code entered, please try again' })
+      res.status(422).send({ error: 'Invalid Officer Code entered, please try again' })
     }
   }
 )

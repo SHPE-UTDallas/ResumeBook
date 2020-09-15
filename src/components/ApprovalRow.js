@@ -79,7 +79,10 @@ function ApprovalRow(props) {
             View
           </Button>
           <MuiThemeProvider theme={greenTheme}>
-            <ApprovalButton documentId={`${props.data._id}`} />
+            <ApprovalButton
+              documentId={`${props.data._id}`}
+              approved={props.data.approved}
+            />
           </MuiThemeProvider>
         </TableCell>
       </TableRow>
