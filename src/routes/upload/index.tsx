@@ -8,7 +8,7 @@ import './main.sass'
 function isLIURL(str: string) {
   const pattern = new RegExp(
     '^(https?:\\/\\/)?' + // protocol
-    '(((linkedin)|(www)).)+com/in' + // domain name
+      '(((linkedin)|(www)).)+com/in' + // domain name
       '(\\/[-a-z\\d%_.~+]+)$', // port and path
     'i'
   ) // fragment locator
@@ -40,13 +40,14 @@ class App extends React.Component<{ classes: any }> {
     error: '',
     success: false,
     majorOther: false,
+    isSubmiting: false,
   }
 
-  majorWrapper: React.Ref<any>
+  selectWrapper: React.Ref<any>
 
   constructor(props: any) {
     super(props)
-    this.majorWrapper = React.createRef()
+    this.selectWrapper = React.createRef()
 
     this.checkOther = this.checkOther.bind(this)
   }
@@ -112,14 +113,27 @@ class App extends React.Component<{ classes: any }> {
     event.stopPropagation()
     event.persist()
 
+    await this.setState({ isSubmiting: true })
+
+    const returnState = {
+      isSubmiting: false,
+      error: '',
+      success: true,
+    }
+
     const info = this.normalizeData(event)
+
     if (event.target.pdf.files.length === 0) {
-      this.setState({ error: 'No file given' })
+      returnState.error = 'No file given'
+      returnState.success = false
+      this.setState(returnState)
       return false
     }
 
     if (!info.linkedIn) {
-      this.setState({ error: 'Not a valid LinkedIn URL' })
+      returnState.error = 'Not a valid LinkedIn url'
+      returnState.success = false
+      this.setState(returnState)
       return false
     }
 
@@ -136,19 +150,17 @@ class App extends React.Component<{ classes: any }> {
     formData.append('pdf', base64 as string)
 
     const endpoint_url = `${ENDPOINT}/api/file`
-    fetch(endpoint_url, {
+    const res = await fetch(endpoint_url, {
       method: 'POST',
       body: formData,
-    }).then((res) => {
-      if (res.status !== 200) {
-        this.setState({
-          error: `While uploading, there was a ${res.status} error`,
-          success: false,
-        })
-      } else {
-        this.setState({ error: '', success: true })
-      }
     })
+
+    if (res.status !== 200) {
+      returnState.error = `While uploading, there was a ${res.status} error`
+      returnState.success = false
+    }
+
+    this.setState(returnState)
   }
 
   render() {
@@ -187,7 +199,7 @@ class App extends React.Component<{ classes: any }> {
               </LabelInput>
               <LabelInput name="major" label="Major">
                 <Select
-                  ref={this.majorWrapper}
+                  ref={this.selectWrapper}
                   native
                   name="major"
                   onChange={this.checkOther}
@@ -210,12 +222,18 @@ class App extends React.Component<{ classes: any }> {
                   <option>Sophomore</option>
                   <option>Junior</option>
                   <option>Senior</option>
+                  <option>Graduate Student</option>
                 </Select>
               </LabelInput>
               <LabelInput label="Resume" name="pdf">
                 <FileInput name="pdf" accept="application/pdf" />
               </LabelInput>
-              <Button variant="contained" color="primary" type="submit">
+              <Button
+                disabled={this.state.isSubmiting}
+                variant="contained"
+                color="primary"
+                type="submit"
+              >
                 submit
               </Button>
             </form>
@@ -236,7 +254,7 @@ class App extends React.Component<{ classes: any }> {
   }
 
   checkOther() {
-    const el: HTMLDivElement = (this.majorWrapper as any).current
+    const el: HTMLDivElement = (this.selectWrapper as any).current
     const select = el.querySelector('select') as HTMLSelectElement
 
     if (select.value === 'Other') {

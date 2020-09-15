@@ -64,7 +64,7 @@ app.post(
       gpa: req.body.gpa,
       major: req.body.major,
       standing: req.body.standing,
-      resume: url.secure_url,
+      resume: '',
     }
 
     if (!startsWith(profile.linkedin, 'https://www.linkedin.com/in/')) {
@@ -74,6 +74,7 @@ app.post(
 
     // Upload the resume to the cloudinary CDN
     const url = await uploadDocument(res, `${req.body.name} - Resume`, req.body.pdf)
+    profile.resume = url.secure_url
 
     // Add an entry to the resumes collection
     const resumesRef = db.collection('resumes')
