@@ -91,7 +91,7 @@ app.post(
         .cookie('jwt', newJwt, { httpOnly: true, COOKIE_SECURE })
         .send({ message: 'Successfully Verified' })
     } else {
-      res.status(422).send('Invalid Verification Code entered, please try again')
+      res.status(422).send({error: 'Invalid Verification Code entered, please try again'})
     }
   }
 )

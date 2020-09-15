@@ -53,7 +53,7 @@ class VerifyForm extends React.Component {
         <div className={classes.content}>
           <div className={classes.toolbar} />
           <Grid container alignItems="center" direction="column" justify="center">
-            <h3>Please verify you account by inputting the code provided to you</h3>
+            <h3>Please verify your account by inputting the code provided to you</h3>
             {this.state.errorMessage === '' ? (
               <React.Fragment />
             ) : (
