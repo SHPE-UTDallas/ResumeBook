@@ -57,9 +57,6 @@ app.post(
       return
     }
 
-    // Upload the resume to the cloudinary CDN
-    const url = await uploadDocument(res, `${req.body.name} - Resume`, req.body.pdf)
-
     const profile = {
       name: req.body.name,
       linkedin: req.body.linkedin.toLowerCase(),
@@ -74,6 +71,9 @@ app.post(
       res.sendStatus(422)
       return
     }
+
+    // Upload the resume to the cloudinary CDN
+    const url = await uploadDocument(res, `${req.body.name} - Resume`, req.body.pdf)
 
     // Add an entry to the resumes collection
     const resumesRef = db.collection('resumes')
