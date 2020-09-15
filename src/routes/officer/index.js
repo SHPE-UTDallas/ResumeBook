@@ -7,7 +7,7 @@ import FilterPane from '../../components/FilterPane'
 
 function Officer(props) {
   const classes = props.classes
-  const endpoint_url = `${ENDPOINT}/api/notApproved`
+  const endpoint_url = `${ENDPOINT}/api/allResumes`
 
   return (
     <div className={classes.root}>

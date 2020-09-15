@@ -11,7 +11,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import './Row.css'
 
 const greenTheme = createMuiTheme({
-  palette: { primary: { '500': '#28a745' } },
+  palette: { primary: { 500: '#28a745' } },
 })
 
 function ApprovalRow(props) {
@@ -79,7 +79,10 @@ function ApprovalRow(props) {
             View
           </Button>
           <MuiThemeProvider theme={greenTheme}>
-            <ApprovalButton documentId={`${props.data._id}`} />
+            <ApprovalButton
+              documentId={`${props.data._id}`}
+              approved={props.data.approved}
+            />
           </MuiThemeProvider>
         </TableCell>
       </TableRow>

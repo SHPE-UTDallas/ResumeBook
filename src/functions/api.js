@@ -162,14 +162,14 @@ app.post(
 )
 
 app.get(
-  `${ENDPOINT}/api/notApproved`,
+  `${ENDPOINT}/api/allResumes`,
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     if (req.user.officer === false) res.send(401)
     let resumesRef = db.collection('resumes')
     let resumes = []
     await resumesRef
-      .where('approved', '==', false)
+      .orderBy('approved', 'asc')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -189,8 +189,6 @@ app.get(
     res.json(resumes)
   }
 )
-
-//TODO: When approving a resume employ the same logic from /api/file where we check if a resume entry in prod already exists with the same email or same name and major, etc.
 
 //Approve a resume/collection
 //TODO: verify document id is not an empty string and is actually of type string
