@@ -11,6 +11,7 @@ require('./utils/auth')
 const app = express()
 app.use(passport.initialize())
 app.use(cookieParser())
+app.use(express.json())
 const { ENDPOINT, CLOUDINARY_TESTDATAPATH } = require('./utils/config')
 
 const { db } = require('./utils/firebaseConfig')
@@ -122,6 +123,7 @@ app.post(
               major: req.body.major,
               standing: req.body.standing,
               resume: url.secure_url,
+              approved: false,
             })
             .then(() => {
               console.log(
@@ -164,13 +166,14 @@ app.post(
 )
 
 app.get(
-  `${ENDPOINT}/api/resumes`,
+  `${ENDPOINT}/api/allResumes`,
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    if (req.user.verified === false) res.send(401)
+    if (req.user.officer === false) res.send(401)
     let resumesRef = db.collection('resumes')
     let resumes = []
     await resumesRef
+      .orderBy('approved', 'asc')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -178,14 +181,96 @@ app.get(
         })
       })
       .then(() => {
-        console.log(`Successfully retrived resumes for user ${req.body.email}`)
+        console.log(`Successfully retrieved resumes for officer ${req.user.email}`)
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve resumes from the database')
+        console.log(err)
+        res.status(500).send({
+          message: 'Could not retrieve resumes from our database. Please try again',
+        })
+      })
+    res.json(resumes)
+  }
+)
+
+//Approve a resume/collection
+//TODO: verify document id is not an empty string and is actually of type string
+app.post(
+  `${ENDPOINT}/api/resumes/approve`,
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (req.user.officer === false) res.send(401)
+    let resumesRef = db.collection('resumes')
+    await resumesRef
+      .doc(`${req.body.documentId}`)
+      .update({
+        approved: true,
+      })
+      .then(() => {
+        res.send({
+          message: `Successfully approved the resume with ID: ${req.body.documentId}`,
+        })
       })
       .catch((err) => {
         console.error('Unable to retrieve resumes from the database')
         console.log(err)
         res
-          .status(500)
-          .send('Could not retrieve resumes from our database. Please try again')
+          .status(422)
+          .send({ message: `No document with the id ${req.body.documentId} exists` })
+      })
+  }
+)
+
+//Unapprove a resume/entry
+app.post(
+  `${ENDPOINT}/api/resumes/unapprove`,
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (req.user.officer === false) res.send(401)
+    let resumesRef = db.collection('resumes')
+    await resumesRef
+      .doc(`${req.body.documentId}`)
+      .update({
+        approved: false,
+      })
+      .then(() => {
+        res.send({
+          message: `Successfully approved the resume with ID: ${req.body.documentId}`,
+        })
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve resumes from the database')
+        console.log(err)
+        res
+          .status(422)
+          .send({ message: `No document with the id ${req.body.documentId} exists` })
+      })
+
+app.get(
+  `${ENDPOINT}/api/resumes`,
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (req.user.verified === false) res.send(401)
+    let resumesRef = db.collection('resumes')
+    let resumes = []
+    await resumesRef
+      .where('approved', '==', true)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          resumes.push(doc.data())
+        })
+      })
+      .then(() => {
+        console.log(`Successfully retrieved resumes for user ${req.user.email}`)
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve resumes from the database')
+        console.log(err)
+        res.status(500).send({
+          error: 'Could not retrieve resumes from our database. Please try again',
+        })
       })
     res.json(resumes)
   }

@@ -205,7 +205,9 @@ export default function (state = initialState, action) {
             min: num,
           },
         },
-        tableData: newTable({ ...state }, num, 'gpa'),
+        tableData: newTable({ ...state }, num, 'gpa').filter((entry) =>
+          filterByNames(state.search, entry)
+        ),
       }
     }
     case SORT_TABLE: {
