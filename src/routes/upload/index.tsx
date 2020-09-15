@@ -5,11 +5,15 @@ import { ENDPOINT } from '../../utils/config'
 import FileInput from '../../components/FileInput'
 import './main.sass'
 
+/** This functions verifies a user's LinkedIn username
+ *  and is later used to tell if we need to preprend
+ *  linkedin.com/in/ to the front or not.
+ */
 function isLIURL(str: string) {
   const pattern = new RegExp(
     '^(https?:\\/\\/)?' + // protocol
-      '(((linkedin)|(www)).)+com/in' + // domain name
-      '(\\/[-a-z\\d%_.~+]+)$', // port and path
+      '(www.)?linkedin.com/in' + // domain name
+      '(\\/[-a-z\\d%_.~+]+)$', // port and path,
     'i'
   ) // fragment locator
   return !!pattern.test(str)
@@ -69,22 +73,23 @@ class App extends React.Component<{ classes: any }> {
 
     let linkedIn = event.target.linkedin.value.trim().toLowerCase()
     if (isLIURL(linkedIn)) {
-      const indexWWW = linkedIn.indexOf('www.')
-      const indexHTTPS = linkedIn.indexOf('https://')
-      const indexLinkedIn = linkedIn.indexOf('linkedin')
-      const httpsLength = 'https://'.length
+      const hasHTTP = linkedIn.indexOf('http://') !== -1
+      if (hasHTTP) {
+        linkedIn = 'https://' + linkedIn.substring(7)
+      }
 
-      if (indexWWW === -1 || indexWWW > indexLinkedIn) {
-        if (indexHTTPS !== -1) {
-          linkedIn =
-            linkedIn.substring(0, httpsLength) + 'www.' + linkedIn.substring(httpsLength)
+      const hasWWW = linkedIn.indexOf('www.') !== -1
+      const hasHTTPS = linkedIn.indexOf('https://') !== -1
+      if (!hasWWW) {
+        if (hasHTTPS) {
+          linkedIn = `https://www.${linkedIn.substring(8)}`
         } else {
-          linkedIn = 'www.' + linkedIn
+          linkedIn = `www.${linkedIn}`
         }
       }
 
-      if (indexHTTPS === -1) {
-        linkedIn = 'https://' + linkedIn
+      if (!hasHTTPS) {
+        linkedIn = `https://${linkedIn}`
       }
     } else if (isValidLIUser(linkedIn)) {
       linkedIn = `https://www.linkedin.com/in/${linkedIn}`

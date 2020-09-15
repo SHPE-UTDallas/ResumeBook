@@ -66,6 +66,7 @@ app.post(
       standing: req.body.standing,
       resume: '',
     }
+    console.log(profile.linkedin)
 
     if (!startsWith(profile.linkedin, 'https://www.linkedin.com/in/')) {
       res.sendStatus(422)
