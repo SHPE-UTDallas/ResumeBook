@@ -246,6 +246,8 @@ app.post(
           .status(422)
           .send({ message: `No document with the id ${req.body.documentId} exists` })
       })
+  }
+)
 
 app.get(
   `${ENDPOINT}/api/resumes`,
