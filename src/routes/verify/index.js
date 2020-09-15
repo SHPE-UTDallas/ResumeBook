@@ -40,7 +40,7 @@ class VerifyForm extends React.Component {
       })
     } else {
       this.setState({
-        errorMessage: response,
+        errorMessage: response.error,
       })
     }
   }
