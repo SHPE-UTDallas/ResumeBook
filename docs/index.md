@@ -8,13 +8,13 @@
 
 ## <span id="resume-operators">Resume Operators</span>
 
-| Routes                   | Description              |
-| ------------------------ | ------------------------ |
-| [/api/file](./api/file)  | Posts user to ResumeBook |
-| `/api/allResumes`        |                          |
-| `/api/resumes/approve`   |                          |
-| `/api/resumes/unapprove` |                          |
-| `/api/resumes`           |                          |
+| Routes                     | Description              |
+| -------------------------- | ------------------------ |
+| [/api/file](./api/file.md) | Posts user to ResumeBook |
+| `/api/allResumes`          |                          |
+| `/api/resumes/approve`     |                          |
+| `/api/resumes/unapprove`   |                          |
+| `/api/resumes`             |                          |
 
 ---
 
