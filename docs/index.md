@@ -4,19 +4,19 @@
 1. [Authentication](#authentication)
 1. [Miscellaneous](#miscellaneous)
 
-***
+---
 
 ## <span id="resume-operators">Resume Operators</span>
 
-| Routes                   | Description |
-| ------------------------ | ----------- |
-| `/api/file`              |             |
-| `/api/allResumes`        |             |
-| `/api/resumes/approve`   |             |
-| `/api/resumes/unapprove` |             |
-| `/api/resumes`           |             |
+| Routes                   | Description              |
+| ------------------------ | ------------------------ |
+| [/api/file](./api/file)  | Posts user to ResumeBook |
+| `/api/allResumes`        |                          |
+| `/api/resumes/approve`   |                          |
+| `/api/resumes/unapprove` |                          |
+| `/api/resumes`           |                          |
 
-***
+---
 
 ## <span id="authentication">Authentication</span>
 
@@ -29,10 +29,10 @@
 | `/auth/linkedin/callback` |             |
 | `/auth/status`            |             |
 
-***
+---
 
 ## <span id="miscellaneous">Miscellaneous</span>
 
-| Routes       | Description                                                              |
-| ------------ | ------------------------------------------------------------------------ |
-| `/dummydata` | For testing purposes, this gives a bunch of random fake data of students |
+| Routes                            | Description                                                              |
+| --------------------------------- | ------------------------------------------------------------------------ |
+| [/dummydata](./misc/dummydata.md) | For testing purposes, this gives a bunch of random fake data of students |
