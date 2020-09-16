@@ -10,9 +10,6 @@ import {
   TOGGLE_DRAWER,
 } from '../actionTypes'
 
-/*TODO:
-Fix mapping of 'Graduate Student' => grad and make the mappings for majors more intuitive/fast (Map structure? extra data but faster runtime than doing string splitting)
-*/
 const initialState = {
   data: [],
   tableData: [],
@@ -68,10 +65,7 @@ const newTable = (state) => {
 
     let standing = entry.standing.split(' ')
     if (standing.length > 1) {
-      if (standing[0] === 'Graduate')
-        //Will be fixed/mapped better in a later version
         standing = 'grad'
-      else standing = (standing[0].charAt(0) + standing[1].charAt(0)).toLowerCase()
     } else {
       standing = standing[0].toLowerCase()
     }
@@ -82,16 +76,21 @@ const newTable = (state) => {
     } else {
       major = major[0].toLowerCase()
     }
+
+    //Checks if the entry matches our 4 filtering options: major, standing, gpa, and the search bar filter (nameFilter)
     return (
       currentFilterOptions.standing[standing] &&
       currentFilterOptions.major[major] &&
-      entry.name.includes(currentFilterOptions.nameFilter) &&
+      entry.name.toLowerCase().includes(currentFilterOptions.nameFilter) &&
       entry.gpa >= currentFilterOptions.gpa.min
     )
   })
 }
 
 const updateTable = (state, filter, category) => {
+  //state - current state
+  //filter - specific filter like junior, senior, biomedical engineering, etc.
+  //category - major, standing, gpa
   return state.tableData.filter((entry) => {
     if (category !== 'gpa') {
       let str = entry[category].split(' ')
@@ -110,6 +109,7 @@ const updateTable = (state, filter, category) => {
   })
 }
 
+//Uses the comparisonObj to allow us to sort by Major and Standing
 const compareValues = (category, order = 'asc') => {
   return (obj1, obj2) => {
     let varA = comparisonObj[obj1[category]]
@@ -155,7 +155,6 @@ export default function (state = initialState, action) {
       }
       newState.tableData = newTable(newState)
       return newState
-      
     }
     case REMOVE_FILTER: {
       const { category, filter } = action.payload
@@ -195,10 +194,8 @@ export default function (state = initialState, action) {
           },
         },
       }
-      return {
-        newState,
-        tableData: newTable({ ...state }, num, 'gpa'),
-      }
+      newState.tableData = newTable(newState)
+      return newState
     }
 
     case SORT_TABLE: {
@@ -236,10 +233,8 @@ export default function (state = initialState, action) {
           nameFilter: search,
         },
       }
-      return {
-        newState,
-        tableData: newTable(state),
-      }
+      newState.tableData = newTable(newState)
+      return newState
     }
 
     case TOGGLE_DRAWER: {
