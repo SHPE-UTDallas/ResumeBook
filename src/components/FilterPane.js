@@ -329,7 +329,7 @@ ResponsiveDrawer.propTypes = {
 
 const mapStateToProps = (state) => {
   const { mobileOpen } = state.data
-  const { gpa, standing, major } = state.data.passingTags
+  const { gpa, standing, major } = state.data.currentFilterOptions
   return {
     mobileOpen: mobileOpen,
     gpa: gpa,

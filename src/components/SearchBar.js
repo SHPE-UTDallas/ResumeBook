@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
 function SearchBar(props) {
-  const search = useSelector((state) => state.data.search)
+  const search = useSelector((state) => state.data.currentFilterOptions.nameFilter)
   const dispatch = useDispatch()
 
   return (
