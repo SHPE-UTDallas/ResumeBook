@@ -278,4 +278,38 @@ app.get(
   }
 )
 
+/**
+ * TODO:
+ * - Check if user is sponsor
+ *
+ * All users to be zipped should be in query with
+ * each user in an index from 0 to n. There cannot
+ * be holes in this counting.
+ */
+app.get(
+  `${ENDPOINT}/api/zip`,
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (!req.user.officer) {
+      res.sendStatus(401)
+      return
+    }
+
+    const users = db.collection('resumes')
+    let URLs = []
+    for (let i = 0; req.query[i]; i++) {
+      const snapshot = await users.where('email', '==', req.query[i]).get()
+
+      if (snapshot.docs.length === 0) {
+        res.status(400).json({ error: `Email '${req.query[i]}' not found` })
+        return
+      }
+
+      const user = snapshot.docs[0]
+      URLs.push(user.data().resume)
+    }
+    res.json(URLs)
+  }
+)
+
 module.exports.handler = serverless(app)
