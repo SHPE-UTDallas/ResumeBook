@@ -7,11 +7,12 @@ import { connect } from 'react-redux'
 import { loginSuccess } from '../../redux/actions'
 import { withRouter } from 'react-router-dom'
 import { ENDPOINT } from '../../utils/config'
+import Alert from '@material-ui/lab/Alert'
 
 class OfficerForm extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { value: '' }
+    this.state = { value: '', errorMessage: '' }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -34,8 +35,14 @@ class OfficerForm extends React.Component {
       localStorage.setItem('officer', true)
       this.props.loginSuccess(true, true)
       this.props.history.push('/officer')
+
+      this.setState({
+        errorMessage: '',
+      })
     } else {
-      //TODO: Add error messages
+      this.setState({
+        errorMessage: response.message,
+      })
     }
   }
 
@@ -48,6 +55,11 @@ class OfficerForm extends React.Component {
           <div className={classes.toolbar} />
           <Grid container alignItems="center" direction="column" justify="center">
             <h3>Please verify your account by inputting the code provided to you</h3>
+            {this.state.errorMessage === '' ? (
+              <React.Fragment />
+            ) : (
+              <Alert severity="error">{this.state.errorMessage}</Alert>
+            )}
             <form onSubmit={this.handleSubmit}>
               <FormControlLabel
                 className={classes.formEntry}
