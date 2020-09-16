@@ -72,17 +72,16 @@ const newTable = (state) => {
     }
 
     //Create the equivalent variable name for that filter i.e Computer Science => cs or Electrical Engineering => ee
-    let major = entry.major.split(' ')
-    if (major.length > 1) {
-      major = (major[0].charAt(0) + major[1].charAt(0)).toLowerCase()
-    } else {
-      major = major[0].toLowerCase()
-    }
+    let majorArr = entry.major.split(' ')
+    let major = ''
+    for (let i = 0; i < majorArr.length; i++) major += majorArr[i].charAt(0)
 
     //Checks if the entry matches our 4 filtering options: major, standing, gpa, and the search bar filter (nameFilter)
     return (
       currentFilterOptions.standing[standing] &&
-      currentFilterOptions.major[major] &&
+      (currentFilterOptions.major[major] ||
+        (currentFilterOptions.major.other &&
+          currentFilterOptions.major[major] === undefined)) && //If it's other
       entry.name.toLowerCase().includes(currentFilterOptions.nameFilter) &&
       entry.gpa >= currentFilterOptions.gpa.min
     )
@@ -93,6 +92,7 @@ const updateTable = (state, filter, category) => {
   //state - current state
   //filter - specific filter like junior, senior, biomedical engineering, etc.
   //category - major, standing, gpa
+  const { major } = state.currentFilterOptions
   return state.tableData.filter((entry) => {
     if (category !== 'gpa') {
       let str = entry[category].split(' ')
@@ -104,7 +104,8 @@ const updateTable = (state, filter, category) => {
       } else {
         str = str[0].toLowerCase()
       }
-      return str !== filter
+
+      return str !== filter && (filter !== 'other' || major[str] !== undefined)
     } else {
       return entry.gpa >= filter
     }
