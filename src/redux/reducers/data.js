@@ -63,13 +63,15 @@ const newTable = (state) => {
   return state.data.filter((entry) => {
     const { currentFilterOptions } = state
 
+    //Create the equivalent variable name for that filter i.e Junior => junior or Graduate Student => grad
     let standing = entry.standing.split(' ')
     if (standing.length > 1) {
-        standing = 'grad'
+      standing = 'grad'
     } else {
       standing = standing[0].toLowerCase()
     }
 
+    //Create the equivalent variable name for that filter i.e Computer Science => cs or Electrical Engineering => ee
     let major = entry.major.split(' ')
     if (major.length > 1) {
       major = (major[0].charAt(0) + major[1].charAt(0)).toLowerCase()
