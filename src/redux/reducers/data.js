@@ -70,7 +70,7 @@ const newTable = (state) => {
     //If the standing doesn't match the filters, remove that entry
     if (!currentFilterOptions.standing[standing]) return false
 
-    //If their major is false (i.e. Computer Science) or if other is false and their major isn't already defined(comp sci, mech eng, ee, etc. => a major like ITS that isn't already listed), then remove it
+    //If their major is false (i.e. Computer Science or another pre-defined major) or if other is false and their major isn't already defined(comp sci, mech eng, ee, etc. => a major like ITS that isn't already listed), then remove it
     if (
       currentFilterOptions.major[major] === false ||
       (currentFilterOptions.major.other === false &&
