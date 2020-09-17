@@ -25,19 +25,19 @@ const initialState = {
       min: 0,
     },
     standing: {
-      grad: true,
-      senior: true,
-      junior: true,
-      sophomore: true,
-      freshman: true,
+      'Graduate Student': true,
+      Senior: true,
+      Junior: true,
+      Sophomore: true,
+      Freshman: true,
     },
     major: {
-      be: true,
-      ce: true,
-      cs: true,
-      ee: true,
-      me: true,
-      se: true,
+      'Biomedical Engineering': true,
+      'Computer Engineering': true,
+      'Computer Science': true,
+      'Electrical Engineering': true,
+      'Mechanical Engineering': true,
+      'Software Engineering': true,
       other: true,
     },
   },
@@ -62,22 +62,15 @@ let comparisonObj = {
 const newTable = (state) => {
   return state.data.filter((entry) => {
     const { currentFilterOptions } = state
+    const { major, standing } = entry
 
+    //If the gpa doesn't match the filter, remove that entry
     if (entry.gpa < currentFilterOptions.gpa.min) return false
-    //Create the equivalent variable name for that filter i.e Junior => junior or Graduate Student => grad
-    let standing = entry.standing.split(' ')
-    if (standing.length > 1) {
-      standing = 'grad'
-    } else {
-      standing = standing[0].toLowerCase()
-    }
 
+    //If the standing doesn't match the filters, remove that entry
     if (!currentFilterOptions.standing[standing]) return false
-    //Create the equivalent variable name for that filter i.e Computer Science => cs or Electrical Engineering => ee
-    let majorArr = entry.major.split(' ')
-    let major = ''
-    for (let i = 0; i < majorArr.length; i++) major += majorArr[i].charAt(0).toLowerCase()
 
+    //If their major is false (i.e. Computer Science) or if other is false and their major isn't already defined(comp sci, mech eng, ee, etc. => a major like ITS that isn't already listed), then remove it
     if (
       currentFilterOptions.major[major] === false ||
       (currentFilterOptions.major.other === false &&
@@ -96,16 +89,7 @@ const updateTable = (state, filter, category) => {
   const { major } = state.currentFilterOptions
   return state.tableData.filter((entry) => {
     if (category !== 'gpa') {
-      let str = entry[category].split(' ')
-      if (str.length > 1) {
-        if (str[0] === 'Graduate')
-          //Will be fixed/mapped better in a later version
-          str = 'grad'
-        else str = (str[0].charAt(0) + str[1].charAt(0)).toLowerCase()
-      } else {
-        str = str[0].toLowerCase()
-      }
-
+      let str = entry[category]
       return str !== filter && (filter !== 'other' || major[str] !== undefined)
     } else {
       return entry.gpa >= filter
@@ -128,6 +112,7 @@ const compareValues = (category, order = 'asc') => {
   }
 }
 
+//function to filter by name
 const filterByNames = (searchQuery, entry) => {
   const name = entry.name.toLowerCase()
   return name.includes(searchQuery)
