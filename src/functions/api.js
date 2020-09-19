@@ -281,6 +281,7 @@ app.get(
 /**
  * TODO:
  * - Check if user is sponsor
+ * - Make use less memory
  *
  * All users to be zipped should be in query with
  * each user in an index from 0 to n. There cannot
@@ -301,14 +302,29 @@ app.get(
       const snapshot = await users.where('email', '==', req.query[i]).get()
 
       if (snapshot.docs.length === 0) {
-        res.status(400).json({ error: `Email '${req.query[i]}' not found` })
+        res.status(400).json({ res: null, error: `Email '${req.query[i]}' not found` })
         return
       }
 
       const user = snapshot.docs[0]
-      URLs.push(user.data().resume)
+      let url = user.data().resume
+      url = url.replace(/%20/g, ' ')
+      url = url.substring(url.lastIndexOf('/') + 1)
+      url = CLOUDINARY_TESTDATAPATH + url
+      URLs.push(url)
     }
-    res.json(URLs)
+
+    const result = await cloudinary.utils.download_zip_url({
+      public_ids: URLs,
+      type: 'upload',
+      resource_type: 'raw',
+      flatten_folders: true,
+    })
+
+    res.json({
+      res: result,
+      error: null,
+    })
   }
 )
 
