@@ -205,7 +205,9 @@ function App() {
             path="/upload"
             render={(routerProps) => <Upload {...routerProps} classes={classes} />}
           />
-          <Route component={NoMatch} />
+          <Route
+            render={(routerProps) => <NoMatch {...routerProps} classes={classes} />}
+          />
         </Switch>
       </Router>
     </MuiThemeProvider>
