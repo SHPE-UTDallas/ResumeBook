@@ -151,7 +151,6 @@ function App() {
     <MuiThemeProvider theme={defaultTheme}>
       <Router>
         <Switch>
-          {' '}
           {/*Look through all <Route> if path isn't found use last <Route>*/}
           <Route
             exact
