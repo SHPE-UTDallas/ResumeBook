@@ -34,7 +34,7 @@ A serverless web application to help recruiters get in contact with SHPE UT Dall
    1. Click on "Edit variables", located underneath the "Environment variables" heading
    1. Input the environment variables I provided you to setup your test environment and then hit Save
 1. Go to the root directory of the ResumeBook repository on your computer.
-   1. If you've been following along exactly with this tutorial then entering `cd ../..` should put you the root directory
+   1. If you've been following along exactly with this tutorial then entering `cd ../..` should put you in the root directory
 1. Create a file called `.env` in the root directory
    1. Inside that file input `NODE_ENV=development`
 1. Run the command `netlify login` and login to your netlify account
