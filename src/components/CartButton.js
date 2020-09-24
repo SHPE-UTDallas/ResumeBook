@@ -27,7 +27,7 @@ class CartButton extends React.Component {
       </Button>
     ) : (
       <Button variant="outlined" color="primary" onClick={this.handleAddToCart}>
-        Add to Cart
+        Add Candidate
       </Button>
     )
     return <React.Fragment>{button}</React.Fragment>
