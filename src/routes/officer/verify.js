@@ -41,7 +41,7 @@ class OfficerForm extends React.Component {
       })
     } else {
       this.setState({
-        errorMessage: response.message,
+        errorMessage: response.error,
       })
     }
   }
