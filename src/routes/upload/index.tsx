@@ -1,4 +1,5 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
+import LabelInput from '../../components/LabelInput'
 import { Grid, Input, Button, Select } from '@material-ui/core'
 import NavBar from '../../components/NavBar'
 import { ENDPOINT } from '../../utils/config'
@@ -22,21 +23,6 @@ function isLIURL(str: string) {
 function isValidLIUser(str: string) {
   const pattern = new RegExp('^[a-zA-Z\\d-]{3,100}$', 'i') // fragment locator
   return !!pattern.test(str)
-}
-
-const LabelInput = (props: {
-  name: string
-  label: string
-  type?: string
-  children?: ReactElement
-  className?: string
-}) => {
-  return (
-    <label className="dg-form-input MuiFormControlLabel-label MuiTypography-body1 MuiFormControlLabel-root">
-      {`${props.label}: `}
-      {props.children ?? <Input required type={props.type ?? 'text'} name={props.name} />}
-    </label>
-  )
 }
 
 class App extends React.Component<{ classes: any }> {
