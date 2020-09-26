@@ -1,8 +1,8 @@
-# POST /api/file
+# POST /api/zip
 
 ## Description
 
-This route posts a specified user to ResumeBook. This user will not be approved immeadiately.
+This route combines resumes identified by emails into a single cloudinary link. This is useful for downloading a collection of resumes.
 
 ---
 
@@ -14,15 +14,15 @@ None
 
 ## Query Parameters
 
-| Name     | Type   | Description                               | Preconditions                              |
-| -------- | ------ | ----------------------------------------- | ------------------------------------------ |
-| name     | string | Name of the user                          | None                                       |
-| email    | string | Email of the user                         | None                                       |
-| linkedin | string | LinkedIn profile of the user              | Starts with "https://www.linkedin.com/in/" |
-| gpa      | string | GPA of the student                        | None                                       |
-| major    | string | Major of the user                         | None                                       |
-| standing | string | The year of the students (ex: "Freshman") | None                                       |
-| pdf      | base64 | The resume of the user                    | less than 25 megabytes                     |
+| Name    | Type   | Description              | Preconditions    |
+| ------- | ------ | ------------------------ | ---------------- |
+| [0...N] | number | array index of the email | Must be an email |
+
+Example:
+
+```
+/api/zip?0=dummy@email.com&1=other@email.com
+```
 
 ---
 
@@ -30,21 +30,18 @@ None
 
 ```typescript
 {
-  "message": string | null,
+  "res": string | null,
   "error": string | null
 }
 ```
 
-| Name    | Type           | Description                                                               |
-| ------- | -------------- | ------------------------------------------------------------------------- |
-| message | string \| null | Either a success message if completed or null if there was an error       |
-| error   | string \| null | Either null if operation was successful or a string if there was an error |
+| Name  | Type           | Description                                                               |
+| ----- | -------------- | ------------------------------------------------------------------------- |
+| res   | string \| null | Either a cloundiary url if completed or null if there was an error        |
+| error | string \| null | Either null if operation was successful or a string if there was an error |
 
 ---
 
 ## Error Codes
 
-| Code | Meaning                                           |
-| ---- | ------------------------------------------------- |
-| 500  | Trouble with our servers. Check the error message |
-| 401  | User is not verified                              |
+None
