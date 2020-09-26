@@ -8,13 +8,14 @@
 
 ## <span id="resume-operators">Resume Operators</span>
 
-| Routes                     | Description              |
-| -------------------------- | ------------------------ |
-| [/api/file](./api/file.md) | Posts user to ResumeBook |
-| `/api/allResumes`          |                          |
-| `/api/resumes/approve`     |                          |
-| `/api/resumes/unapprove`   |                          |
-| `/api/resumes`             |                          |
+| Routes                     | Description                               |
+| -------------------------- | ----------------------------------------- |
+| [/api/file](./api/file.md) | Posts user to ResumeBook                  |
+| `/api/allResumes`          |                                           |
+| `/api/resumes/approve`     |                                           |
+| `/api/resumes/unapprove`   |                                           |
+| `/api/resumes`             |                                           |
+| [/api/zip](./api/zip)      | Zips resumes into a single cloudinary url |
 
 ---
 
