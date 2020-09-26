@@ -10,9 +10,15 @@ import TableSortLabel from '@material-ui/core/TableSortLabel'
 import { connect } from 'react-redux'
 import { storeDataFromAPI, sortTable, filterNameDel } from '../redux/actions'
 import PropTypes from 'prop-types'
-import ApprovalRow from './ApprovalRow'
+import CartRow from './CartRow'
 import LoadingIndicator from './LoadingIndicator.js'
 import SearchBar from './SearchBar'
+import DownloadButton from '../components/DownloadButton'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+
+const greenTheme = createMuiTheme({
+  palette: { primary: { 500: '#28a745' } },
+})
 
 class SimpleTable extends React.Component {
   constructor(props) {
@@ -23,7 +29,57 @@ class SimpleTable extends React.Component {
   }
 
   async componentDidMount() {
-    this.props.storeDataFromAPI(this.props.data)
+    // dummy data for now
+    this.props.storeDataFromAPI([
+      {
+        _id: 1,
+        name: 'Mahmud Bouda',
+        linkedin: 'http://dummyimage.com/199x136.bmp/dddddd/000000',
+        gpa: 1.0,
+        major: 'Biomedical Engineering',
+        standing: 'Senior',
+        resume:
+          'https://engineering.utdallas.edu/engineering/files/IPP-Resume-Tips-Samples-2019.pdf',
+      },
+      {
+        _id: 2,
+        name: 'Libbi Worman',
+        linkedin: 'http://dummyimage.com/217x234.jpg/cc0000/ffffff',
+        gpa: 3.7,
+        major: 'Other',
+        standing: 'Junior',
+        resume: 'https://www.mccc.edu/programs/engr_sci_as/pdf/resume.pdf',
+      },
+      {
+        _id: 3,
+        name: 'Derry de Broke',
+        linkedin: 'http://dummyimage.com/139x182.bmp/dddddd/000000',
+        gpa: 1.3,
+        major: 'Computer Science',
+        standing: 'Freshman',
+        resume: 'https://www.mccc.edu/programs/engr_sci_as/pdf/resume.pdf',
+      },
+      {
+        _id: 4,
+        name: 'Britni De Ath',
+        linkedin: 'http://dummyimage.com/192x114.jpg/cc0000/ffffff',
+        gpa: 0.3,
+        major: 'Computer Science',
+        standing: 'Graduate Student',
+        resume:
+          'https://engineering.utdallas.edu/engineering/files/IPP-Resume-Tips-Samples-2019.pdf',
+      },
+      {
+        _id: 5,
+        name: 'Kimberly Pellett',
+        linkedin: 'http://dummyimage.com/248x153.bmp/cc0000/ffffff',
+        gpa: 2.8,
+        major: 'Computer Engineering',
+        standing: 'Senior',
+        resume: 'https://www.mccc.edu/programs/engr_sci_as/pdf/resume.pdf',
+      },
+    ])
+    console.log(this.props.data)
     this.setState({ loading: false })
   }
 
@@ -68,7 +124,7 @@ class SimpleTable extends React.Component {
     const content = (
       <React.Fragment>
         {tableData.map((row) => (
-          <ApprovalRow key={row._id} data={row} />
+          <CartRow key={row._id} data={row} />
         ))}
       </React.Fragment>
     )
@@ -112,6 +168,11 @@ class SimpleTable extends React.Component {
                 <TableCell align="left" size="medium">
                   Resume
                 </TableCell>
+                <TableCell align="left" size="medium">
+                  <MuiThemeProvider theme={greenTheme}>
+                    {/*Should add Download all here  documentId={`${props.data._id}`}  not working here*/}
+                  </MuiThemeProvider>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>{this.tableBody()}</TableBody>
@@ -125,7 +186,7 @@ class SimpleTable extends React.Component {
 }
 
 SimpleTable.propTypes = {
-  data: PropTypes.array.isRequired,
+  //data: PropTypes.array.isRequired,
   storeDataFromAPI: PropTypes.func.isRequired,
   orderBy: PropTypes.string.isRequired,
   order: PropTypes.string.isRequired,

@@ -40,8 +40,8 @@ function NavBar(props) {
         <Toolbar>
           {enableDrawerMenu}
           {
-            <img
-              style={{ width: '40x', height: '40px' }}
+            <img 
+              style={{ width: '40x', height: '40px',  }}
               alt="SHPE logo"
               src="https://i0.wp.com/www.shpesd.org/wp-content/uploads/2020/02/cropped-SHPE_logo_vert_SanDiegoPro_CMYK_HalfSize.png?fit=512%2C512"
             />
@@ -53,7 +53,7 @@ function NavBar(props) {
             Home
           </Typography>
           <Box ml="auto">
-            <Cart classes={classes} />
+            <Cart classes={classes} />{/* wanted to add cart class here */}
             <LoginLogoutButton loggedIn={props.isAuthenticated} />
           </Box>
         </Toolbar>

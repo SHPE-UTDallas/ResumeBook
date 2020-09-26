@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import Typography from '@material-ui/core/Typography'
+import './styles/NavBar.sass'
 
 class Cart extends React.Component {
   constructor() {
@@ -16,7 +17,7 @@ class Cart extends React.Component {
         <Typography style={{ marginTop: '-8px' }} className={this.props.classes.cartText}>
           {this.props.numInCart}
         </Typography>
-        <ShoppingCartIcon className={this.props.classes.cart} />
+        <ShoppingCartIcon className={this.props.classes.cart}  />
       </React.Fragment>
     )
   }

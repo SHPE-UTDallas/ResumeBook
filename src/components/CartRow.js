@@ -4,7 +4,8 @@ import Collapse from '@material-ui/core/Collapse'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import Button from '@material-ui/core/Button'
-import ApprovalButton from '../components/ApprovalButton'
+import DownloadButton from '../components/DownloadButton'
+import RemoveButton from '../components/RemoveButton'
 import { PDFObject } from 'react-pdfobject'
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
@@ -79,10 +80,8 @@ function ApprovalRow(props) {
             View
           </Button>
           <MuiThemeProvider theme={greenTheme}>
-            <ApprovalButton
-              documentId={`${props.data._id}`}
-              approved={props.data.approved}
-            />
+            <DownloadButton documentId={`${props.data._id}`} />
+            <RemoveButton documentId={`${props.data._id}`} />
           </MuiThemeProvider>
         </TableCell>
       </TableRow>
