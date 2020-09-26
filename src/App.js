@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
   formEntry: {
     padding: '0',
     marginTop: '0px',
-    marginBottom: '-10px',
+    // marginBottom: '-10px',
   },
   searchBar: {
     marginBottom: theme.spacing(2),
