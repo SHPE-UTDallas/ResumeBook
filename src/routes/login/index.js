@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import NavBar from '../../components/NavBar'
 import { LinkedInLoginButton } from 'react-social-login-buttons'
 import { ENDPOINT } from '../../utils/config'
+import Footer from '../../components/Footer'
 
 function App(props) {
   const classes = props.classes
@@ -16,6 +17,7 @@ function App(props) {
           <LinkedInLoginButton />
         </a>
       </div>
+      <Footer />
     </div>
   )
 }

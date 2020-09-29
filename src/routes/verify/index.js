@@ -8,6 +8,7 @@ import { loginSuccess } from '../../redux/actions'
 import { withRouter } from 'react-router-dom'
 import { ENDPOINT } from '../../utils/config'
 import Alert from '@material-ui/lab/Alert'
+import Footer from '../../components/Footer'
 
 class VerifyForm extends React.Component {
   constructor(props) {
@@ -78,6 +79,7 @@ class VerifyForm extends React.Component {
             </form>
           </Grid>
         </div>
+        <Footer />
       </div>
     )
   }

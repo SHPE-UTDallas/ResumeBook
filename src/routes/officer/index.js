@@ -4,6 +4,7 @@ import NavBar from '../../components/NavBar'
 import { ENDPOINT } from '../../utils/config'
 import ApprovalTable from '../../components/ApprovalTable'
 import FilterPane from '../../components/FilterPane'
+import Footer from '../../components/Footer'
 
 function Officer(props) {
   const classes = props.classes
@@ -18,6 +19,7 @@ function Officer(props) {
         <h1 style={{ textAlign: 'center' }}>Members</h1>
         <ApprovalTable url={endpoint_url} classes={classes} data={[]} />
       </main>
+      <Footer />
     </div>
   )
 }

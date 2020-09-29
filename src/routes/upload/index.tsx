@@ -4,6 +4,7 @@ import NavBar from '../../components/NavBar'
 import { ENDPOINT } from '../../utils/config'
 import FileInput from '../../components/FileInput'
 import './main.sass'
+import Footer from '../../components/Footer'
 
 /** This functions verifies a user's LinkedIn username
  *  and is later used to tell if we need to preprend
@@ -244,6 +245,7 @@ class App extends React.Component<{ classes: any }> {
             </form>
           </Grid>
         </div>
+        <Footer/>
       </div>
     )
   }

@@ -4,6 +4,7 @@ import FilterPane from '../../components/FilterPane'
 import NavBar from '../../components/NavBar'
 import Table from '../../components/Table'
 import { ENDPOINT } from '../../utils/config'
+import Footer from '../../components/Footer'
 function App(props) {
   const classes = props.classes
   const endpoint_url = `${ENDPOINT}/api/resumes`
@@ -16,6 +17,7 @@ function App(props) {
         <h1 style={{ textAlign: 'center' }}>Members</h1>
         <Table url={endpoint_url} data={[]} classes={classes} />
       </main>
+      <Footer />
     </div>
   )
 }

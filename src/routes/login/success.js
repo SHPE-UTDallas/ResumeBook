@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import NavBar from '../../components/NavBar'
 import store from '../../redux/store'
 import isAuthenticated from '../../utils/auth/isAuthenticated'
+import Footer from '../../components/Footer'
 
 function App(props) {
   const classes = props.classes
@@ -22,6 +23,7 @@ function App(props) {
         <div className={classes.toolbar} />
         <h1>Login successful</h1>
       </div>
+      <Footer />
     </div>
   )
 }

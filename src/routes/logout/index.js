@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import NavBar from '../../components/NavBar'
 import logout from '../../utils/auth/logout'
+import Footer from '../../components/Footer'
 
 function App(props) {
   const classes = props.classes
@@ -17,6 +18,7 @@ function App(props) {
         <div className={classes.toolbar} />
         <h1>Logout successful</h1>
       </div>
+      <Footer />
     </div>
   )
 }
