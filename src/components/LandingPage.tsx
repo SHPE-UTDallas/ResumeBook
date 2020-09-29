@@ -19,8 +19,7 @@ function App(props: any) {
   }
 
   return (
-    <div className={classes.content + ' landing-content'}>
-      <div className={classes.toolbar} />
+    <>
       <Carousel
         // auto
         width="100%"
@@ -33,7 +32,7 @@ function App(props: any) {
       </Carousel>
       <br />
       <LandingInfo />
-    </div>
+    </>
   )
 }
 
