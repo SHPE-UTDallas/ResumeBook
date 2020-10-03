@@ -8,7 +8,6 @@ import Cart from './CartNavBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import { connect } from 'react-redux'
 import { toggleDrawer } from '../redux/actions'
-import Box from '@material-ui/core/Box'
 import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
 import LoginLogoutButton from './LoginLogoutButton.js'
@@ -52,10 +51,10 @@ function NavBar(props) {
           <Typography component={NavLink} to="/" className="nav-link">
             Home
           </Typography>
-          <Box ml="auto">
+          <div id="navbar-cart-logbutton">
             <Cart classes={classes} />
             <LoginLogoutButton loggedIn={props.isAuthenticated} />
-          </Box>
+          </div>
         </Toolbar>
       </AppBar>
     </React.Fragment>
