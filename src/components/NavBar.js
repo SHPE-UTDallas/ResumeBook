@@ -54,6 +54,7 @@ function NavBar(props) {
           </Typography>
           <Box ml="auto">
             <Cart classes={classes} />
+            {/* wanted to add cart class here */}
             <LoginLogoutButton loggedIn={props.isAuthenticated} />
           </Box>
         </Toolbar>
