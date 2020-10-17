@@ -83,12 +83,10 @@ const useStyles = makeStyles((theme) => ({
   },
   cart: {
     display: 'inline',
-    marginBottom: '-4px',
     marginRight: theme.spacing(1),
   },
   cartText: {
     display: 'inline',
-    marginRight: theme.spacing(1),
     fontSize: '1.5rem',
   },
   formEntry: {

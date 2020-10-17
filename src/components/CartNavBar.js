@@ -12,12 +12,12 @@ class Cart extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Typography style={{ marginTop: '-8px' }} className={this.props.classes.cartText}>
+      <div id="cart-navbar">
+        <Typography className={this.props.classes.cartText}>
           {this.props.numInCart}
         </Typography>
         <PersonIcon className={this.props.classes.cart} />
-      </React.Fragment>
+      </div>
     )
   }
 }
