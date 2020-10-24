@@ -66,6 +66,7 @@ app.post(
       major: req.body.major,
       standing: req.body.standing,
       resume: '',
+      approved: false,
     }
 
     if (!startsWith(profile.linkedin, 'https://www.linkedin.com/in/')) {

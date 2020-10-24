@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './index.css'
 import store from './redux/store'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import Home from './routes/index'
 import Demo from './routes/demo/index'
@@ -14,7 +14,7 @@ import Logout from './routes/logout/index'
 import Upload from './routes/upload/index'
 import Officer from './routes/officer/index'
 import OfficerVerification from './routes/officer/verify'
-//import NoMatch from './routes/404'; TODO: Implement 404 page
+import NoMatch from './routes/404'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { green } from '@material-ui/core/colors'
 
@@ -83,12 +83,10 @@ const useStyles = makeStyles((theme) => ({
   },
   cart: {
     display: 'inline',
-    marginBottom: '-4px',
     marginRight: theme.spacing(1),
   },
   cartText: {
     display: 'inline',
-    marginRight: theme.spacing(1),
     fontSize: '1.5rem',
   },
   formEntry: {
@@ -150,59 +148,64 @@ function App() {
   return (
     <MuiThemeProvider theme={defaultTheme}>
       <Router>
-        <Route
-          exact
-          path="/"
-          render={(routeProps) => <Home {...routeProps} classes={classes} />}
-        />
-        <Route
-          exact
-          path="/demo"
-          render={(routeProps) => <Demo {...routeProps} classes={classes} />}
-        />
-        <VerifiedRoute
-          exact
-          path="/resumes"
-          render={(routerProps) => <Resumes {...routerProps} classes={classes} />}
-        />
-        <LoggedInRoute
-          exact
-          path="/verify"
-          render={(routerProps) => <Verify {...routerProps} classes={classes} />}
-        />
-        <OfficerRoute
-          exact
-          path="/officer"
-          render={(routerProps) => <Officer {...routerProps} classes={classes} />}
-        />
-        <LoggedInRoute
-          exact
-          path="/officer/verify"
-          render={(routerProps) => (
-            <OfficerVerification {...routerProps} classes={classes} />
-          )}
-        />
-        <Route
-          exact
-          path="/login"
-          render={(routerProps) => <Login {...routerProps} classes={classes} />}
-        />
-        <Route
-          exact
-          path="/login/success"
-          render={(routerProps) => <LoginSuccess {...routerProps} classes={classes} />}
-        />
-        <Route
-          exact
-          path="/logout"
-          render={(routerProps) => <Logout {...routerProps} classes={classes} />}
-        />
-        <LoggedInRoute
-          exact
-          path="/upload"
-          render={(routerProps) => <Upload {...routerProps} classes={classes} />}
-        />
-        {/* <Route component={NoMatch} /> */}
+        <Switch>
+          {/*Look through all <Route> if path isn't found use last <Route>*/}
+          <Route
+            exact
+            path="/"
+            render={(routeProps) => <Home {...routeProps} classes={classes} />}
+          />
+          <Route
+            exact
+            path="/demo"
+            render={(routeProps) => <Demo {...routeProps} classes={classes} />}
+          />
+          <VerifiedRoute
+            exact
+            path="/resumes"
+            render={(routerProps) => <Resumes {...routerProps} classes={classes} />}
+          />
+          <LoggedInRoute
+            exact
+            path="/verify"
+            render={(routerProps) => <Verify {...routerProps} classes={classes} />}
+          />
+          <OfficerRoute
+            exact
+            path="/officer"
+            render={(routerProps) => <Officer {...routerProps} classes={classes} />}
+          />
+          <LoggedInRoute
+            exact
+            path="/officer/verify"
+            render={(routerProps) => (
+              <OfficerVerification {...routerProps} classes={classes} />
+            )}
+          />
+          <Route
+            exact
+            path="/login"
+            render={(routerProps) => <Login {...routerProps} classes={classes} />}
+          />
+          <Route
+            exact
+            path="/login/success"
+            render={(routerProps) => <LoginSuccess {...routerProps} classes={classes} />}
+          />
+          <Route
+            exact
+            path="/logout"
+            render={(routerProps) => <Logout {...routerProps} classes={classes} />}
+          />
+          <LoggedInRoute
+            exact
+            path="/upload"
+            render={(routerProps) => <Upload {...routerProps} classes={classes} />}
+          />
+          <Route
+            render={(routerProps) => <NoMatch {...routerProps} classes={classes} />}
+          />
+        </Switch>
       </Router>
     </MuiThemeProvider>
   )

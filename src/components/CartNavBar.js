@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
+import PersonIcon from '@material-ui/icons/Person'
 import Typography from '@material-ui/core/Typography'
 
 class Cart extends React.Component {
@@ -12,12 +12,12 @@ class Cart extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Typography style={{ marginTop: '-8px' }} className={this.props.classes.cartText}>
+      <div id="cart-navbar">
+        <Typography className={this.props.classes.cartText}>
           {this.props.numInCart}
         </Typography>
-        <ShoppingCartIcon className={this.props.classes.cart} />
-      </React.Fragment>
+        <PersonIcon className={this.props.classes.cart} />
+      </div>
     )
   }
 }
