@@ -9,7 +9,6 @@ import Demo from './routes/demo/index'
 import Resumes from './routes/resumes/index'
 import Verify from './routes/verify/index'
 import Login from './routes/login/index'
-import LoginSuccess from './routes/login/success'
 import Logout from './routes/logout/index'
 import Upload from './routes/upload/index'
 import Officer from './routes/officer/index'
@@ -186,11 +185,6 @@ function App() {
             exact
             path="/login"
             render={(routerProps) => <Login {...routerProps} classes={classes} />}
-          />
-          <Route
-            exact
-            path="/login/success"
-            render={(routerProps) => <LoginSuccess {...routerProps} classes={classes} />}
           />
           <Route
             exact
