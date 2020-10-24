@@ -12,7 +12,7 @@ import Alert from '@material-ui/lab/Alert'
 class OfficerForm extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { value: '', errorMessage: '' }
+    this.state = { value: '', errorMessage: '', disabled: false }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -21,6 +21,10 @@ class OfficerForm extends React.Component {
   }
 
   async handleSubmit(event) {
+    this.setState({
+      disabled: true,
+    })
+
     event.preventDefault()
     const endpoint_url = `${ENDPOINT}/auth/officer`
     const response = await fetch(`${endpoint_url}`, {
@@ -44,6 +48,10 @@ class OfficerForm extends React.Component {
         errorMessage: response.error,
       })
     }
+
+    this.setState({
+      disabled: false,
+    })
   }
 
   render() {
@@ -73,6 +81,7 @@ class OfficerForm extends React.Component {
                 className={classes.button}
                 endIcon={<SendIcon />}
                 type="submit"
+                disabled={this.state.disabled}
               >
                 Submit
               </Button>
