@@ -8,7 +8,6 @@ function App(props) {
   return (
     <>
       <Navbar enableDrawer={false} classes={classes} />
-      <div className={classes.toolbar} />
       <div style={{ justifyContent: 'center' }} className={classes.root}></div>
       <main className={classes.content}>
         <div className={classes.toolbar} />

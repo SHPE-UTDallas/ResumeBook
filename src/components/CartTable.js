@@ -12,9 +12,10 @@ import { storeDataFromAPI, sortTable, filterNameDel } from '../redux/actions'
 import PropTypes from 'prop-types'
 import CartRow from './CartRow'
 import LoadingIndicator from './LoadingIndicator.js'
-import SearchBar from './SearchBar'
-import DownloadButton from '../components/DownloadButton'
+import CartSearchBar from './CartSearchBar'
+import DownloadAllButton from '../components/DownloadAllButton'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
 
 const greenTheme = createMuiTheme({
   palette: { primary: { 500: '#28a745' } },
@@ -135,7 +136,20 @@ class SimpleTable extends React.Component {
   render() {
     return (
       <>
-        <SearchBar classes={this.props.classes} />
+        <Grid container spacing={3}>
+          <Grid item xs={5} sm={3}>
+            <CartSearchBar classes={this.props.classes} />
+          </Grid>
+          <Grid item xs={2} sm={4}></Grid>
+          <Grid item xs={5} sm={4}>
+            <DownloadAllButton
+              style={{
+                marginTop: '10px',
+                marginLeft: '17px',
+              }}
+            />
+          </Grid>
+        </Grid>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
@@ -169,9 +183,7 @@ class SimpleTable extends React.Component {
                   Resume
                 </TableCell>
                 <TableCell align="left" size="medium">
-                  <MuiThemeProvider theme={greenTheme}>
-                    {/*Should add Download all here  documentId={`${props.data._id}`}  not working here*/}
-                  </MuiThemeProvider>
+                  <MuiThemeProvider theme={greenTheme}></MuiThemeProvider>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -186,7 +198,7 @@ class SimpleTable extends React.Component {
 }
 
 SimpleTable.propTypes = {
-  //data: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
   storeDataFromAPI: PropTypes.func.isRequired,
   orderBy: PropTypes.string.isRequired,
   order: PropTypes.string.isRequired,
