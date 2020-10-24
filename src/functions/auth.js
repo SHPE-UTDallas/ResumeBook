@@ -21,7 +21,7 @@ const { db } = require('./utils/firebaseConfig')
 const handleCallback = (req, res) => {
   res
     .cookie('jwt', req.user.jwt, { httpOnly: true, COOKIE_SECURE })
-    .redirect('/login/success')
+    .redirect('/?login=true')
 }
 
 app.post(`${ENDPOINT}/auth/logout`, (req, res) => {
