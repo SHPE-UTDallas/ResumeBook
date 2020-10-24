@@ -6,5 +6,9 @@ export default async function logout() {
   const response = await fetch(`${ENDPOINT}/auth/logout`, {
     method: 'POST',
   }).then((response) => response.json())
-  if (response.message === 'Successfully logged out') store.dispatch(logoutSuccess())
+  if (response.message === 'Successfully logged out') {
+    store.dispatch(logoutSuccess())
+    localStorage.setItem('isLoggedIn', false)
+    localStorage.setItem('verified', false)
+  }
 }
