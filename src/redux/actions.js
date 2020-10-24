@@ -104,10 +104,3 @@ export const loginSuccess = (verified, officer) => ({
 export const logoutSuccess = () => ({
   type: LOGOUT_SUCCESS,
 })
-
-export const filterTableData = (userIdsSet) => ({
-  type: FILTER_TABLE_DATA,
-  payload: {
-    userIdsSet,
-  },
-})
