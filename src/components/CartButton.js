@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { addToCart, removeFromCart, filterTableData } from '../redux/actions'
+import { addToCart, removeFromCart } from '../redux/actions'
 
 class CartButton extends React.Component {
   constructor(props) {
@@ -42,13 +42,11 @@ CartButton.propTypes = {
   userList: PropTypes.array.isRequired,
   removeFromCart: PropTypes.func.isRequired,
   addToCart: PropTypes.func.isRequired,
-  filterTableData: PropTypes.func.isRequired,
   data: PropTypes.array.isRequired,
 }
 const mapDispatchToProps = {
   addToCart,
   removeFromCart,
-  filterTableData,
 }
 const mapStateToProps = (state) => {
   const { users } = state.cart

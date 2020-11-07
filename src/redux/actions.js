@@ -12,7 +12,6 @@ import {
   TOGGLE_DRAWER,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
-  FILTER_TABLE_DATA,
   // TOGGLE_THEME,
 } from './actionTypes'
 
