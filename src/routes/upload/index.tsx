@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react';
 import LabelInput from '../../components/LabelInput'
 import { Grid, Input, Button, Select } from '@material-ui/core'
 import NavBar from '../../components/NavBar'

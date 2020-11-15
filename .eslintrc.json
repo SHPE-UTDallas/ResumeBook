@@ -16,7 +16,9 @@
     "sourceType": "module"
   },
   "rules": {
-    "no-console": "warn"
+    "no-console": "warn",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
   },
   "settings": {
     "react": {

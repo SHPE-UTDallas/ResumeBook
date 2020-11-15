@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Collapse from '@material-ui/core/Collapse'
 import TableCell from '@material-ui/core/TableCell'
@@ -14,7 +14,7 @@ const greenTheme = createMuiTheme({
   palette: { primary: { 500: '#28a745' } },
 })
 
-class Row extends React.Component {
+class Row extends Component {
   // ...
   constructor(props) {
     super(props)
@@ -36,7 +36,7 @@ class Row extends React.Component {
     ) : null
 
     return (
-      <React.Fragment>
+      <Fragment>
         <TableRow>
           <TableCell component="th" scope="row">
             {this.props.data.linkedin ? (
@@ -90,7 +90,7 @@ class Row extends React.Component {
           </TableCell>
         </TableRow>
         {details}
-      </React.Fragment>
+      </Fragment>
     )
   }
 }

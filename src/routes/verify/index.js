@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import NavBar from '../../components/NavBar'
 import { Grid, FormControlLabel, Input, Button } from '@material-ui/core'
@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom'
 import { ENDPOINT } from '../../utils/config'
 import Alert from '@material-ui/lab/Alert'
 
-class VerifyForm extends React.Component {
+class VerifyForm extends Component {
   constructor(props) {
     super(props)
     this.state = { value: '', errorMessage: '', disabled: false }
@@ -63,7 +63,7 @@ class VerifyForm extends React.Component {
           <Grid container alignItems="center" direction="column" justify="center">
             <h3>Please verify your account by inputting the code provided to you</h3>
             {this.state.errorMessage === '' ? (
-              <React.Fragment />
+              <Fragment />
             ) : (
               <Alert severity="error">{this.state.errorMessage}</Alert>
             )}

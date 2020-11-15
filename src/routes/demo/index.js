@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import FilterPane from '../../components/FilterPane'
 import NavBar from '../../components/NavBar'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
 import Collapse from '@material-ui/core/Collapse'
 import TableCell from '@material-ui/core/TableCell'
@@ -30,11 +30,11 @@ function ApprovalRow(props) {
       </TableCell>
     </TableRow>
   ) : (
-    <React.Fragment />
+    <Fragment />
   )
 
   return (
-    <React.Fragment>
+    <Fragment>
       <TableRow>
         <TableCell component="th" scope="row">
           {props.data.linkedin ? (
@@ -87,7 +87,7 @@ function ApprovalRow(props) {
         </TableCell>
       </TableRow>
       {details}
-    </React.Fragment>
+    </Fragment>
   )
 }
 
