@@ -2,9 +2,9 @@ import { loginSuccess } from './redux/actions'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import App from './App'
-import React from 'react'
+import { Component } from 'react'
 // Parent
-class AuthWrapper extends React.Component {
+class AuthWrapper extends Component {
   constructor(props) {
     super(props)
     this.state = {

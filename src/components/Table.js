@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component, Fragment } from 'react'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -14,7 +14,7 @@ import Row from './Row'
 import LoadingIndicator from './LoadingIndicator.js'
 import SearchBar from './SearchBar'
 
-class SimpleTable extends React.Component {
+class SimpleTable extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -72,11 +72,11 @@ class SimpleTable extends React.Component {
   tableBody = () => {
     const tableData = this.props.data
     const content = (
-      <React.Fragment>
+      <Fragment>
         {tableData.map((row) => (
           <Row key={row._id} data={row} />
         ))}
-      </React.Fragment>
+      </Fragment>
     )
 
     return content

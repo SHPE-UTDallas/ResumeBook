@@ -1,10 +1,10 @@
-import React from 'react'
+import { Component, Fragment } from 'react'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { addToCart, removeFromCart } from '../redux/actions'
 
-class CartButton extends React.Component {
+class CartButton extends Component {
   constructor(props) {
     super(props)
     this.state = { added: false }
@@ -30,7 +30,7 @@ class CartButton extends React.Component {
         Add Candidate
       </Button>
     )
-    return <React.Fragment>{button}</React.Fragment>
+    return <Fragment>{button}</Fragment>
   }
 }
 

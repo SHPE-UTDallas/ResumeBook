@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { Fragment, useState } from 'react'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 import { ENDPOINT } from '../utils/config'
@@ -59,7 +59,7 @@ function ApprovalButton(props) {
       Approve
     </Button>
   )
-  return <React.Fragment>{button}</React.Fragment>
+  return <Fragment>{button}</Fragment>
 }
 
 ApprovalButton.propTypes = {

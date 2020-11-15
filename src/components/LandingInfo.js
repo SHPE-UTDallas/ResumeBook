@@ -1,8 +1,8 @@
-import React from 'react'
+import { Component } from 'react'
 import { Grid, Button } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
 
-export default class LandingInfo extends React.Component {
+export default class LandingInfo extends Component {
   render() {
     return (
       <div id="info">

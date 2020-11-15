@@ -1,4 +1,4 @@
-import React from 'react'
+import { Fragment } from 'react'
 import Button from '@material-ui/core/Button'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 import { NavLink } from 'react-router-dom'
@@ -44,7 +44,7 @@ function LoginLogout(props) {
       </Button>
     </MuiThemeProvider>
   )
-  return <React.Fragment>{login}</React.Fragment>
+  return <Fragment>{login}</Fragment>
 }
 
 LoginLogout.propTypes = {

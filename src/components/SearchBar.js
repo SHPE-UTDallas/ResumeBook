@@ -1,4 +1,3 @@
-import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import { filterNameAdd, filterNameDel } from '../redux/actions'
 import { useDispatch, useSelector } from 'react-redux'

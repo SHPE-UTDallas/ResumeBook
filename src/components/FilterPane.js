@@ -1,4 +1,3 @@
-import React from 'react'
 import Drawer from '@material-ui/core/Drawer'
 import Hidden from '@material-ui/core/Hidden'
 import FormGroup from '@material-ui/core/FormGroup'

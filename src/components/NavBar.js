@@ -1,4 +1,4 @@
-import React from 'react'
+import { Fragment } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import IconButton from '@material-ui/core/IconButton'
@@ -33,7 +33,7 @@ function NavBar(props) {
   )
 
   return (
-    <React.Fragment>
+    <Fragment>
       <CssBaseline />
       <AppBar className={classes.appBar} color="default" position="fixed">
         <Toolbar>
@@ -57,7 +57,7 @@ function NavBar(props) {
           </div>
         </Toolbar>
       </AppBar>
-    </React.Fragment>
+    </Fragment>
   )
 }
 

@@ -1,10 +1,10 @@
-import React from 'react'
+import { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import PersonIcon from '@material-ui/icons/Person'
 import Typography from '@material-ui/core/Typography'
 
-class Cart extends React.Component {
+class Cart extends Component {
   constructor() {
     super()
     this.state = { numInCart: 0 }
