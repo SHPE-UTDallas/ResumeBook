@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import './styles/Carousel.sass'
 
 interface CarouselProps {
@@ -11,7 +11,7 @@ interface CarouselProps {
   children: React.ReactNode
 }
 
-export default class extends React.Component<
+export default class Carousel extends React.Component<
   CarouselProps,
   {
     activeOn: number
@@ -20,13 +20,13 @@ export default class extends React.Component<
   state = {
     activeOn: 0,
   }
-  forward: boolean = false
+  forward = false
   length: number
   outerLength: number
   css: string
-  auto: boolean = false
+  auto = false
   interval: NodeJS.Timeout | null = null
-  initial: boolean = true
+  initial = true
   wrapper: React.RefObject<HTMLDivElement>
 
   constructor(props: CarouselProps) {

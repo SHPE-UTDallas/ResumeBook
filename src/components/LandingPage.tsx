@@ -4,8 +4,8 @@ import './styles/LandingPage.sass'
 import LandingInfo from './LandingInfo'
 import Alert from '@material-ui/lab/Alert'
 import Collapse from '@material-ui/core/Collapse'
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton'
+import CloseIcon from '@material-ui/icons/Close'
 
 function App(props: any) {
   const classes = props.classes
@@ -27,35 +27,39 @@ function App(props: any) {
 
   return (
     <div className={classes.content + ' landing-content'}>
-      <div className={classes.toolbar} /> 
-      {login||logout?<Collapse in={open}
-        style={{
-          width: '300px',
-          margin: '0 auto',
-        }}
-      > 
-        <Alert severity="success" 
-
-        style={{
-          marginBottom: '16px',
-        }}
-
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-        >{login? "Login Successful" : "Logout Successful"}
-        
-        </Alert>
-        </Collapse> : <></>}
+      <div className={classes.toolbar} />
+      {login || logout ? (
+        <Collapse
+          in={open}
+          style={{
+            width: '300px',
+            margin: '0 auto',
+          }}
+        >
+          <Alert
+            severity="success"
+            style={{
+              marginBottom: '16px',
+            }}
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setOpen(false)
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+          >
+            {login ? 'Login Successful' : 'Logout Successful'}
+          </Alert>
+        </Collapse>
+      ) : (
+        <></>
+      )}
       <Carousel
         // auto
         width="100%"

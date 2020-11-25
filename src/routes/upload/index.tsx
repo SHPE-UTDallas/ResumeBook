@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import LabelInput from '../../components/LabelInput'
 import { Grid, Input, Button, Select } from '@material-ui/core'
 import NavBar from '../../components/NavBar'
@@ -129,8 +129,8 @@ class App extends React.Component<{ classes: any }> {
     }
 
     //Convert pdf to base64 since Netlify/AWS Lambda doesn't allow binary content
-    let base64 = await this.toBase64(event.target.pdf.files[0])
-    let formData = new FormData()
+    const base64 = await this.toBase64(event.target.pdf.files[0])
+    const formData = new FormData()
 
     formData.append('name', info.name)
     formData.append('email', info.email)
