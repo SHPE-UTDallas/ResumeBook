@@ -85,7 +85,7 @@ class Row extends React.Component {
               View
             </Button>
             <MuiThemeProvider theme={greenTheme}>
-              <CartButton userId={`${this.props.data._id}`} />
+              <CartButton users={this.props.data} />
             </MuiThemeProvider>
           </TableCell>
         </TableRow>

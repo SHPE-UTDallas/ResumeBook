@@ -10,9 +10,6 @@ import {
   TOGGLE_DRAWER,
 } from '../actionTypes'
 
-/*TODO:
-Fix mapping of 'Graduate Student' => grad and make the mappings for majors more intuitive/fast (Map structure? extra data but faster runtime than doing string splitting)
-*/
 const initialState = {
   data: [],
   tableData: [],
@@ -22,110 +19,89 @@ const initialState = {
     category: 'standing',
     direction: 'asc',
   },
-
-  search: '',
-
-  passingTags: {
+  currentFilterOptions: {
+    nameFilter: '',
     gpa: {
       min: 0,
     },
     standing: {
-      grad: true,
-      senior: true,
-      junior: true,
-      sophomore: true,
-      freshman: true,
+      'Graduate Student': true,
+      Senior: true,
+      Junior: true,
+      Sophomore: true,
+      Freshman: true,
     },
     major: {
-      be: true,
-      ce: true,
-      cs: true,
-      ee: true,
-      me: true,
-      se: true,
+      'Biomedical Engineering': true,
+      'Computer Engineering': true,
+      'Computer Science': true,
+      'Electrical Engineering': true,
+      'Mechanical Engineering': true,
+      'Software Engineering': true,
       other: true,
     },
   },
 }
-//Filter algorithm from: https://medium.com/better-programming/creating-a-multi-filter-function-to-filter-out-multiple-attributes-javascript-react-rails-5aad8e272142
-const newTable = (state, filter, category) => {
-  const collectedTrueKeys = {
-    major: [],
-    standing: [],
-  }
-  const { gpa, major, standing } = state.passingTags
-  if (category === 'major') {
-    major[filter] = !major[filter]
-  } else if (category === 'standing') {
-    standing[filter] = !standing[filter]
-  } else if (category === 'gpa') {
-    gpa.min = filter
-  }
-  for (let majorKey in major) {
-    if (major[majorKey]) collectedTrueKeys.major.push(majorKey)
-  }
-  for (let standingKey in standing) {
-    if (standing[standingKey]) collectedTrueKeys.standing.push(standingKey)
-  }
-  return multiPropsFilter(gpa, [...state.data], collectedTrueKeys)
+/* Helper object */
+let comparisonObj = {
+  'Graduate Student': 0,
+  Senior: 1,
+  Junior: 2,
+  Sophomore: 3,
+  Freshman: 4,
+  'Biomedical Engineering': 0,
+  'Computer Engineering': 1,
+  'Computer Science': 2,
+  'Electrical Engineering': 3,
+  'Mechanical Engineering': 4,
+  'Software Engineering': 5,
+  Other: 6,
 }
-const multiPropsFilter = (gpa, products, filters) => {
-  const filterKeys = Object.keys(filters)
-  return products.filter((product) => {
-    return filterKeys.every((key) => {
-      let str = product[key].split(' ')
-      if (str.length > 1) {
-        if (str[0] === 'Graduate')
-          //Will be fixed/mapped better in a later version
-          str = 'grad'
-        else str = (str[0].charAt(0) + str[1].charAt(0)).toLowerCase()
-      } else {
-        str = str[0].toLowerCase()
-      }
-      return filters[key].includes(str) && product.gpa >= gpa.min
-    })
+
+/*-----------------Utility Functions-----------------------*/
+const newTable = (state) => {
+  return state.data.filter((entry) => {
+    const { currentFilterOptions } = state
+    const { major, standing } = entry
+
+    //If the gpa doesn't match the filter, remove that entry
+    if (entry.gpa < currentFilterOptions.gpa.min) return false
+
+    //If the standing doesn't match the filters, remove that entry
+    if (!currentFilterOptions.standing[standing]) return false
+
+    //If their major is false (i.e. Computer Science or another pre-defined major) or if other is false and their major isn't already defined(comp sci, mech eng, ee, etc. => a major like ITS that isn't already listed), then remove it
+    if (
+      currentFilterOptions.major[major] === false ||
+      (currentFilterOptions.major.other === false &&
+        currentFilterOptions.major[major] === undefined)
+    )
+      return false
+    //Checks if the entry matches our 4 filtering options: major, standing, gpa, and the search bar filter (nameFilter)
+    return entry.name.toLowerCase().includes(currentFilterOptions.nameFilter)
   })
 }
+
 const updateTable = (state, filter, category) => {
-  return state.tableData.filter((product) => {
+  //state - current state
+  //filter - specific filter like junior, senior, biomedical engineering, etc.
+  //category - major, standing, gpa
+  const { major } = state.currentFilterOptions
+  return state.tableData.filter((entry) => {
     if (category !== 'gpa') {
-      let str = product[category].split(' ')
-      if (str.length > 1) {
-        if (str[0] === 'Graduate')
-          //Will be fixed/mapped better in a later version
-          str = 'grad'
-        else str = (str[0].charAt(0) + str[1].charAt(0)).toLowerCase()
-      } else {
-        str = str[0].toLowerCase()
-      }
-      return str !== filter
+      let str = entry[category]
+      return str !== filter && (filter !== 'other' || major[str] !== undefined)
     } else {
-      return product.gpa >= filter
+      return entry.gpa >= filter
     }
   })
 }
 
-//Reference: https://www.sitepoint.com/sort-an-array-of-objects-in-javascript/
+//Uses the comparisonObj to allow us to sort by Major and Standing
 const compareValues = (category, order = 'asc') => {
-  let myMap = new Map()
-  if (category === 'standing') {
-    myMap.set('Graduate Student', 0)
-    myMap.set('Senior', 1)
-    myMap.set('Junior', 2)
-    myMap.set('Sophomore', 3)
-    myMap.set('Freshman', 4)
-  } else {
-    myMap.set('Biomedical Engineering', 0)
-    myMap.set('Computer Engineering', 1)
-    myMap.set('Computer Science', 2)
-    myMap.set('Electrical Engineering', 3)
-    myMap.set('Mechanical Engineering', 4)
-    myMap.set('Software Engineering', 5)
-    myMap.set('Other', 6)
-  }
-  return function innerSort(obj1, obj2) {
-    let varA = myMap.get(obj1[category])
-    let varB = myMap.get(obj2[category])
+  return (obj1, obj2) => {
+    let varA = comparisonObj[obj1[category]]
+    let varB = comparisonObj[obj2[category]]
     let comparison = 0
     if (varA > varB) {
       comparison = 1
@@ -136,11 +112,13 @@ const compareValues = (category, order = 'asc') => {
   }
 }
 
+//function to filter by name
 const filterByNames = (searchQuery, entry) => {
   const name = entry.name.toLowerCase()
   return name.includes(searchQuery)
 }
 
+/*----------------Reducers-------------------------------*/
 export default function (state = initialState, action) {
   switch (action.type) {
     case STORE_DATA_FROM_API: {
@@ -154,29 +132,28 @@ export default function (state = initialState, action) {
 
     case ADD_FILTER: {
       const { category, filter } = action.payload
-      return {
+      const newState = {
         ...state,
-        passingTags: {
-          ...state.passingTags,
+        currentFilterOptions: {
+          ...state.currentFilterOptions,
           [category]: {
-            ...state.passingTags[category],
-            [filter]: !state.passingTags[category][filter],
+            ...state.currentFilterOptions[category],
+            [filter]: !state.currentFilterOptions[category][filter],
           },
         },
-        tableData: newTable({ ...state }, filter, category)
-          .sort(compareValues(state.sort.category, state.sort.direction))
-          .filter((entry) => filterByNames(state.search, entry)),
       }
+      newState.tableData = newTable(newState)
+      return newState
     }
     case REMOVE_FILTER: {
       const { category, filter } = action.payload
       return {
         ...state,
-        passingTags: {
-          ...state.passingTags,
+        currentFilterOptions: {
+          ...state.currentFilterOptions,
           [category]: {
-            ...state.passingTags[category],
-            [filter]: !state.passingTags[category][filter],
+            ...state.currentFilterOptions[category],
+            [filter]: !state.currentFilterOptions[category][filter],
           },
         },
         tableData: updateTable({ ...state }, filter, category),
@@ -186,8 +163,8 @@ export default function (state = initialState, action) {
       const { num } = action.payload
       return {
         ...state,
-        passingTags: {
-          ...state.passingTags,
+        currentFilterOptions: {
+          ...state.currentFilterOptions,
           gpa: {
             min: num,
           },
@@ -197,19 +174,19 @@ export default function (state = initialState, action) {
     }
     case DECREASE_GPA: {
       const { num } = action.payload
-      return {
+      const newState = {
         ...state,
-        passingTags: {
-          ...state.passingTags,
+        currentFilterOptions: {
+          ...state.currentFilterOptions,
           gpa: {
             min: num,
           },
         },
-        tableData: newTable({ ...state }, num, 'gpa').filter((entry) =>
-          filterByNames(state.search, entry)
-        ),
       }
+      newState.tableData = newTable(newState)
+      return newState
     }
+
     case SORT_TABLE: {
       const { category, direction } = action.payload
       return {
@@ -227,7 +204,10 @@ export default function (state = initialState, action) {
       search = search.toLowerCase()
       return {
         ...state,
-        search: search,
+        currentFilterOptions: {
+          ...state.currentFilterOptions,
+          nameFilter: search,
+        },
         tableData: [...state.tableData].filter((entry) => filterByNames(search, entry)),
       }
     }
@@ -235,11 +215,15 @@ export default function (state = initialState, action) {
     case FILTER_NAME_DEL: {
       let { search } = action.payload
       search = search.toLowerCase()
-      return {
+      const newState = {
         ...state,
-        search: search,
-        tableData: [...state.data].filter((entry) => filterByNames(search, entry)),
+        currentFilterOptions: {
+          ...state.currentFilterOptions,
+          nameFilter: search,
+        },
       }
+      newState.tableData = newTable(newState)
+      return newState
     }
 
     case TOGGLE_DRAWER: {

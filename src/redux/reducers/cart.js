@@ -1,26 +1,26 @@
 import { ADD_TO_CART, REMOVE_FROM_CART } from '../actionTypes'
 
 const initialState = {
-  ids: [],
   numInCart: 0,
+  users: [],
 }
 
 export default function (state = initialState, action) {
   switch (action.type) {
     case ADD_TO_CART: {
-      const { userId } = action.payload
+      const { users } = action.payload
       return {
         ...state,
-        ids: [...state.ids, userId],
+        users: [...state.users, users],
         numInCart: state.numInCart + 1,
       }
     }
     case REMOVE_FROM_CART: {
-      const { userId } = action.payload
-      const index = state.ids.indexOf(userId)
+      const { users } = action.payload
+      const idex = state.users.indexOf(users)
       return {
         ...state,
-        ids: [...state.ids.slice(0, index), ...state.ids.slice(index + 1)],
+        users: [...state.users.slice(0, idex), ...state.users.slice(idex + 1)],
         numInCart: state.numInCart - 1,
       }
     }

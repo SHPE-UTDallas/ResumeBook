@@ -15,17 +15,17 @@ import {
   // TOGGLE_THEME,
 } from './actionTypes'
 
-export const addToCart = (userId) => ({
+export const addToCart = (users) => ({
   type: ADD_TO_CART,
   payload: {
-    userId,
+    users,
   },
 })
 
-export const removeFromCart = (userId) => ({
+export const removeFromCart = (users) => ({
   type: REMOVE_FROM_CART,
   payload: {
-    userId,
+    users,
   },
 })
 
