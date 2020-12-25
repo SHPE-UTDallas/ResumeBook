@@ -8,12 +8,6 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@netlify/zip-it-and-ship-it": "^1.3.1",
     "@reduxjs/toolkit": "^1.3.6",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "http-proxy-middleware": "^1.0.4",
-    "netlify-lambda": "^1.6.3",
-    "node-sass": "^4.14.1",
     "query-string": "^6.13.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -50,6 +44,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "babel-eslint": "^10.1.0",
@@ -64,6 +61,8 @@
     "eslint-plugin-react-hooks": "^2.0.0",
     "gh-pages": "^2.2.0",
     "husky": "^4.2.5",
+    "netlify-lambda": "^1.6.3",
+    "node-sass": "^4.14.1",
     "prettier": "^2.0.5",
     "styled-components": "^5.1.1"
   },
