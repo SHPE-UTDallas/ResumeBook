@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import PersonIcon from '@material-ui/icons/Person'
 import Typography from '@material-ui/core/Typography'
+import './styles/NavBar.sass'
 
 class Cart extends React.Component {
   constructor() {
