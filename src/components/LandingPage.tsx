@@ -7,6 +7,7 @@ import Alert from '@material-ui/lab/Alert'
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import CarouselImages from '../json/carouselImageUrls.json'
 
 function App(props: any) {
   const classes = props.classes
@@ -20,7 +21,7 @@ function App(props: any) {
     carousel.push(
       <img
         key={`carousel-img-${i}`}
-        src={`/carousel/${i}.jpg`}
+        src={`${CarouselImages.images[i-1]}`}
         alt="SHPE organization images"
       />
     )
