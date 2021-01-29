@@ -80,8 +80,8 @@ function ApprovalRow(props) {
             View
           </Button>
           <MuiThemeProvider theme={greenTheme}>
-            <DownloadButton documentId={`${props.data._id}`} />
-            <RemoveButton documentId={`${props.data._id}`} />
+            <DownloadButton candidate={props.data} />
+            <RemoveButton candidate={`${props.data}`} />
           </MuiThemeProvider>
         </TableCell>
       </TableRow>

@@ -22,10 +22,10 @@ export const addToCart = (users) => ({
   },
 })
 
-export const removeFromCart = (users) => ({
+export const removeFromCart = (user) => ({
   type: REMOVE_FROM_CART,
   payload: {
-    users,
+    user,
   },
 })
 

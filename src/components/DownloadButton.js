@@ -1,11 +1,25 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
+import saveAs from 'file-saver'
 
-function Download() {
+const startDownload = (candidate) => {
+  fetch(candidate.resume, {
+    responseType: 'blob',
+  })
+    .then((response) => response.blob())
+    .then((blob) => saveAs(blob, `${candidate.name} - Resume.pdf`))
+}
+
+function Download(props) {
   return (
     <React.Fragment>
-      <Button variant="outlined" color="primary" style={{ marginRight: '8px' }}>
+      <Button
+        onClick={() => startDownload(props.candidate)}
+        variant="outlined"
+        color="primary"
+        style={{ marginRight: '8px' }}
+      >
         Download
       </Button>
     </React.Fragment>
@@ -13,6 +27,6 @@ function Download() {
 }
 
 Download.propTypes = {
-  documentId: PropTypes.string.isRequired,
+  candidate: PropTypes.object.isRequired,
 }
 export default Download

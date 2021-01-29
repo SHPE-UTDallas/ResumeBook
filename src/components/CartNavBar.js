@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import PersonIcon from '@material-ui/icons/Person'
 import Typography from '@material-ui/core/Typography'
 import './styles/NavBar.sass'
+import { withRouter } from 'react-router-dom'
 
 class Cart extends React.Component {
   constructor() {
@@ -13,7 +14,7 @@ class Cart extends React.Component {
 
   render() {
     return (
-      <div id="cart-navbar">
+      <div id="cart-navbar" onClick={() => this.props.history.push('/cart')}>
         <Typography className={this.props.classes.cartText}>
           {this.props.numInCart}
         </Typography>
@@ -26,6 +27,7 @@ class Cart extends React.Component {
 Cart.propTypes = {
   classes: PropTypes.object.isRequired,
   numInCart: PropTypes.number.isRequired,
+  history: PropTypes.any.isRequired,
 }
 
 const mapStateToProps = (state) => {
@@ -33,4 +35,4 @@ const mapStateToProps = (state) => {
   return { numInCart: numInCart }
 }
 
-export default connect(mapStateToProps)(Cart)
+export default connect(mapStateToProps)(withRouter(Cart))

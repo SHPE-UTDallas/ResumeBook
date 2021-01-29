@@ -30,57 +30,6 @@ class SimpleTable extends React.Component {
   }
 
   async componentDidMount() {
-    // dummy data for now
-    this.props.storeDataFromAPI([
-      {
-        _id: 1,
-        name: 'Mahmud Bouda',
-        linkedin: 'http://dummyimage.com/199x136.bmp/dddddd/000000',
-        gpa: 1.0,
-        major: 'Biomedical Engineering',
-        standing: 'Senior',
-        resume:
-          'https://engineering.utdallas.edu/engineering/files/IPP-Resume-Tips-Samples-2019.pdf',
-      },
-      {
-        _id: 2,
-        name: 'Libbi Worman',
-        linkedin: 'http://dummyimage.com/217x234.jpg/cc0000/ffffff',
-        gpa: 3.7,
-        major: 'Other',
-        standing: 'Junior',
-        resume: 'https://www.mccc.edu/programs/engr_sci_as/pdf/resume.pdf',
-      },
-      {
-        _id: 3,
-        name: 'Derry de Broke',
-        linkedin: 'http://dummyimage.com/139x182.bmp/dddddd/000000',
-        gpa: 1.3,
-        major: 'Computer Science',
-        standing: 'Freshman',
-        resume: 'https://www.mccc.edu/programs/engr_sci_as/pdf/resume.pdf',
-      },
-      {
-        _id: 4,
-        name: 'Britni De Ath',
-        linkedin: 'http://dummyimage.com/192x114.jpg/cc0000/ffffff',
-        gpa: 0.3,
-        major: 'Computer Science',
-        standing: 'Graduate Student',
-        resume:
-          'https://engineering.utdallas.edu/engineering/files/IPP-Resume-Tips-Samples-2019.pdf',
-      },
-      {
-        _id: 5,
-        name: 'Kimberly Pellett',
-        linkedin: 'http://dummyimage.com/248x153.bmp/cc0000/ffffff',
-        gpa: 2.8,
-        major: 'Computer Engineering',
-        standing: 'Senior',
-        resume: 'https://www.mccc.edu/programs/engr_sci_as/pdf/resume.pdf',
-      },
-    ])
-    console.log(this.props.data)
     this.setState({ loading: false })
   }
 
@@ -208,7 +157,7 @@ SimpleTable.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const { tableData } = state.data
+  const tableData = state.cart.users
   const { category, direction } = state.data.sort
   return { data: tableData, orderBy: category, order: direction }
 }

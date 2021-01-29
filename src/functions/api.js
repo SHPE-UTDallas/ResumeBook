@@ -3,7 +3,7 @@ const express = require('express')
 const serverless = require('serverless-http')
 const cookieParser = require('cookie-parser')
 var multer = require('multer')
-var upload = multer({ storage: storage })
+var upload = multer({ storage: storage, limits: { fieldSize: 10 * 1024 * 1024 } })
 var storage = multer.memoryStorage()
 var cloudinary = require('cloudinary').v2
 require('./utils/auth')
