@@ -15,7 +15,7 @@ class AuthWrapper extends React.Component {
   }
 
   async componentDidMount() {
-    fetch(`${ENDPOINT}/auth/loginStatus`).then(async (res) => {
+    await fetch(`${ENDPOINT}/auth/loginStatus`).then(async (res) => {
       res = await res.json()
       await this.props.loginSuccess(res.verified, res.officer)
     })
