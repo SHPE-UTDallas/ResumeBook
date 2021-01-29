@@ -9,7 +9,8 @@ exports.BASE_URL =
 
 exports.COOKIE_SECURE = process.env.NODE_ENV !== 'development'
 
-exports.CLOUDINARY_TESTDATAPATH = process.env.NODE_ENV === 'development' ? 'test/' : ''
+exports.CLOUDINARY_TESTDATAPATH =
+  process.env.NODE_ENV === 'development' ? 'test/' : 'prod/'
 exports.ENDPOINT = process.env.NODE_ENV === 'development' ? '/.netlify/functions' : '/api'
 
 exports.SECRET = process.env.SECRET || 'SUPERSECRET'

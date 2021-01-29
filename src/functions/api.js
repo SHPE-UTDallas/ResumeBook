@@ -37,7 +37,7 @@ async function uploadDocument(res, name, base64) {
         res.status(500).send('Unable to upload your resume to our CDN. Please try again')
       }
       console.log(`Cloudinary Successfully uploaded a resume for "${name}"`)
-      return result.secure_url
+      return { url: result.secure_url, public_id: result.public_id }
     }
   )
 }
@@ -71,8 +71,13 @@ app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
   }
 
   // Upload the resume to the cloudinary CDN
-  const url = await uploadDocument(res, `${req.body.name} - Resume`, req.body.pdf)
-  profile.resume = url.secure_url
+  const { url, public_id } = await uploadDocument(
+    res,
+    `${req.body.name} - Resume`,
+    req.body.pdf
+  )
+  profile.resume = url
+  profile.resume_public_id = public_id
 
   // Add an entry to the resumes collection
   const resumesRef = db.collection('resumes')
