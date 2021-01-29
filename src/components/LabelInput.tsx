@@ -19,6 +19,7 @@ export default function LabelInput(props: {
   name: string
   label: string
   type?: string
+  required?: boolean
   className?: string
   children?: ReactElement
 }) {
@@ -27,7 +28,7 @@ export default function LabelInput(props: {
       className={`dg-form-input MuiFormControlLabel-label MuiTypography-body1 MuiFormControlLabel-root ${props.className}`}
     >
       {`${props.label}: `}
-      {props.children ?? <Input required type={props.type ?? 'text'} name={props.name} />}
+      {props.children ?? <Input required={props.required} type={props.type ?? 'text'} name={props.name} />}
     </label>
   )
 }

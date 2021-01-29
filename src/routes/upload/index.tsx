@@ -21,7 +21,7 @@ function isLIURL(str: string) {
 }
 
 function isValidLIUser(str: string) {
-  const pattern = new RegExp('^[a-zA-Z\\d-]{3,100}$', 'i') // fragment locator
+  const pattern = new RegExp('^[a-zA-Z\\d-]{3,100}/?$', 'i') // fragment locator
   return !!pattern.test(str)
 }
 
@@ -54,7 +54,8 @@ class App extends React.Component<{ classes: any }> {
   normalizeData(event: React.ChangeEvent<any>) {
     const name = event.target.name.value.trim()
     const email = event.target.email.value.trim()
-    const gpa = event.target.gpa.value.trim()
+    // const gpa = event.target.gpa.value.trim()
+    const gpa = 0.0
     const standing = event.target.standing.value.trim()
 
     let linkedIn = event.target.linkedin.value.trim().toLowerCase()
@@ -121,21 +122,22 @@ class App extends React.Component<{ classes: any }> {
       return false
     }
 
-    if (!info.linkedIn) {
+    if (!info.linkedIn && event.target.linkedin.value.trim().length !== 0) {
       returnState.error = 'Not a valid LinkedIn url'
       returnState.success = false
       this.setState(returnState)
       return false
     }
-
+    
     //Convert pdf to base64 since Netlify/AWS Lambda doesn't allow binary content
     let base64 = await this.toBase64(event.target.pdf.files[0])
     let formData = new FormData()
 
     formData.append('name', info.name)
     formData.append('email', info.email)
-    formData.append('linkedin', info.linkedIn)
-    formData.append('gpa', info.gpa)
+    if(info.linkedIn != null)
+      formData.append('linkedin', info.linkedIn)
+    // formData.append('gpa', info.gpa)
     formData.append('major', info.major)
     formData.append('standing', info.standing)
     formData.append('pdf', base64 as string)
@@ -177,8 +179,8 @@ class App extends React.Component<{ classes: any }> {
             >
               <LabelInput name="name" label="Name" />
               <LabelInput name="email" label="Email" />
-              <LabelInput name="linkedin" label="LinkedIn" />
-              <LabelInput label="GPA" name="gpa">
+              <LabelInput name="linkedin" label="LinkedIn (Optional)" required={false} />
+              {/* <LabelInput label="GPA" name="gpa">
                 <Input
                   inputProps={{
                     step: 0.1,
@@ -187,7 +189,7 @@ class App extends React.Component<{ classes: any }> {
                   name="gpa"
                   required
                 />
-              </LabelInput>
+              </LabelInput> */}
               <LabelInput name="major" label="Major">
                 <Select
                   ref={this.selectWrapper}
@@ -228,6 +230,7 @@ class App extends React.Component<{ classes: any }> {
                 submit
               </Button>
             </form>
+            <p>Having any issues? Please email <a href="mailto:gabriel.flynn@utdallas.edu">gabriel.flynn@utdallas.edu</a></p>
           </Grid>
         </div>
       </div>

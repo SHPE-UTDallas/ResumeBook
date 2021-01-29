@@ -191,7 +191,7 @@ function App() {
             path="/logout"
             render={(routerProps) => <Logout {...routerProps} classes={classes} />}
           />
-          <LoggedInRoute
+          <Route
             exact
             path="/upload"
             render={(routerProps) => <Upload {...routerProps} classes={classes} />}

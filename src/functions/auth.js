@@ -32,7 +32,10 @@ app.post(
   `${ENDPOINT}/auth/verify`,
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    if (req.body.code.toLocaleLowerCase() === VERIFICATION_CODE.toLocaleLowerCase()) {
+    if (
+      req.body.code.trim().toLocaleLowerCase() ===
+      VERIFICATION_CODE.trim().toLocaleLowerCase()
+    ) {
       let userRef = db.collection('users')
       await userRef
         .where('email', '==', `${req.user.email}`)
@@ -102,7 +105,9 @@ app.post(
   `${ENDPOINT}/auth/officer`,
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    if (req.body.code.toLocaleLowerCase() === OFFICER_CODE.toLocaleLowerCase()) {
+    if (
+      req.body.code.trim().toLocaleLowerCase() === OFFICER_CODE.trim().toLocaleLowerCase()
+    ) {
       let userRef = db.collection('users')
 
       await userRef

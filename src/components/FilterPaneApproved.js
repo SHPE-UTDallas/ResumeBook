@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { useTheme } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
-import Input from '@material-ui/core/Input'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import LabelInput from './LabelInput'
@@ -51,11 +50,6 @@ function ResponsiveDrawer(props) {
     else props.addFilter(name, category)
   }
 
-  const handleGPAChange = (gpa) => {
-    if (gpa > props.gpa.min) props.increaseGPA(gpa, 'gpa')
-    else props.decreaseGPA(gpa)
-  }
-
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -78,7 +72,7 @@ function ResponsiveDrawer(props) {
                     </Select>
                   </Grid>
                 </LabelInput>
-                <h3
+                {/*REMOVED FOR GPA: <h3
                   style={{
                     marginTop: '0px',
                     marginBottom: '0px',
@@ -109,7 +103,7 @@ function ResponsiveDrawer(props) {
                       />
                     </Grid>
                   }
-                />
+                /> */}
               </Grid>
               <Grid item xs={12}>
                 <h3 style={{ marginBottom: '0px' }}>Standing</h3>
@@ -120,10 +114,10 @@ function ResponsiveDrawer(props) {
                     className={classes.formEntry}
                     control={
                       <Switch
-                        checked={props.standing.grad}
+                        checked={props.standing['Graduate Student']}
                         onChange={(e) => handleChange(e.target.name, 'standing')}
                         color="primary"
-                        name="grad"
+                        name="Graduate Student"
                       />
                     }
                     label="Graduate Student"
@@ -134,10 +128,10 @@ function ResponsiveDrawer(props) {
                     className={classes.formEntry}
                     control={
                       <Switch
-                        checked={props.standing.senior}
+                        checked={props.standing.Senior}
                         onChange={(e) => handleChange(e.target.name, 'standing')}
                         color="primary"
-                        name="senior"
+                        name="Senior"
                       />
                     }
                     label="Senior"
@@ -148,10 +142,10 @@ function ResponsiveDrawer(props) {
                     className={classes.formEntry}
                     control={
                       <Switch
-                        checked={props.standing.junior}
+                        checked={props.standing.Junior}
                         onChange={(e) => handleChange(e.target.name, 'standing')}
                         color="primary"
-                        name="junior"
+                        name="Junior"
                       />
                     }
                     label="Junior"
@@ -162,10 +156,10 @@ function ResponsiveDrawer(props) {
                     className={classes.formEntry}
                     control={
                       <Switch
-                        checked={props.standing.sophomore}
+                        checked={props.standing.Sophomore}
                         onChange={(e) => handleChange(e.target.name, 'standing')}
                         color="primary"
-                        name="sophomore"
+                        name="Sophomore"
                       />
                     }
                     label="Sophomore"
@@ -176,10 +170,10 @@ function ResponsiveDrawer(props) {
                     className={classes.formEntry}
                     control={
                       <Switch
-                        checked={props.standing.freshman}
+                        checked={props.standing.Freshman}
                         onChange={(e) => handleChange(e.target.name, 'standing')}
                         color="primary"
-                        name="freshman"
+                        name="Freshman"
                       />
                     }
                     label="Freshman"
@@ -195,10 +189,10 @@ function ResponsiveDrawer(props) {
                     className={classes.formEntry}
                     control={
                       <Switch
-                        checked={props.major.be}
+                        checked={props.major['Biomedical Engineering']}
                         onChange={(e) => handleChange(e.target.name, 'major')}
                         color="primary"
-                        name="be"
+                        name="Biomedical Engineering"
                       />
                     }
                     label="Biomedical Engineering"
@@ -209,10 +203,10 @@ function ResponsiveDrawer(props) {
                     className={classes.formEntry}
                     control={
                       <Switch
-                        checked={props.major.ce}
+                        checked={props.major['Computer Engineering']}
                         onChange={(e) => handleChange(e.target.name, 'major')}
                         color="primary"
-                        name="ce"
+                        name="Computer Engineering"
                       />
                     }
                     label="Computer Engineering"
@@ -223,10 +217,10 @@ function ResponsiveDrawer(props) {
                     className={classes.formEntry}
                     control={
                       <Switch
-                        checked={props.major.cs}
+                        checked={props.major['Computer Science']}
                         onChange={(e) => handleChange(e.target.name, 'major')}
                         color="primary"
-                        name="cs"
+                        name="Computer Science"
                       />
                     }
                     label="Computer Science"
@@ -237,10 +231,10 @@ function ResponsiveDrawer(props) {
                     className={classes.formEntry}
                     control={
                       <Switch
-                        checked={props.major.ee}
+                        checked={props.major['Electrical Engineering']}
                         onChange={(e) => handleChange(e.target.name, 'major')}
                         color="primary"
-                        name="ee"
+                        name="Electrical Engineering"
                       />
                     }
                     label="Electrical Engineering"
@@ -251,10 +245,10 @@ function ResponsiveDrawer(props) {
                     className={classes.formEntry}
                     control={
                       <Switch
-                        checked={props.major.me}
+                        checked={props.major['Mechanical Engineering']}
                         onChange={(e) => handleChange(e.target.name, 'major')}
                         color="primary"
-                        name="me"
+                        name="Mechanical Engineering"
                       />
                     }
                     label="Mechanical Engineering"
@@ -265,10 +259,10 @@ function ResponsiveDrawer(props) {
                     className={classes.formEntry}
                     control={
                       <Switch
-                        checked={props.major.se}
+                        checked={props.major['Software Engineering']}
                         onChange={(e) => handleChange(e.target.name, 'major')}
                         color="primary"
-                        name="se"
+                        name="Software Engineering"
                       />
                     }
                     label="Software Engineering"
@@ -345,7 +339,7 @@ ResponsiveDrawer.propTypes = {
 
 const mapStateToProps = (state) => {
   const { mobileOpen } = state.data
-  const { gpa, standing, major } = state.data.passingTags
+  const { gpa, standing, major } = state.data.currentFilterOptions
   return {
     mobileOpen: mobileOpen,
     gpa: gpa,
