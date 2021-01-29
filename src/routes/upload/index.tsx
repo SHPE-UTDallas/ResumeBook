@@ -1,6 +1,6 @@
 import React from 'react'
 import LabelInput from '../../components/LabelInput'
-import { Grid, Input, Button, Select } from '@material-ui/core'
+import { Grid, Button, Select } from '@material-ui/core'
 import NavBar from '../../components/NavBar'
 import { ENDPOINT } from '../../utils/config'
 import FileInput from '../../components/FileInput'

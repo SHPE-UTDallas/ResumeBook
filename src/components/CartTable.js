@@ -12,10 +12,10 @@ import { storeDataFromAPI, sortTable, filterNameDel } from '../redux/actions'
 import PropTypes from 'prop-types'
 import CartRow from './CartRow'
 import LoadingIndicator from './LoadingIndicator.js'
-import CartSearchBar from './CartSearchBar'
 import DownloadAllButton from '../components/DownloadAllButton'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
+import Alert from '@material-ui/lab/Alert'
 
 const greenTheme = createMuiTheme({
   palette: { primary: { 500: '#28a745' } },
@@ -26,6 +26,7 @@ class SimpleTable extends React.Component {
     super(props)
     this.state = {
       loading: true,
+      errorMessage: '',
     }
   }
 
@@ -82,13 +83,15 @@ class SimpleTable extends React.Component {
     return content
   }
 
+  setErrorMesage = (message) => {
+    this.setState({ errorMessage: message })
+  }
+
   render() {
     return (
       <>
         <Grid container spacing={3}>
-          <Grid item xs={5} sm={3}>
-            <CartSearchBar classes={this.props.classes} />
-          </Grid>
+          <Grid item xs={5} sm={3}></Grid>
           <Grid item xs={2} sm={4}></Grid>
           <Grid item xs={5} sm={4}>
             <DownloadAllButton
@@ -96,9 +99,19 @@ class SimpleTable extends React.Component {
                 marginTop: '10px',
                 marginLeft: '17px',
               }}
+              setErrorMessage={this.setErrorMesage}
             />
           </Grid>
         </Grid>
+        {this.state.errorMessage ? (
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Alert severity="error">{this.state.errorMessage}</Alert>
+            </Grid>
+          </Grid>
+        ) : (
+          <></>
+        )}
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
