@@ -9,7 +9,7 @@ function App(props) {
     <>
       <Navbar enableDrawer={false} classes={classes} />
       <div style={{ justifyContent: 'center' }} className={classes.root}></div>
-      <main className={classes.content}>
+      <main className={classes.content} style={{ width: '85%', margin: '0 auto' }}>
         <div className={classes.toolbar} />
         <h1 style={{ textAlign: 'center' }}>Members</h1>
         <Table classes={classes} />
