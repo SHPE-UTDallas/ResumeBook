@@ -14,7 +14,7 @@ function isLIURL(str: string) {
   const pattern = new RegExp(
     '^(https?:\\/\\/)?' + // protocol
       '(www.)?linkedin.com/in' + // domain name
-      '(\\/[-a-z\\d%_.~+]+)$', // port and path,
+      '(\\/[-a-z\\d%_.~+]+)\/?$', // port and path,
     'i'
   ) // fragment locator
   return !!pattern.test(str)
