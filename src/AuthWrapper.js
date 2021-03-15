@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import App from './App'
 import React from 'react'
+import LoadingIndicator from './components/LoadingIndicator'
 import { ENDPOINT } from './utils/config'
 
 // Parent
@@ -28,7 +29,7 @@ class AuthWrapper extends React.Component {
     if (this.state.authVerified) {
       return <App />
     } else {
-      return null
+      return <LoadingIndicator />
     }
   }
 }
