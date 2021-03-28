@@ -44,8 +44,7 @@ app.post(
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     if (
-      req.body.code.trim().toLocaleLowerCase() ===
-      VERIFICATION_CODE.trim().toLocaleLowerCase()
+      VERIFICATION_CODE.has(req.body.code.trim().toLocaleLowerCase()) // The verification codes all have already been trimmed and converted to the locale lowercase
     ) {
       let userRef = db.collection('users')
       await userRef
