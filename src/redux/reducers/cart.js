@@ -16,11 +16,13 @@ export default function (state = initialState, action) {
       }
     }
     case REMOVE_FROM_CART: {
-      const { users } = action.payload
-      const idex = state.users.indexOf(users)
+      const { user } = action.payload
+      const idex = state.users.indexOf(user)
+      const newArr = [...state.users]
+      newArr.splice(idex, 1)
       return {
         ...state,
-        users: [...state.users.slice(0, idex), ...state.users.slice(idex + 1)],
+        users: newArr,
         numInCart: state.numInCart - 1,
       }
     }

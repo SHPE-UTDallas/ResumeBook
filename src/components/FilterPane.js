@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { useTheme } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
-import Input from '@material-ui/core/Input'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import { connect } from 'react-redux'
@@ -48,11 +47,6 @@ function ResponsiveDrawer(props) {
     else props.addFilter(name, category)
   }
 
-  const handleGPAChange = (gpa) => {
-    if (gpa > props.gpa.min) props.increaseGPA(gpa, 'gpa')
-    else props.decreaseGPA(gpa)
-  }
-
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -61,6 +55,7 @@ function ResponsiveDrawer(props) {
           <h2>Filter Options</h2>
           <Box ml={1}>
             <FormGroup>
+              {/* REMOVED FOR GPA: 
               <Grid item xs={12}>
                 <h3
                   style={{
@@ -94,7 +89,7 @@ function ResponsiveDrawer(props) {
                     </Grid>
                   }
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <h3 style={{ marginBottom: '0px' }}>Standing</h3>
               </Grid>

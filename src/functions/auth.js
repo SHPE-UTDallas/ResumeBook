@@ -20,7 +20,7 @@ const { db } = require('./utils/firebaseConfig')
 
 const handleCallback = (req, res) => {
   res
-    .cookie('jwt', req.user.jwt, { httpOnly: true, COOKIE_SECURE })
+    .cookie('jwt', req.user.jwt, { httpOnly: true, secure: COOKIE_SECURE, expires: 0 })
     .redirect('/?login=true')
 }
 
@@ -28,11 +28,24 @@ app.post(`${ENDPOINT}/auth/logout`, (req, res) => {
   res.clearCookie('jwt').send({ message: 'Successfully logged out' })
 })
 
+//Endpoint to check if a user's jwt cookie is still valid
+app.get(
+  `${ENDPOINT}/auth/loginStatus`,
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    return res
+      .status(200)
+      .json({ officer: req.user.officer, verified: req.user.verified })
+  }
+)
+
 app.post(
   `${ENDPOINT}/auth/verify`,
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    if (req.body.code.toLocaleLowerCase() === VERIFICATION_CODE.toLocaleLowerCase()) {
+    if (
+      VERIFICATION_CODE.has(req.body.code.trim().toLocaleLowerCase()) // The verification codes all have already been trimmed and converted to the locale lowercase
+    ) {
       let userRef = db.collection('users')
       await userRef
         .where('email', '==', `${req.user.email}`)
@@ -102,7 +115,9 @@ app.post(
   `${ENDPOINT}/auth/officer`,
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    if (req.body.code.toLocaleLowerCase() === OFFICER_CODE.toLocaleLowerCase()) {
+    if (
+      req.body.code.trim().toLocaleLowerCase() === OFFICER_CODE.trim().toLocaleLowerCase()
+    ) {
       let userRef = db.collection('users')
 
       await userRef

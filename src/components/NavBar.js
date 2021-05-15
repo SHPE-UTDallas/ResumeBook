@@ -53,6 +53,7 @@ function NavBar(props) {
           </Typography>
           <div id="navbar-cart-logbutton">
             <Cart classes={classes} />
+            {/* wanted to add cart class here */}
             <LoginLogoutButton loggedIn={props.isAuthenticated} />
           </div>
         </Toolbar>

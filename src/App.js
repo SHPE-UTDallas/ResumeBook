@@ -13,6 +13,7 @@ import Logout from './routes/logout/index'
 import Upload from './routes/upload/index'
 import Officer from './routes/officer/index'
 import OfficerVerification from './routes/officer/verify'
+import Cart from './routes/cart/index'
 import NoMatch from './routes/404'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { green } from '@material-ui/core/colors'
@@ -191,10 +192,15 @@ function App() {
             path="/logout"
             render={(routerProps) => <Logout {...routerProps} classes={classes} />}
           />
-          <LoggedInRoute
+          <Route
             exact
             path="/upload"
             render={(routerProps) => <Upload {...routerProps} classes={classes} />}
+          />
+          <Route
+            exact
+            path="/cart"
+            render={(routeProps) => <Cart {...routeProps} classes={classes} />}
           />
           <Route
             render={(routerProps) => <NoMatch {...routerProps} classes={classes} />}

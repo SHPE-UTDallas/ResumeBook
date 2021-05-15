@@ -3,6 +3,9 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import App from './App'
 import React from 'react'
+import LoadingIndicator from './components/LoadingIndicator'
+import { ENDPOINT } from './utils/config'
+
 // Parent
 class AuthWrapper extends React.Component {
   constructor(props) {
@@ -13,13 +16,12 @@ class AuthWrapper extends React.Component {
   }
 
   async componentDidMount() {
-    if (JSON.parse(localStorage.getItem('isLoggedIn')) === true) {
-      const verificationStatus =
-        JSON.parse(localStorage.getItem('verified')) === true ? true : false
-      const officerStatus =
-        JSON.parse(localStorage.getItem('officer')) === true ? true : false
-      await this.props.loginSuccess(verificationStatus, officerStatus)
-    }
+    await fetch(`${ENDPOINT}/auth/loginStatus`).then(async (res) => {
+      if (res.status === 200) {
+        res = await res.json()
+        await this.props.loginSuccess(res.verified, res.officer)
+      }
+    })
     this.setState({ authVerified: true })
   }
 
@@ -27,7 +29,7 @@ class AuthWrapper extends React.Component {
     if (this.state.authVerified) {
       return <App />
     } else {
-      return null
+      return <LoadingIndicator />
     }
   }
 }

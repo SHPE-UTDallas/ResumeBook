@@ -3,7 +3,7 @@ const express = require('express')
 const serverless = require('serverless-http')
 const cookieParser = require('cookie-parser')
 var multer = require('multer')
-var upload = multer({ storage: storage })
+var upload = multer({ storage: storage, limits: { fieldSize: 10 * 1024 * 1024 } })
 var storage = multer.memoryStorage()
 var cloudinary = require('cloudinary').v2
 require('./utils/auth')
@@ -28,7 +28,7 @@ async function uploadDocument(res, name, base64) {
       resource_type: 'raw',
       format: 'pdf',
     },
-    (err, result) => {
+    (err) => {
       if (err) {
         console.error(
           `Cloudinary was unable to upload the resume for "${name}" successfully`
@@ -37,134 +37,125 @@ async function uploadDocument(res, name, base64) {
         res.status(500).send('Unable to upload your resume to our CDN. Please try again')
       }
       console.log(`Cloudinary Successfully uploaded a resume for "${name}"`)
-      return result.secure_url
     }
   )
 }
 
-app.post(
-  `${ENDPOINT}/api/file`,
-  passport.authenticate('jwt', { session: false }),
-  upload.none(),
-  async (req, res) => {
-    /* TODO:
-     *  - HANDLE ERROR INCASE CLOUDINARY UPLOAD DOESN'T WORK
-     *  - INPUT VALIDATION
-     *  - Select for majors
-     *  - Verification
+app.post(`${ENDPOINT}/api/file`, upload.none(), async (req, res) => {
+  /* TODO:
+   *  - HANDLE ERROR INCASE CLOUDINARY UPLOAD DOESN'T WORK
+   *  - INPUT VALIDATION
+   *  - Select for majors
+   *  - Verification
+   */
+
+  const profile = {
+    name: req.body.name,
+    email: req.body.email,
+    major: req.body.major,
+    standing: req.body.standing,
+    resume: '',
+    approved: false,
+  }
+
+  //Check LinkedIn and add optional field
+  if (
+    req.body.linkedin &&
+    !startsWith(req.body.linkedin, 'https://www.linkedin.com/in/')
+  ) {
+    res.sendStatus(422)
+    return
+  } else if (req.body.linkedin != null) {
+    profile.linkedin = req.body.linkedin.toLowerCase()
+  }
+
+  // Upload the resume to the cloudinary CDN
+  const { secure_url, public_id } = await uploadDocument(
+    res,
+    `${req.body.name} - Resume`,
+    req.body.pdf
+  )
+  profile.resume = secure_url
+  profile.resume_public_id = public_id
+
+  // Add an entry to the resumes collection
+  const resumesRef = db.collection('resumes')
+
+  console.log(`Performing a query to figure out if a resume exists for ${profile.name}`)
+  const snapshot = await resumesRef.where('name', '==', profile.name).get()
+
+  if (snapshot.size == 0) {
+    console.log(`No resumes found for ${profile.name}, creating a new document`)
+    await resumesRef
+      .add(profile)
+      .then((doc) => doc.update({ _id: doc.id }))
+      .catch((err) => {
+        console.error(`Unable add a resume to the collection for ${profile.name}`)
+        console.log(err)
+        res
+          .status(500)
+          .send('Unable to add your resume to our database. Please try again')
+      })
+  } else if (snapshot.size >= 1) {
+    /* If there already exists an entry with that same name either:
+     * Update their entry if we can be somewhat confident it's the same person
+     * (We're going to assume the chance of two people having the same name, standing, and major is low)
+     * Create a new entry if we can be somewhat confident it's a different person
      */
-    if (!req.user.verified) {
-      res.sendStatus(401)
-      return
+    console.log(`One or more entries were found with the name ${profile.name}`)
+
+    let documentAdded = false
+    for (let i = 0; i < snapshot.size; i++) {
+      const doc = snapshot.docs[i]
+      const { major, standing, email } = doc.data()
+
+      // If the email they inputed is the same as another entry with the same name but a different major and/or standing we can reasonably assume it's the same person
+      if (
+        !documentAdded &&
+        ((major === profile.major && standing === profile.standing) ||
+          email === profile.email)
+      ) {
+        // TODO: Delete old cloudinary resume if the user is updating their resume
+        await doc.ref
+          .update(profile)
+          .then(() => {
+            console.log(
+              `Successfully updated resume entry for ${profile.name} with collection ID: ${doc.id}`
+            )
+            documentAdded = true
+          })
+          .catch((err) => {
+            console.error(
+              `Unable to update resume entry for ${profile.name} with collection ID: ${doc.id}`
+            )
+            console.log(err)
+            res
+              .status(500)
+              .send('Unable to update your resume in our database. Please try again')
+          })
+      }
     }
 
-    const profile = {
-      name: req.body.name,
-      linkedin: req.body.linkedin.toLowerCase(),
-      email: req.body.email,
-      gpa: req.body.gpa,
-      major: req.body.major,
-      standing: req.body.standing,
-      resume: '',
-      approved: false,
-    }
-
-    if (!startsWith(profile.linkedin, 'https://www.linkedin.com/in/')) {
-      res.sendStatus(422)
-      return
-    }
-
-    // Upload the resume to the cloudinary CDN
-    const url = await uploadDocument(res, `${req.body.name} - Resume`, req.body.pdf)
-    profile.resume = url.secure_url
-
-    // Add an entry to the resumes collection
-    const resumesRef = db.collection('resumes')
-
-    console.log(`Performing a query to figure out if a resume exists for ${profile.name}`)
-    const snapshot = await resumesRef.where('name', '==', profile.name).get()
-
-    if (snapshot.size == 0) {
-      console.log(`No resumes found for ${profile.name}, creating a new document`)
+    // We are assuming that this person hasn't already been added to the resumes collection
+    if (!documentAdded) {
       await resumesRef
         .add(profile)
-        .then((doc) => doc.update({ _id: doc.id }))
+        .then((doc) => {
+          console.log(
+            `Created a new entry for ${req.body.name} with collection ID: ${doc.id}`
+          )
+        })
         .catch((err) => {
-          console.error(`Unable add a resume to the collection for ${profile.name}`)
-          console.log(err)
+          console.log(`Unable to add new resume entry for ${req.body.name}`)
+          console.error(err)
           res
             .status(500)
             .send('Unable to add your resume to our database. Please try again')
         })
-    } else if (snapshot.size >= 1) {
-      /* If there already exists an entry with that same name either:
-       * Update their entry if we can be somewhat confident it's the same person
-       * (We're going to assume the chance of two people having the same name, standing, and major is low)
-       * Create a new entry if we can be somewhat confident it's a different person
-       */
-      console.log(`One or more entries were found with the name ${profile.name}`)
-
-      let documentAdded = false
-      for (let i = 0; i < snapshot.size; i++) {
-        const doc = snapshot.docs[i]
-        const { major, standing, email } = doc.data()
-
-        // If the email they inputed is the same as another entry with the same name but a different major and/or standing we can reasonably assume it's the same person
-        if (
-          !documentAdded &&
-          ((major === profile.major && standing === profile.standing) ||
-            email === profile.email)
-        ) {
-          // TODO: Delete old cloudinary resume if the user is updating their resume
-          await doc.ref
-            .update({
-              linkedin: req.body.linkedin,
-              email: req.body.email,
-              gpa: req.body.gpa,
-              major: req.body.major,
-              standing: req.body.standing,
-              resume: url.secure_url,
-              approved: false,
-            })
-            .then(() => {
-              console.log(
-                `Successfully updated resume entry for ${profile.name} with collection ID: ${doc.id}`
-              )
-              documentAdded = true
-            })
-            .catch((err) => {
-              console.error(
-                `Unable to update resume entry for ${profile.name} with collection ID: ${doc.id}`
-              )
-              console.log(err)
-              res
-                .status(500)
-                .send('Unable to update your resume in our database. Please try again')
-            })
-        }
-      }
-
-      // We are assuming that this person hasn't already been added to the resumes collection
-      if (!documentAdded) {
-        await resumesRef
-          .add(profile)
-          .then((doc) => {
-            console.log(
-              `Created a new entry for ${req.body.name} with collection ID: ${doc.id}`
-            )
-          })
-          .catch((err) => {
-            console.log(`Unable to add new resume entry for ${req.body.name}`)
-            console.error(err)
-            res
-              .status(500)
-              .send('Unable to add your resume to our database. Please try again')
-          })
-      }
     }
-    res.send('Successfully Added')
   }
-)
+  res.send('Successfully Added')
+})
 
 app.get(
   `${ENDPOINT}/api/allResumes`,
