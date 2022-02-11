@@ -63,7 +63,7 @@
     "gh-pages": "^2.2.0",
     "husky": "^4.2.5",
     "netlify-lambda": "^1.6.3",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "prettier": "^2.0.5"
   },
   "husky": {
